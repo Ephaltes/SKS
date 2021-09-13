@@ -362,7 +362,7 @@ MigrationBackup/
 FodyWeavers.xsd
 
 #Appsettings
-appsettings.json
+#appsettings.json
 
 #jetbrains
 .idea/
