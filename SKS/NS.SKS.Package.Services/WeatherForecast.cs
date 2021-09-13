@@ -4,6 +4,7 @@ namespace SKS
 {
     public class WeatherForecast
     {
+        // this is a example comment 
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
