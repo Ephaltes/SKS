@@ -1,33 +1,82 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
-namespace SKS
+using Newtonsoft.Json.Converters;
+using Newtonsoft.Json.Serialization;
+
+using NS.SKS.Package.Services.Filter;
+
+namespace NS.SKS.Package.Services
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        private readonly IWebHostEnvironment _hostingEnv;
+
+        public IConfiguration Configuration
         {
-            Configuration = configuration;
+            get;
         }
 
-        public IConfiguration Configuration { get; }
+        public Startup(IWebHostEnvironment env, IConfiguration configuration)
+        {
+            Configuration = configuration;
+            _hostingEnv = env;
+        }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSwaggerGen(c => { c.SwaggerDoc("v1", new OpenApiInfo { Title = "NS.SKS.Package.Services", Version = "v1" }); });
+
+            services
+                .AddMvc(options =>
+                        {
+                            options.InputFormatters.RemoveType<SystemTextJsonInputFormatter>();
+                            options.OutputFormatters.RemoveType<SystemTextJsonOutputFormatter>();
+                        })
+                .AddNewtonsoftJson(opts =>
+                                   {
+                                       opts.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                                       opts.SerializerSettings.Converters.Add(new StringEnumConverter(new CamelCaseNamingStrategy()));
+                                   })
+                .AddXmlSerializerFormatters();
+
+
+            services
+                .AddSwaggerGen(c =>
+                               {
+                                   c.SwaggerDoc("1.20.0", new OpenApiInfo
+                                                          {
+                                                              Version = "1.20.0",
+                                                              Title = "Parcel Logistics Service",
+                                                              Description = "Parcel Logistics Service (ASP.NET Core 3.1)",
+                                                              Contact = new OpenApiContact
+                                                                        {
+                                                                            Name = "SKS",
+                                                                            Url = new Uri("https://www.technikum-wien.at/"),
+                                                                            Email = ""
+                                                                        },
+                                                              TermsOfService = new Uri("https://www.technikum-wien.at/")
+                                                          });
+                                   c.CustomSchemaIds(type => type.FullName);
+                                   //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{_hostingEnv.ApplicationName}.xml");
+
+                                   // Include DataAnnotation attributes on Controller Action parameters as Swagger validation rules (e.g required, pattern, ..)
+                                   // Use [ValidateModelState] on Actions to actually validate it in C# as well!
+                                   c.OperationFilter<GeneratePathParamsValidationFilter>();
+                               });
+
+            services.AddSwaggerGen(c =>
+                                   {
+                                       c.SwaggerDoc("v1", new OpenApiInfo { Title = "NS.SKS.Package.Services", Version = "v1" });
+                                   });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +95,35 @@ namespace SKS
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+                             {
+                                 //TODO: Either use the SwaggerGen generated Swagger contract (generated from C# classes)
+                                 c.SwaggerEndpoint("/swagger/1.20.0/swagger.json", "Parcel Logistics Service");
+
+                                 //TODO: Or alternatively use the original Swagger contract that's included in the static files
+                                 // c.SwaggerEndpoint("/swagger-original.json", "Parcel Logistics Service Original");
+                             });
+
+            //TODO: Use Https Redirection
+            // app.UseHttpsRedirection();
+
+            app.UseEndpoints(endpoints =>
+                             {
+                                 endpoints.MapControllers();
+                             });
+
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                //TODO: Enable production exception handling (https://docs.microsoft.com/en-us/aspnet/core/fundamentals/error-handling)
+                app.UseExceptionHandler("/Error");
+
+                app.UseHsts();
+            }
         }
     }
 }
