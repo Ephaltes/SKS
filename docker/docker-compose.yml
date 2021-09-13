@@ -1,0 +1,16 @@
+version: '3.3'
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+    restart: unless-stopped
+    container_name: sks_sql_server
+    environment:
+      SA_PASSWORD: 'SKS_PASSWORD'
+      ACCEPT_EULA: 'Y'
+    ports:
+      - '1433:1433'
+    volumes:
+      - "sql_db:/var/opt/mssql/data"
+
+volumes:
+  sql_db:
