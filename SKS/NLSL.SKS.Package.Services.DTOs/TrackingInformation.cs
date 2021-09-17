@@ -33,31 +33,31 @@ namespace NLSL.SKS.Package.Services.DTOs
             /// Enum PickupEnum for Pickup
             /// </summary>
             [EnumMember(Value = "Pickup")]
-            PickupEnum = 0,
+            Pickup= 0,
 
             /// <summary>
             /// Enum InTransportEnum for InTransport
             /// </summary>
             [EnumMember(Value = "InTransport")]
-            InTransportEnum = 1,
+            InTransport = 1,
 
             /// <summary>
             /// Enum InTruckDeliveryEnum for InTruckDelivery
             /// </summary>
             [EnumMember(Value = "InTruckDelivery")]
-            InTruckDeliveryEnum = 2,
+            InTruckDelivery = 2,
 
             /// <summary>
             /// Enum TransferredEnum for Transferred
             /// </summary>
             [EnumMember(Value = "Transferred")]
-            TransferredEnum = 3,
+            Transferred = 3,
 
             /// <summary>
             /// Enum DeliveredEnum for Delivered
             /// </summary>
             [EnumMember(Value = "Delivered")]
-            DeliveredEnum = 4
+            Delivered = 4
         }
 
         /// <summary>

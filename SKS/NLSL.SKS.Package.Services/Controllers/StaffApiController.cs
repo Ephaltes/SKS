@@ -37,7 +37,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportHop")]
         [SwaggerResponse(500, type: typeof(Error), description: "An error occured.")]
-        public virtual IActionResult ReportHop([FromRoute] [Required] [RegularExpression("/^[A-Z0-9]{9}$/")] string trackingId, [FromRoute] [Required] [RegularExpression("/^[A-Z]{4}\\d{1,4}$/")] string code)
+        public virtual IActionResult ReportHop([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId, [FromRoute] [Required] [RegularExpression("/^[A-Z]{4}\\d{1,4}$/")] string code)
         {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);
@@ -60,7 +60,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportParcelDelivery")]
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ReportParcelDelivery([FromRoute] [Required] [RegularExpression("/^[A-Z0-9]{9}$/")] string trackingId)
+        public virtual IActionResult ReportParcelDelivery([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(200);

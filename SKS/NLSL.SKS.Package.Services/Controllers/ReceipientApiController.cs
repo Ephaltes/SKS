@@ -43,7 +43,7 @@ namespace NLSL.SKS.Package.Services.Controllers
             description: "Parcel exists, here&#x27;s the tracking information.")]
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult TrackParcel(
-            [FromRoute] [Required] [RegularExpression("/^[A-Z0-9]{9}$/")]
+            [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")]
             string trackingId)
         {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...

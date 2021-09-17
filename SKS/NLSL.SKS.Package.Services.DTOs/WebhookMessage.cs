@@ -21,7 +21,7 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// <summary>
         /// Gets or Sets TrackingId
         /// </summary>
-        [RegularExpression("/^[A-Z0-9]{9}$/")]
+        [RegularExpression("^[A-Z0-9]{9}$")]
         [DataMember(Name = "trackingId")]
         public string TrackingId
         {
