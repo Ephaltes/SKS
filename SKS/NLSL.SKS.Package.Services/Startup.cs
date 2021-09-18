@@ -62,8 +62,7 @@ namespace NLSL.SKS.Package.Services
                                                                             Name = "SKS",
                                                                             Url = new Uri("https://www.technikum-wien.at/"),
                                                                             Email = ""
-                                                                        },
-                                                              TermsOfService = new Uri("https://www.technikum-wien.at/")
+                                                                        }
                                                           });
                                    c.CustomSchemaIds(type => type.FullName);
                                    //c.IncludeXmlComments($"{AppContext.BaseDirectory}{Path.DirectorySeparatorChar}{_hostingEnv.ApplicationName}.xml");
