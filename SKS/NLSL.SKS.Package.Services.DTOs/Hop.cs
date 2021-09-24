@@ -10,13 +10,20 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Diagnostics.CodeAnalysis;
+
+using Newtonsoft.Json;
+
+using NLSL.SKS.Package.Services.DTOs.JsonConverter;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
     /// <summary>
     /// </summary>
     [DataContract]
-    public class Hop
+    [ExcludeFromCodeCoverage]
+    [JsonConverter(typeof(HopJsonConverter))]
+    public abstract class Hop
     {
         /// <summary>
         /// Gets or Sets HopType

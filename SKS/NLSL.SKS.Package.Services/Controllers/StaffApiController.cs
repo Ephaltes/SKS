@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,15 +38,24 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ReportHop")]
         [SwaggerResponse(500, type: typeof(Error), description: "An error occured.")]
-        public virtual IActionResult ReportHop([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId, [FromRoute] [Required] [RegularExpression("/^[A-Z]{4}\\d{1,4}$/")] string code)
+        public virtual IActionResult ReportHop([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId, [FromRoute] [Required] [RegularExpression("^[A-Z]{4}\\d{1,4}$")] string code)
         {
+            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
+            _ = code ?? throw new ArgumentNullException(nameof(code));
+
+            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
+            {
+                throw new ArgumentException(nameof(trackingId));
+            }           
+            if (Regex.Match(code, ("^[A-Z]{4}\\d{1,4}$")).Success is false)
+            {
+                throw new ArgumentException(nameof(code));
+            }
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 500 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(500, default(Error));
-
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -62,16 +72,21 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ReportParcelDelivery([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
+            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
+            
+            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
+            {
+                throw new ArgumentException(nameof(trackingId));
+            }
+            
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400, default(Error));
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-
-            throw new NotImplementedException();
         }
     }
 }

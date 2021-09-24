@@ -9,12 +9,14 @@
  */
 
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
     /// <summary>
     /// </summary>
+    [ExcludeFromCodeCoverage]
     [DataContract]
     public class Error
     {

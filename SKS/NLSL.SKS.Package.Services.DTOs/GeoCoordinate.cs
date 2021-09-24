@@ -10,12 +10,14 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
     /// <summary>
     /// </summary>
     [DataContract]
+    [ExcludeFromCodeCoverage]
     public class GeoCoordinate
     {
         /// <summary>

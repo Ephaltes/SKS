@@ -10,6 +10,7 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
@@ -23,6 +24,7 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// </summary>
         [Required]
         [DataMember(Name = "weight")]
+        [ExcludeFromCodeCoverage]
         public float? Weight
         {
             get;
@@ -30,11 +32,11 @@ namespace NLSL.SKS.Package.Services.DTOs
         }
 
         /// <summary>
-        /// Gets or Sets Receipient
+        /// Gets or Sets Recipient
         /// </summary>
         [Required]
-        [DataMember(Name = "receipient")]
-        public Receipient Receipient
+        [DataMember(Name = "recipient")]
+        public Recipient Recipient
         {
             get;
             set;
@@ -45,7 +47,7 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// </summary>
         [Required]
         [DataMember(Name = "sender")]
-        public Receipient Sender
+        public Recipient Sender
         {
             get;
             set;

@@ -2,6 +2,7 @@
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.Services.DTOs.Enums
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,7 @@ namespace NLSL.SKS.Package.Services.Attributes
     /// <summary>
     /// Model state validation attribute
     /// </summary>
+    [ExcludeFromCodeCoverage]
     public class ValidateModelStateAttribute : ActionFilterAttribute
     {
         /// <summary>
