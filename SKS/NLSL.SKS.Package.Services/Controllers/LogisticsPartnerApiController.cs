@@ -56,10 +56,6 @@ namespace NLSL.SKS.Package.Services.Controllers
             _ = body.Recipient.PostalCode ?? throw new ArgumentNullException(nameof(body.Recipient.PostalCode));
             _ = body.Recipient.Country ?? throw new ArgumentNullException(nameof(body.Recipient.Country));
             _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
-            if (Regex.Match(trackingId, "^[A-Z0-9]{9}$").Success is false)
-            {
-                throw new ArgumentException(nameof(trackingId));
-            }
 
             return StatusCode(200);
         }
