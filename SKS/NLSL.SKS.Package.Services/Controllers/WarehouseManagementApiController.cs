@@ -10,12 +10,10 @@
 
 #nullable enable
 
-using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using Microsoft.AspNetCore.Mvc;
-
-using Newtonsoft.Json;
 
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
@@ -51,13 +49,17 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-            string exampleJson = "\"\"";
 
-            Warehouse? example = exampleJson != null
-                ? JsonConvert.DeserializeObject<Warehouse>(exampleJson)
-                : default; //TODO: Change the data returned
+            Warehouse warehouse = new Warehouse
+                                  {
+                                      Code = "code12345"
+                                  };
 
-            return new ObjectResult(example);
+            List<Warehouse> warehouseList = new List<Warehouse>
+                                            { warehouse };
+
+
+            return new ObjectResult(warehouseList) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -83,13 +85,16 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-            const string exampleJson = "\"\"";
 
-            Warehouse? example = exampleJson != null
-                ? JsonConvert.DeserializeObject<Warehouse>(exampleJson)
-                : default; //TODO: Change the data returned
+            if (code != "test")
+                return new NotFoundObjectResult(null);
 
-            return new ObjectResult(example);
+            Warehouse warehouse = new Warehouse
+                                  {
+                                      Code = "code12345"
+                                  };
+
+            return new ObjectResult(warehouse) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -105,13 +110,11 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
         {
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            if (body == null)
+                return StatusCode(400);
 
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
 
-            throw new NotImplementedException();
+            return StatusCode(200);
         }
     }
 }

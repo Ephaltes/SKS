@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -15,6 +16,7 @@ using NLSL.SKS.Package.Services.Filter;
 
 namespace NLSL.SKS.Package.Services
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         private readonly IWebHostEnvironment _hostingEnv;
@@ -52,11 +54,11 @@ namespace NLSL.SKS.Package.Services
             services
                 .AddSwaggerGen(c =>
                                {
-                                   c.SwaggerDoc("1.20.0", new OpenApiInfo
+                                   c.SwaggerDoc("1.20.1", new OpenApiInfo
                                                           {
-                                                              Version = "1.20.0",
+                                                              Version = "1.20.1",
                                                               Title = "Parcel Logistics Service",
-                                                              Description = "Parcel Logistics Service (ASP.NET Core 3.1)",
+                                                              Description = "Parcel Logistics Service (ASP.NET 5)",
                                                               Contact = new OpenApiContact
                                                                         {
                                                                             Name = "SKS",
@@ -98,7 +100,7 @@ namespace NLSL.SKS.Package.Services
             app.UseSwaggerUI(c =>
                              {
                                  //TODO: Either use the SwaggerGen generated Swagger contract (generated from C# classes)
-                                 c.SwaggerEndpoint("/swagger/1.20.0/swagger.json", "Parcel Logistics Service");
+                                 c.SwaggerEndpoint("/swagger/1.20.1/swagger.json", "Parcel Logistics Service");
 
                                  //TODO: Or alternatively use the original Swagger contract that's included in the static files
                                  // c.SwaggerEndpoint("/swagger-original.json", "Parcel Logistics Service Original");

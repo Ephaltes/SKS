@@ -10,7 +10,9 @@
 
 #nullable enable
 
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,7 +28,7 @@ namespace NLSL.SKS.Package.Services.Controllers
     /// <summary>
     /// </summary>
     [ApiController]
-    public class ReceipientApiController : ControllerBase
+    public class RecipientApiController : ControllerBase
     {
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID.
@@ -46,21 +48,23 @@ namespace NLSL.SKS.Package.Services.Controllers
             [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")]
             string trackingId)
         {
+            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
+            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
+            {
+                throw new ArgumentException(nameof(trackingId));
+            }
+
+
+
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(TrackingInformation));
+             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400, default(Error));
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-            const string exampleJson = "{\n  \"visitedHops\" : [ {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  }, {\n    \"dateTime\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"code\" : \"code\",\n    \"description\" : \"description\"\n  } ],\n  \"futureHops\" : [ null, null ],\n  \"state\" : \"Pickup\"\n}";
 
-            TrackingInformation? example = exampleJson != null
-                ? JsonConvert.DeserializeObject<TrackingInformation>(exampleJson)
-                : default; //TODO: Change the data returned
-
-            return new ObjectResult(example);
         }
     }
 }

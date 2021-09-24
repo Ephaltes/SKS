@@ -16,12 +16,14 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
 using NLSL.SKS.Package.Services.DTOs.Enums;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
     /// <summary>
     /// </summary>
     [DataContract]
+    [ExcludeFromCodeCoverage]
     public class TrackingInformation
     {
         /// <summary>

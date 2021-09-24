@@ -10,13 +10,15 @@
 
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.Services.DTOs
 {
     /// <summary>
     /// </summary>
     [DataContract]
-    public class Receipient
+    [ExcludeFromCodeCoverage]
+    public class Recipient
     {
         /// <summary>
         /// Name of person or company.
