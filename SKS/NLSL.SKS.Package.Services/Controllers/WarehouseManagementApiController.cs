@@ -28,14 +28,14 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class WarehouseManagementApiController : ControllerBase
     {
-        Warehouse tempRootWarehouse = null;
+        private readonly Warehouse? _rootWarehouse;
         public WarehouseManagementApiController()    
         {
 
         }
-        public WarehouseManagementApiController(Warehouse exampleRoot)
+        public WarehouseManagementApiController(Warehouse rootWarehouse)
         {
-            tempRootWarehouse = exampleRoot;
+            _rootWarehouse = rootWarehouse;
         }
         /// <summary>
         /// Exports the hierarchy of Warehouse and Truck objects.
@@ -59,7 +59,7 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-            if(tempRootWarehouse is null)
+            if(_rootWarehouse is null)
             {
                 return new ObjectResult("failed") { StatusCode = 400 };
             }
