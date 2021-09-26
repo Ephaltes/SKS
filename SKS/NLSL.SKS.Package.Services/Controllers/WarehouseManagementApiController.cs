@@ -29,10 +29,7 @@ namespace NLSL.SKS.Package.Services.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private readonly Warehouse? _rootWarehouse;
-        public WarehouseManagementApiController()    
-        {
 
-        }
         public WarehouseManagementApiController(Warehouse rootWarehouse)
         {
             _rootWarehouse = rootWarehouse;
