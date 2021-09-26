@@ -12,6 +12,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
+using NLSL.SKS.Package.Services.DTOs;
 using NLSL.SKS.Package.Services.Filter;
 
 namespace NLSL.SKS.Package.Services
@@ -36,6 +37,9 @@ namespace NLSL.SKS.Package.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            Warehouse warehouse = new Warehouse() { Code = "1234", HopType = "Truck" };
+            services.AddSingleton(warehouse);
 
             services
                 .AddMvc(options =>
