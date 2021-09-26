@@ -18,7 +18,8 @@ namespace NLSL.SKS.Package.Services.Tests
         [SetUp]
         public void Setup()
         {
-            testController = new WarehouseManagementApiController();
+            Warehouse example = new Warehouse();
+            testController = new WarehouseManagementApiController(example);
         }
         [Test]
         public void ExportWarehouses_ReturnsListOfWareHouses_Success()
@@ -27,6 +28,16 @@ namespace NLSL.SKS.Package.Services.Tests
             result =(ObjectResult) testController.ExportWarehouses();
 
             result.StatusCode.Should().Be(200);
+        }
+        [Test]
+        public void ExportWarehouses_ReturnsListOfWareHouses_FailureRootIsNUll()
+        {
+            ObjectResult result;
+                     
+            testController = new WarehouseManagementApiController();
+            result = (ObjectResult)testController.ExportWarehouses();
+
+            result.StatusCode.Should().Be(400);
         }
         [Test]
         public void GetWarehouse_TestCode_Success()
