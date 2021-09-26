@@ -10,6 +10,7 @@
 
 #nullable enable
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -27,6 +28,15 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class WarehouseManagementApiController : ControllerBase
     {
+        Warehouse tempRootWarehouse = null;
+        public WarehouseManagementApiController()    
+        {
+
+        }
+        public WarehouseManagementApiController(Warehouse exampleRoot)
+        {
+            tempRootWarehouse = exampleRoot;
+        }
         /// <summary>
         /// Exports the hierarchy of Warehouse and Truck objects.
         /// </summary>
@@ -49,7 +59,10 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-
+            if(tempRootWarehouse is null)
+            {
+                return new ObjectResult("failed") { StatusCode = 400 };
+            }
             Warehouse warehouse = new Warehouse
                                   {
                                       Code = "code12345"
