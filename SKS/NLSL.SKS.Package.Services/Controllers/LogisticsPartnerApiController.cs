@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -26,6 +27,12 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class LogisticsPartnerApiController : ControllerBase
     {
+
+        private readonly IParcelManagement _parcelManagement;
+        public LogisticsPartnerApiController(IParcelManagement parcelManagement)
+        {
+            _parcelManagement = parcelManagement;
+        }
         /// <summary>
         /// Transfer an existing parcel into the system from the service of a logistics partner.
         /// </summary>
@@ -41,21 +48,10 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult TransitionParcel([FromBody] Parcel body, [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
-            _ = body.Weight ?? throw new ArgumentNullException(nameof(body.Weight));
-            _ = body.Sender ?? throw new ArgumentNullException(nameof(body.Sender));
-            _ = body.Recipient ?? throw new ArgumentNullException(nameof(body.Recipient));
-            _ = body.Sender.City ?? throw new ArgumentNullException(nameof(body.Sender.City));
-            _ = body.Sender.Street ?? throw new ArgumentNullException(nameof(body.Sender.Street));
-            _ = body.Sender.Name ?? throw new ArgumentNullException(nameof(body.Sender.Name));
-            _ = body.Sender.PostalCode ?? throw new ArgumentNullException(nameof(body.Sender.PostalCode));
-            _ = body.Sender.Country ?? throw new ArgumentNullException(nameof(body.Sender.Country));
-            _ = body.Recipient.City ?? throw new ArgumentNullException(nameof(body.Recipient.City));
-            _ = body.Recipient.Street ?? throw new ArgumentNullException(nameof(body.Recipient.Street));
-            _ = body.Recipient.Name ?? throw new ArgumentNullException(nameof(body.Recipient.Name));
-            _ = body.Recipient.PostalCode ?? throw new ArgumentNullException(nameof(body.Recipient.PostalCode));
-            _ = body.Recipient.Country ?? throw new ArgumentNullException(nameof(body.Recipient.Country));
-            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
+            //automapper 
+
+
+            _parcelManagement.Transition(afterAutoMapper);
 
             return StatusCode(200);
         }

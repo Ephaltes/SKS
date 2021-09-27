@@ -10,12 +10,11 @@
 
 #nullable enable
 
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -29,10 +28,12 @@ namespace NLSL.SKS.Package.Services.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private readonly Warehouse? _rootWarehouse;
+        private readonly IWarehouseManagement _warehouseManagement;
 
-        public WarehouseManagementApiController(Warehouse rootWarehouse)
+        public WarehouseManagementApiController(Warehouse rootWarehouse, IWarehouseManagement warehouseManagement)
         {
             _rootWarehouse = rootWarehouse;
+            _warehouseManagement = warehouseManagement;
         }
         /// <summary>
         /// Exports the hierarchy of Warehouse and Truck objects.
@@ -56,18 +57,8 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-            if(_rootWarehouse is null)
-            {
-                return new ObjectResult("failed") { StatusCode = 400 };
-            }
-            Warehouse warehouse = new Warehouse
-                                  {
-                                      Code = "code12345"
-                                  };
 
-            List<Warehouse> warehouseList = new List<Warehouse>
-                                            { warehouse };
-
+            var warehouseList = _warehouseManagement.GetAll();
 
             return new ObjectResult(warehouseList) { StatusCode = 200 };
         }
@@ -96,13 +87,7 @@ namespace NLSL.SKS.Package.Services.Controllers
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
 
-            if (code != "test")
-                return new NotFoundObjectResult(null);
-
-            Warehouse warehouse = new Warehouse
-                                  {
-                                      Code = "code12345"
-                                  };
+            var warehouse = _warehouseManagement.Get(code);
 
             return new ObjectResult(warehouse) { StatusCode = 200 };
         }
@@ -120,10 +105,10 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
         {
-            if (body == null)
-                return StatusCode(400);
-
-
+            //automapper
+            
+            _warehouseManagement.Add(WarehouseAfterAutoMapper);
+            
             return StatusCode(200);
         }
     }

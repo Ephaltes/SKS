@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -30,6 +31,12 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class RecipientApiController : ControllerBase
     {
+
+        private readonly IParcelManagement _parcelManagement;
+        public RecipientApiController(IParcelManagement parcelManagement)
+        {
+            _parcelManagement = parcelManagement;
+        }
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID.
         /// </summary>
@@ -48,12 +55,8 @@ namespace NLSL.SKS.Package.Services.Controllers
             [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")]
             string trackingId)
         {
-            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
-            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
-            {
-                throw new ArgumentException(nameof(trackingId));
-            }
 
+            _parcelManagement.Track(trackingId);
 
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...

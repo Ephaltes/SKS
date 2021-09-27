@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -26,6 +27,13 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class StaffApiController : ControllerBase
     {
+
+        private readonly IParcelManagement _parcelManagement;
+        public StaffApiController(IParcelManagement parcelManagement)
+        {
+            _parcelManagement = parcelManagement;
+        }
+
         /// <summary>
         /// Report that a Parcel has arrived at a certain hop either Warehouse or Truck
         /// </summary>
@@ -40,17 +48,9 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(500, type: typeof(Error), description: "An error occured.")]
         public virtual IActionResult ReportHop([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId, [FromRoute] [Required] [RegularExpression("^[A-Z]{4}\\d{1,4}$")] string code)
         {
-            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
-            _ = code ?? throw new ArgumentNullException(nameof(code));
 
-            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
-            {
-                throw new ArgumentException(nameof(trackingId));
-            }           
-            if (Regex.Match(code, ("^[A-Z]{4}\\d{1,4}$")).Success is false)
-            {
-                throw new ArgumentException(nameof(code));
-            }
+            _parcelManagement.ReportHop(trackingId, code);
+            
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
              return StatusCode(200);
 
@@ -72,12 +72,8 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult ReportParcelDelivery([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
-            _ = trackingId ?? throw new ArgumentNullException(nameof(trackingId));
-            
-            if (Regex.Match(trackingId, ("^[A-Z0-9]{9}$")).Success is false)
-            {
-                throw new ArgumentException(nameof(trackingId));
-            }
+
+            _parcelManagement.Delivered(trackingId);
             
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
              return StatusCode(200);
