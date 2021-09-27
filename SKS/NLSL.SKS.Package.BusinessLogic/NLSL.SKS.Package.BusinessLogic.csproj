@@ -9,4 +9,8 @@
     <PackageReference Include="FluentValidation" Version="10.3.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
+  </ItemGroup>
+
 </Project>

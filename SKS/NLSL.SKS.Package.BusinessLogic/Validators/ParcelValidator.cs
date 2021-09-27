@@ -1,0 +1,29 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+using FluentValidation;
+
+using NLSL.SKS.Package.BusinessLogic.Entities;
+
+namespace NLSL.SKS.Package.BusinessLogic.Validators
+{
+    class ParcelValidator : BaseValidator<Parcel>
+    {
+        public ParcelValidator()
+        {
+            RuleFor(p => p.Recipient).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.Sender).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.VisitedHops).NotNull().WithMessage("{PropertyName} was null"); 
+            RuleFor(p => p.FutureHops).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.State).NotNull().WithMessage("{PropertyName} was null");
+
+            RuleFor(p => p.TrackingId).NotNull().WithMessage("{PropertyName} was null")
+                .Matches("^[A-Z0-9]{9}$").WithMessage("{PropertyName} does not Match ^[A-Z0-9]{9}$ Regex");
+            RuleFor(p => p.Weight).NotNull().WithMessage("{PropertyName} was null")
+                .GreaterThan(0.0f).WithMessage("{PropertyName} is to light");
+        }
+    }
+}
