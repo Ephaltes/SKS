@@ -19,6 +19,8 @@ using Swashbuckle.AspNetCore.Annotations;
 
 using System;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
+
 namespace NLSL.SKS.Package.Services.Controllers
 {
     /// <summary>
@@ -26,6 +28,11 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class SenderApiController : ControllerBase
     {
+        private readonly IParcelManagement _parcelManagement;
+        public SenderApiController(IParcelManagement parcelManagement)
+        {
+            _parcelManagement = parcelManagement;
+        }
         /// <summary>
         /// Submit a new parcel to the logistics service.
         /// </summary>
@@ -40,21 +47,9 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
         public virtual IActionResult SubmitParcel([FromBody] Parcel body)
         {
-            _ = body ?? throw new ArgumentNullException(nameof(body));
-            _ = body.Weight ?? throw new ArgumentNullException(nameof(body.Weight));
-            _ = body.Sender ?? throw new ArgumentNullException(nameof(body.Sender));
-            _ = body.Recipient ?? throw new ArgumentNullException(nameof(body.Recipient));
-            _ = body.Sender.City ?? throw new ArgumentNullException(nameof(body.Sender.City));
-            _ = body.Sender.Street ?? throw new ArgumentNullException(nameof(body.Sender.Street));
-            _ = body.Sender.Name ?? throw new ArgumentNullException(nameof(body.Sender.Name));
-            _ = body.Sender.PostalCode ?? throw new ArgumentNullException(nameof(body.Sender.PostalCode));
-            _ = body.Sender.Country ?? throw new ArgumentNullException(nameof(body.Sender.Country));
-            _ = body.Recipient.City ?? throw new ArgumentNullException(nameof(body.Recipient.City));
-            _ = body.Recipient.Street ?? throw new ArgumentNullException(nameof(body.Recipient.Street));
-            _ = body.Recipient.Name ?? throw new ArgumentNullException(nameof(body.Recipient.Name));
-            _ = body.Recipient.PostalCode ?? throw new ArgumentNullException(nameof(body.Recipient.PostalCode));
-            _ = body.Recipient.Country ?? throw new ArgumentNullException(nameof(body.Recipient.Country));
+           //automapper
 
+           _parcelManagement.Submit(afterAutoMapper);
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
              return StatusCode(201);
