@@ -1,18 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.Services", "NLSL.SKS.Package.Services\NLSL.SKS.Package.Services.csproj", "{EF0EE5FB-85BE-41F4-B4AA-97FAC40BF2AB}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31019.35
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services", "NLSL.SKS.Package.Services\NLSL.SKS.Package.Services.csproj", "{EF0EE5FB-85BE-41F4-B4AA-97FAC40BF2AB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.Services.DTOs", "NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj", "{7EDFA9CC-1C07-44A5-88FE-211CCD899C31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services.DTOs", "NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj", "{7EDFA9CC-1C07-44A5-88FE-211CCD899C31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.Services.Interfaces", "NLSL.SKS.Package.Services.Interfaces\NLSL.SKS.Package.Services.Interfaces.csproj", "{965CDD10-6EE8-4970-8DED-2A082E32F230}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services.Interfaces", "NLSL.SKS.Package.Services.Interfaces\NLSL.SKS.Package.Services.Interfaces.csproj", "{965CDD10-6EE8-4970-8DED-2A082E32F230}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{855DEB1B-BF8E-4B1C-ADF4-71A516014422}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{B219CC58-9068-4D0A-AFC3-BD56F6C11671}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.Services.Tests", "NLSL.SKS.Package.Services.Tests\NLSL.SKS.Package.Services.Tests.csproj", "{25C9A9E0-3979-497A-8D5E-C603368A070F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services.Tests", "NLSL.SKS.Package.Services.Tests\NLSL.SKS.Package.Services.Tests.csproj", "{25C9A9E0-3979-497A-8D5E-C603368A070F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DTOs.Tests", "NLSL.SKS.Package.DTOs.Tests\NLSL.SKS.Package.DTOs.Tests.csproj", "{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DTOs.Tests", "NLSL.SKS.Package.DTOs.Tests\NLSL.SKS.Package.DTOs.Tests.csproj", "{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Entities", "NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj", "{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Interfaces", "NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj", "{2B111775-53EC-4CEC-9256-5A87683D91F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic", "NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj", "{7E1DDA8A-D756-437C-87F3-61E4078B0597}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Tests", "NLSL.SKS.Package.BusinessLogic.Tests\NLSL.SKS.Package.BusinessLogic.Tests.csproj", "{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,12 +51,38 @@ Global
 		{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B111775-53EC-4CEC-9256-5A87683D91F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B111775-53EC-4CEC-9256-5A87683D91F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B111775-53EC-4CEC-9256-5A87683D91F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B111775-53EC-4CEC-9256-5A87683D91F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E1DDA8A-D756-437C-87F3-61E4078B0597}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E1DDA8A-D756-437C-87F3-61E4078B0597}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E1DDA8A-D756-437C-87F3-61E4078B0597}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E1DDA8A-D756-437C-87F3-61E4078B0597}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF0EE5FB-85BE-41F4-B4AA-97FAC40BF2AB} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
-		{965CDD10-6EE8-4970-8DED-2A082E32F230} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
 		{7EDFA9CC-1C07-44A5-88FE-211CCD899C31} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
+		{965CDD10-6EE8-4970-8DED-2A082E32F230} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
 		{25C9A9E0-3979-497A-8D5E-C603368A070F} = {B219CC58-9068-4D0A-AFC3-BD56F6C11671}
 		{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0} = {B219CC58-9068-4D0A-AFC3-BD56F6C11671}
+		{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
+		{2B111775-53EC-4CEC-9256-5A87683D91F2} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
+		{7E1DDA8A-D756-437C-87F3-61E4078B0597} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
+		{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6} = {B219CC58-9068-4D0A-AFC3-BD56F6C11671}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {863DB4E3-9185-4827-AB19-EFC5350ED555}
 	EndGlobalSection
 EndGlobal
