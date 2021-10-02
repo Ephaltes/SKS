@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace NLSL.SKS.Package.BusinessLogic.Validators
 {
-    class HopArrivalValidator : BaseValidator<HopArrival>
+    public class HopArrivalValidator : BaseValidator<HopArrival>
     {
         public HopArrivalValidator()
         {

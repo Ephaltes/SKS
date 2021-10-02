@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace NLSL.SKS.Package.BusinessLogic.Validators
 {
-    class GeoCoordinateValidator : BaseValidator<GeoCoordinate>
+    public class GeoCoordinateValidator : BaseValidator<GeoCoordinate>
     {
         public GeoCoordinateValidator()
         {

@@ -1,9 +1,19 @@
+using System.Collections.Generic;
+using System.Linq;
+
+using AutoMapper;
+
+using FakeItEasy;
+
+using FizzWare.NBuilder;
+
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Controllers;
-using NLSL.SKS.Package.Services.DTOs;
 
 using NUnit.Framework;
 
@@ -11,38 +21,46 @@ namespace NLSL.SKS.Package.Services.Tests
 {
     public class WarehouseManagementApiControllerBehaviour
     {
-        private WarehouseManagementApiController testController;
+        private IMapper _mapper;
+        private WarehouseManagementApiController _testController;
+        private IWarehouseManagement _warehouseManagement;
 
         [SetUp]
         public void Setup()
         {
-            Warehouse example = new Warehouse();
-            testController = new WarehouseManagementApiController(example);
+            _mapper = A.Fake<IMapper>();
+            _warehouseManagement = A.Fake<IWarehouseManagement>();
+
+            _testController = new WarehouseManagementApiController(_warehouseManagement, _mapper);
         }
         [Test]
         public void ExportWarehouses_ReturnsListOfWareHouses_Success()
         {
             ObjectResult result;
-            result = (ObjectResult)testController.ExportWarehouses();
+            IReadOnlyCollection<Warehouse> warehouseList = Builder<Warehouse>.CreateListOfSize(2).Build().ToList();
+            A.CallTo(() => _warehouseManagement.GetAll()).Returns(warehouseList);
+
+            result = (ObjectResult)_testController.ExportWarehouses();
 
             result.StatusCode.Should().Be(200);
         }
         [Test]
-        public void ExportWarehouses_ReturnsListOfWareHouses_FailureRootIsNUll()
+        public void ExportWarehouses_NoWarehouses_EmptyList()
         {
             ObjectResult result;
+            A.CallTo(() => _warehouseManagement.GetAll()).Returns(new List<Warehouse>());
 
-            WarehouseManagementApiController? controller = new WarehouseManagementApiController(null);
-            result = (ObjectResult)controller.ExportWarehouses();
+            result = (ObjectResult)_testController.ExportWarehouses();
 
             result.StatusCode.Should().Be(400);
         }
         [Test]
-        public void GetWarehouse_TestCode_Success()
+        public void GetWarehouse_Code_Success()
         {
             ObjectResult result;
+            A.CallTo(() => _warehouseManagement.Get(A<WarehouseCode>.Ignored)).Returns(new Warehouse());
 
-            result = (ObjectResult)testController.GetWarehouse("test");
+            result = (ObjectResult)_testController.GetWarehouse("test");
 
             result.StatusCode.Should().Be(200);
         }
@@ -50,8 +68,9 @@ namespace NLSL.SKS.Package.Services.Tests
         public void GetWarehouse_CodeNotFound_StatusCode404()
         {
             ObjectResult result;
+            A.CallTo(() => _warehouseManagement.Get(A<WarehouseCode>.Ignored)).Returns(null);
 
-            result = (ObjectResult)testController.GetWarehouse("test222");
+            result = (ObjectResult)_testController.GetWarehouse("test222");
 
             result.StatusCode.Should().Be(404);
         }
@@ -59,10 +78,11 @@ namespace NLSL.SKS.Package.Services.Tests
         [Test]
         public void ImportWarehouses_Warehouse_Success()
         {
-            Warehouse warehouse = new Warehouse();
+            DTOs.Warehouse warehouse = new DTOs.Warehouse();
             StatusCodeResult result;
-
-            result = (StatusCodeResult)testController.ImportWarehouses(warehouse);
+            A.CallTo(() => _warehouseManagement.Add(null)).WithAnyArguments().Returns(true);
+            
+            result = (StatusCodeResult)_testController.ImportWarehouses(warehouse);
 
             result.StatusCode.Should().Be(200);
         }
@@ -70,9 +90,11 @@ namespace NLSL.SKS.Package.Services.Tests
         [Test]
         public void ImportWarehouses_NullWareHouse_StatusCode400()
         {
-            StatusCodeResult result;
-
-            result = (StatusCodeResult)testController.ImportWarehouses(null);
+            DTOs.Warehouse warehouse = new DTOs.Warehouse();
+            ObjectResult result;
+            A.CallTo(() => _warehouseManagement.Add(null)).WithAnyArguments().Returns(false);
+            
+            result = (ObjectResult)_testController.ImportWarehouses(warehouse);
 
             result.StatusCode.Should().Be(400);
         }

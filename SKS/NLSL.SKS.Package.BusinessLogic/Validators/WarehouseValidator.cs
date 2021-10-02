@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace NLSL.SKS.Package.BusinessLogic.Validators
 {
-    class WarehouseValidator : BaseValidator<Warehouse>
+    public class WarehouseValidator : BaseValidator<Warehouse>
     {
         public WarehouseValidator()
         {

@@ -10,19 +10,21 @@
 
 #nullable enable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.RegularExpressions;
+
+using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Newtonsoft.Json;
-
+using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
 using Swashbuckle.AspNetCore.Annotations;
+
+using Error = NLSL.SKS.Package.Services.DTOs.Error;
+using Parcel = NLSL.SKS.Package.BusinessLogic.Entities.Parcel;
 
 namespace NLSL.SKS.Package.Services.Controllers
 {
@@ -31,11 +33,13 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class RecipientApiController : ControllerBase
     {
+        private readonly IMapper _mapper;
 
         private readonly IParcelManagement _parcelManagement;
-        public RecipientApiController(IParcelManagement parcelManagement)
+        public RecipientApiController(IParcelManagement parcelManagement, IMapper mapper)
         {
             _parcelManagement = parcelManagement;
+            _mapper = mapper;
         }
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID.
@@ -55,19 +59,25 @@ namespace NLSL.SKS.Package.Services.Controllers
             [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")]
             string trackingId)
         {
+            TrackingId trackingIdObject = new TrackingId(trackingId);
 
-            _parcelManagement.Track(trackingId);
+            Parcel? trackingParcel = _parcelManagement.Track(trackingIdObject);
 
+            if (trackingParcel is null)
+                return new BadRequestObjectResult(
+                    new Error { ErrorMessage = "The operation failed due to an error." });
+
+            TrackingInformation? resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
+
+            return new OkObjectResult(resultParcel);
 
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-             return StatusCode(200);
 
             //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(400, default(Error));
 
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
-
         }
     }
 }

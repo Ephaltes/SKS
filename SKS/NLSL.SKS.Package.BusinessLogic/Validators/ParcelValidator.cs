@@ -10,7 +10,7 @@ using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Validators
 {
-    class ParcelValidator : BaseValidator<Parcel>
+    public class ParcelValidator : BaseValidator<Parcel>
     {
         public ParcelValidator()
         {

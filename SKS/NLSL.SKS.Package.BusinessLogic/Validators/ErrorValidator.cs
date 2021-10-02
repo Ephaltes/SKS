@@ -9,7 +9,7 @@ using FluentValidation;
 
 namespace NLSL.SKS.Package.BusinessLogic.Validators
 {
-    class ErrorValidator : BaseValidator<Error>
+    public class ErrorValidator : BaseValidator<Error>
     {
         public ErrorValidator()
         {

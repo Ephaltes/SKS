@@ -10,15 +10,21 @@
 
 #nullable enable
 
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
-using NLSL.SKS.Package.Services.DTOs;
 
 using Swashbuckle.AspNetCore.Annotations;
+
+using Error = NLSL.SKS.Package.Services.DTOs.Error;
+using Warehouse = NLSL.SKS.Package.Services.DTOs.Warehouse;
 
 namespace NLSL.SKS.Package.Services.Controllers
 {
@@ -27,13 +33,13 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class WarehouseManagementApiController : ControllerBase
     {
-        private readonly Warehouse? _rootWarehouse;
+        private readonly IMapper _mapper;
         private readonly IWarehouseManagement _warehouseManagement;
 
-        public WarehouseManagementApiController(Warehouse rootWarehouse, IWarehouseManagement warehouseManagement)
+        public WarehouseManagementApiController(IWarehouseManagement warehouseManagement, IMapper mapper)
         {
-            _rootWarehouse = rootWarehouse;
             _warehouseManagement = warehouseManagement;
+            _mapper = mapper;
         }
         /// <summary>
         /// Exports the hierarchy of Warehouse and Truck objects.
@@ -58,7 +64,11 @@ namespace NLSL.SKS.Package.Services.Controllers
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
 
-            var warehouseList = _warehouseManagement.GetAll();
+            IReadOnlyCollection<BusinessLogic.Entities.Warehouse> warehouseList = _warehouseManagement.GetAll();
+            
+            if(warehouseList.Count <= 0)
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = "An error occurred loading." });
 
             return new ObjectResult(warehouseList) { StatusCode = 200 };
         }
@@ -76,6 +86,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerOperation("GetWarehouse")]
         [SwaggerResponse(200, type: typeof(Warehouse), description: "Successful response")]
         [SwaggerResponse(400, type: typeof(Error), description: "An error occurred loading.")]
+        [SwaggerResponse(404, type: typeof(Error), description: "Warehouse not found")]
         public virtual IActionResult GetWarehouse([FromRoute] [Required] string code)
         {
             //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
@@ -87,7 +98,13 @@ namespace NLSL.SKS.Package.Services.Controllers
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
 
-            var warehouse = _warehouseManagement.Get(code);
+            WarehouseCode warehouseCode = new WarehouseCode(code);
+
+            BusinessLogic.Entities.Warehouse? warehouse = _warehouseManagement.Get(warehouseCode);
+            
+            if(warehouse is null)
+                return new NotFoundObjectResult(new Error
+                                                  { ErrorMessage = "Warehouse not found" });
 
             return new ObjectResult(warehouse) { StatusCode = 200 };
         }
@@ -95,7 +112,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         /// <summary>
         /// Imports a hierarchy of Warehouse and Truck objects.
         /// </summary>
-        /// <param name="body"></param>
+        /// <param name="warehouse"></param>
         /// <response code="200">Successfully loaded.</response>
         /// <response code="400">The operation failed due to an error.</response>
         [HttpPost]
@@ -103,13 +120,17 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ImportWarehouses")]
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ImportWarehouses([FromBody] Warehouse body)
+        public virtual IActionResult ImportWarehouses([FromBody] Warehouse warehouse)
         {
-            //automapper
+            BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
+
+            bool wasAdded = _warehouseManagement.Add(eWarehouse);
             
-            _warehouseManagement.Add(WarehouseAfterAutoMapper);
-            
-            return StatusCode(200);
+            if(!wasAdded)
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = "The operation failed due to an error." });
+
+            return new OkResult();
         }
     }
 }
