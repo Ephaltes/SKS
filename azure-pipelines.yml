@@ -35,12 +35,12 @@ steps:
   displayName: Test
 
 - task: reportgenerator@4
-    displayName: 'Merge code coverage reports'
-    inputs:
-      reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
-      targetdir: '$(Pipeline.Workspace)/coverlet'
-      reporttypes: 'Cobertura'
-      verbosity: 'Verbose'
+  displayName: 'Merge code coverage reports'
+  inputs:
+    reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    targetdir: '$(Pipeline.Workspace)/coverlet'
+    reporttypes: 'Cobertura'
+    verbosity: 'Verbose'
      
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage results'
