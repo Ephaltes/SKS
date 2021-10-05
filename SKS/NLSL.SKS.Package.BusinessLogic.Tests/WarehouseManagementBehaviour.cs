@@ -63,7 +63,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().NotBeNull();
         }
-        
+
         [Test]
         public void Add_ValidWarehouse_ReturnsTrue()
         {

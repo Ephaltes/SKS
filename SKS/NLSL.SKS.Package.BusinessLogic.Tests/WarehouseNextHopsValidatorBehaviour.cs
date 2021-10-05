@@ -1,18 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using FluentValidation;
+using FluentValidation.TestHelper;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Validators;
 
 using NUnit.Framework;
-using FluentValidation;
-using FluentValidation.TestHelper;
-using NLSL.SKS.Package.BusinessLogic.Validators;
-using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
-    class WarehouseNextHopsValidatorTest
+    public class WarehouseNextHopsValidatorBehaviour
     {
         private WarehouseNextHopsValidator validator;
 
@@ -25,16 +21,16 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void WarehouseNextHopsValidator_HopIsNull_ValidationError()
         {
-                var model = new WarehouseNextHops { Hop = null };
-                var result = validator.TestValidate(model);
-                result.ShouldHaveValidationErrorFor(entity => entity.Hop);
+            WarehouseNextHops model = new WarehouseNextHops { Hop = null };
+            TestValidationResult<WarehouseNextHops> result = validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(entity => entity.Hop);
         }
 
         [Test]
         public void WarehouseNextHopsValidator_TraveltimeMinsIsNull_ValidationError()
         {
-            var model = new WarehouseNextHops { TraveltimeMins = null};
-            var result = validator.TestValidate(model);
+            WarehouseNextHops model = new WarehouseNextHops { TraveltimeMins = null };
+            TestValidationResult<WarehouseNextHops> result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(entity => entity.TraveltimeMins);
         }
     }

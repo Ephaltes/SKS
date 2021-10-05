@@ -1,18 +1,13 @@
-﻿using System;
-using System.IO;
+﻿using FluentValidation.TestHelper;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Validators;
 
 using NUnit.Framework;
-using FluentValidation;
-using FluentValidation.TestHelper;
-using NLSL.SKS.Package.BusinessLogic.Validators;
-using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
-    class TrackingIdValidatorTest
+    public class TrackingIdValidatorBehaviour
     {
         private TrackingIdValidator validator;
 
@@ -24,22 +19,22 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void TrackingIdValidator_IdIsNull_ValidationError()
         {
-                var model = new TrackingId(null);
-                var result = validator.TestValidate(model);
-                result.ShouldHaveValidationErrorFor(entity => entity.Id);
+            TrackingId model = new TrackingId(null);
+            TestValidationResult<TrackingId> result = validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(entity => entity.Id);
         }
         [Test]
         public void TrackingIdValidator_IdIsValid_Success()
         {
-            var model = new TrackingId("ABCDEFGHI");
-            var result = validator.TestValidate(model);
+            TrackingId model = new TrackingId("ABCDEFGHI");
+            TestValidationResult<TrackingId> result = validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(entity => entity.Id);
         }
         [Test]
         public void TrackingIdValidator_IdIsNotValid_ValidationError()
         {
-            var model = new TrackingId("ABCDEFGH");
-            var result = validator.TestValidate(model);
+            TrackingId model = new TrackingId("ABCDEFGH");
+            TestValidationResult<TrackingId> result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(entity => entity.Id);
         }
     }

@@ -13,7 +13,6 @@ using FluentValidation.Results;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 
 using NUnit.Framework;
-using NUnit.Framework.Interfaces;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
@@ -44,7 +43,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().NotBeNull();
         }
-        
+
         [Test]
         public void Transition_InvalidParcel_ReturnsNull()
         {
@@ -57,7 +56,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeNull();
         }
-        
+
         [Test]
         public void Track_ValidTrackingId_ReturnsParcel()
         {
@@ -69,7 +68,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().NotBeNull();
         }
-        
+
         [Test]
         public void Track_InvalidTrackingId_ReturnsNull()
         {
@@ -82,7 +81,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeNull();
         }
-        
+
         [Test]
         public void Submit_ValidParcel_ReturnsParcel()
         {
@@ -94,7 +93,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().NotBeNull();
         }
-        
+
         [Test]
         public void Submit_InvalidParcel_ReturnsNull()
         {
@@ -107,7 +106,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeNull();
         }
-        
+
         [Test]
         public void Delivered_ValidTrackingId_ReturnsTrue()
         {
@@ -119,7 +118,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeTrue();
         }
-        
+
         [Test]
         public void Delivered_InvalidTrackingId_ReturnsNull()
         {
@@ -132,7 +131,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeNull();
         }
-        
+
         [Test]
         public void ReportHop_ValidHop_ReturnsTrue()
         {
@@ -144,7 +143,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             result.Should().BeTrue();
         }
-        
+
         [Test]
         public void ReportHop_InvalidHop_ReturnsFalse()
         {

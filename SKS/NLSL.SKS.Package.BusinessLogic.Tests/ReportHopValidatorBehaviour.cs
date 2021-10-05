@@ -1,18 +1,14 @@
-﻿using System;
-using System.IO;
+﻿using FluentValidation;
+using FluentValidation.TestHelper;
 
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Validators;
 
 using NUnit.Framework;
-using FluentValidation;
-using FluentValidation.TestHelper;
-using NLSL.SKS.Package.BusinessLogic.Validators;
-using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
-    class ReportHopValidatorTest
+    public class ReportHopValidatorBehaviour
     {
         private ReportHopValidator validator;
 
@@ -25,29 +21,29 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void ReportHopValidator_HopCodeIsNull_ValidationError()
         {
-                var model = new ReportHop { HopCode = null };
-                var result = validator.TestValidate(model);
-                result.ShouldHaveValidationErrorFor(entity => entity.HopCode);
+            ReportHop model = new ReportHop { HopCode = null };
+            TestValidationResult<ReportHop> result = validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(entity => entity.HopCode);
         }
         [Test]
         public void ReportHopValidator_HopCodeIsEmpty_ValidationError()
         {
-            var model = new ReportHop { HopCode = "" };
-            var result = validator.TestValidate(model);
+            ReportHop model = new ReportHop { HopCode = "" };
+            TestValidationResult<ReportHop> result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(entity => entity.HopCode);
         }
         [Test]
         public void ReportHopValidator_HopCodeIsNotNullAndNotEmpty_Success()
         {
-            var model = new ReportHop { HopCode = "a" };
-            var result = validator.TestValidate(model);
+            ReportHop model = new ReportHop { HopCode = "a" };
+            TestValidationResult<ReportHop> result = validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(entity => entity.HopCode);
         }
         [Test]
         public void ReportHopValidator_TrackingIdIsNull_ValidationError()
         {
-            var model = new ReportHop { TrackingId = null };
-            var result = validator.TestValidate(model);
+            ReportHop model = new ReportHop { TrackingId = null };
+            TestValidationResult<ReportHop> result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(entity => entity.HopCode);
         }
     }
