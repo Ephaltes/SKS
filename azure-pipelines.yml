@@ -34,11 +34,19 @@ steps:
     arguments: '--configuration $(buildConfiguration) --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=cobertura'
   displayName: Test
 
+- task: reportgenerator@4
+    displayName: 'Merge code coverage reports'
+    inputs:
+      reports: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+      targetdir: '$(Pipeline.Workspace)/coverlet'
+      reporttypes: 'Cobertura'
+      verbosity: 'Verbose'
+     
 - task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage report'
+  displayName: 'Publish code coverage results'
   inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(Agent.TempDirectory)/**/coverage.cobertura.xml'
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Pipeline.Workspace)/coverlet/Cobertura.xml'
 
 - task: DotNetCoreCLI@2
   inputs:
