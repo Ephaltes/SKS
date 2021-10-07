@@ -1,60 +1,75 @@
 using System;
+
+using AutoMapper;
+
+using FakeItEasy;
+
 using FluentAssertions;
 using NUnit.Framework;
 using NLSL.SKS.Package.Services.DTOs;
 using NLSL.SKS.Package.Services.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
+
 namespace NLSL.SKS.Package.Services.Tests
 {
     public class LogisticsParnterApiControllerBehaviour 
     {
-        private Parcel testParcel = new();
-        private Recipient testSender = new();
-        private Recipient testRecipient = new();
-        private LogisticsPartnerApiController testController = new();
+        private Parcel _testParcel = new();
+        private Recipient _testSender = new();
+        private Recipient _testRecipient = new();
+        private LogisticsPartnerApiController _testController;
+        private IParcelManagement _parcelManagement;
+        private IMapper _mapper;
         [SetUp]
         public void Setup()
         {
-            testParcel = new();
-            testSender = new();
-            testRecipient = new();
+            _parcelManagement = A.Fake<IParcelManagement>();
+            _mapper = A.Fake<IMapper>();
 
-            testSender.City = "testSender.City";
-            testSender.Country = "testSender.Country";
-            testSender.Name = "testSender.Name";
-            testSender.Street = "testSender.Street";
-            testSender.PostalCode = "testSender.PostalCode";
+            _testController = new LogisticsPartnerApiController(_parcelManagement, _mapper);
+            
+            _testParcel = new();
+            _testSender = new();
+            _testRecipient = new();
 
-            testRecipient.City = "testRecipient.City";
-            testRecipient.Country = "testRecipient.Country";
-            testRecipient.Name = "testRecipient.Name";
-            testRecipient.Street = "testRecipient.Street";
-            testRecipient.PostalCode = "testRecipient.PostalCode";
+            _testSender.City = "testSender.City";
+            _testSender.Country = "testSender.Country";
+            _testSender.Name = "testSender.Name";
+            _testSender.Street = "testSender.Street";
+            _testSender.PostalCode = "testSender.PostalCode";
 
-            testParcel.Weight = 1;
-            testParcel.Sender = testSender;
-            testParcel.Recipient = testRecipient;
+            _testRecipient.City = "testRecipient.City";
+            _testRecipient.Country = "testRecipient.Country";
+            _testRecipient.Name = "testRecipient.Name";
+            _testRecipient.Street = "testRecipient.Street";
+            _testRecipient.PostalCode = "testRecipient.PostalCode";
+
+            _testParcel.Weight = 1;
+            _testParcel.Sender = _testSender;
+            _testParcel.Recipient = _testRecipient;
         }
 
         [Test]
         public void TransitionParcel_ValidParcel_Success()
         {
-            StatusCodeResult result;
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
             
-            result = (StatusCodeResult) testController.TransitionParcel(testParcel, "ABCDEFGHI");
+            result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 
             result.StatusCode.Should().Be(200);
         }
         [Test]
-        public void TransitionParcel_InValidParcelWithWeightIsNull_ArgumentNullException()
+        public void TransitionParcel_BadRequest_FromBL()
         {
-            Action action;
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
+            
+            result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 
-            testParcel.Weight = null;         
-            action = () => testController.TransitionParcel(testParcel, "ABCDEFGHI");
-
-            action.Should().Throw<ArgumentNullException>().WithParameterName(nameof(testParcel.Weight));
+            result.StatusCode.Should().Be(400);
         }
     }
 }

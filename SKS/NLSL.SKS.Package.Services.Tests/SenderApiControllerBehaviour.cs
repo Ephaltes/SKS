@@ -1,60 +1,75 @@
 using System;
+
+using AutoMapper;
+
+using FakeItEasy;
+
 using FluentAssertions;
 using NUnit.Framework;
 using NLSL.SKS.Package.Services.DTOs;
 using NLSL.SKS.Package.Services.Controllers;
 using Microsoft.AspNetCore.Mvc;
 
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
+
 namespace NLSL.SKS.Package.Services.Tests
 {
     public class SenderApiControllerBehaviour
     {
-        private Parcel testParcel = new();
-        private Recipient testSender = new();
-        private Recipient testRecipient = new();
-        private SenderApiController testController = new();
+        private Parcel _testParcel = new();
+        private Recipient _testSender = new();
+        private Recipient _testRecipient = new();
+        private SenderApiController _testController;
+        private IMapper _mapper;
+        private IParcelManagement _parcelManagement;
         [SetUp]
         public void Setup()
         {
-            testParcel = new();
-            testSender = new();
-            testRecipient = new();
+            _parcelManagement = A.Fake<IParcelManagement>();
+            _mapper = A.Fake<IMapper>();
 
-            testSender.City = "testSender.City";
-            testSender.Country = "testSender.Country";
-            testSender.Name = "testSender.Name";
-            testSender.Street = "testSender.Street";
-            testSender.PostalCode = "testSender.PostalCode";
+            _testController = new SenderApiController(_parcelManagement, _mapper);
 
-            testRecipient.City = "testRecipient.City";
-            testRecipient.Country = "testRecipient.Country";
-            testRecipient.Name = "testRecipient.Name";
-            testRecipient.Street = "testRecipient.Street";
-            testRecipient.PostalCode = "testRecipient.PostalCode";
+            _testParcel = new();
+            _testSender = new();
+            _testRecipient = new();
 
-            testParcel.Weight = 1;
-            testParcel.Sender = testSender;
-            testParcel.Recipient = testRecipient;
+            _testSender.City = "testSender.City";
+            _testSender.Country = "testSender.Country";
+            _testSender.Name = "testSender.Name";
+            _testSender.Street = "testSender.Street";
+            _testSender.PostalCode = "testSender.PostalCode";
+
+            _testRecipient.City = "testRecipient.City";
+            _testRecipient.Country = "testRecipient.Country";
+            _testRecipient.Name = "testRecipient.Name";
+            _testRecipient.Street = "testRecipient.Street";
+            _testRecipient.PostalCode = "testRecipient.PostalCode";
+
+            _testParcel.Weight = 1;
+            _testParcel.Sender = _testSender;
+            _testParcel.Recipient = _testRecipient;
         }
 
         [Test]
         public void SubmitParcel_ValidParcel_Success()
         {
-            StatusCodeResult result;
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
             
-            result = (StatusCodeResult) testController.SubmitParcel(testParcel);
+            result = (ObjectResult) _testController.SubmitParcel(_testParcel);
 
             result.StatusCode.Should().Be(201);
         }
         [Test]
-        public void SubmitParcel_InValidParcelWithWeightIsNull_ArgumentNullException()
+        public void SubmitParcel_InvalidParcel_BadRequest()
         {
-            Action action;
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
+            
+            result = (ObjectResult) _testController.SubmitParcel(_testParcel);
 
-            testParcel.Weight = null;         
-            action = () => testController.SubmitParcel(testParcel);
-
-            action.Should().Throw<ArgumentNullException>().WithParameterName(nameof(testParcel.Weight));
+            result.StatusCode.Should().Be(400);
         }
     }
 }
