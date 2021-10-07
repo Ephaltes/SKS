@@ -16,7 +16,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public class Recipient
     {
@@ -24,8 +23,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Name of person or company.
         /// </summary>
         /// <value>Name of person or company.</value>
-        [Required]
-        [DataMember(Name = "name")]
         public string Name
         {
             get;
@@ -36,8 +33,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Street
         /// </summary>
         /// <value>Street</value>
-        [Required]
-        [DataMember(Name = "street")]
         public string Street
         {
             get;
@@ -48,8 +43,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Postalcode
         /// </summary>
         /// <value>Postalcode</value>
-        [Required]
-        [DataMember(Name = "postalCode")]
         public string PostalCode
         {
             get;
@@ -60,8 +53,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// City
         /// </summary>
         /// <value>City</value>
-        [Required]
-        [DataMember(Name = "city")]
         public string City
         {
             get;
@@ -72,8 +63,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Country
         /// </summary>
         /// <value>Country</value>
-        [Required]
-        [DataMember(Name = "country")]
         public string Country
         {
             get;

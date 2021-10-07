@@ -13,19 +13,19 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 using System.Collections.Generic;
 
+using NLSL.SKS.Package.BusinessLogic.Entities.Enums;
+
 namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
+    [ExcludeFromCodeCoverage]
+
     public class Parcel
     {
         /// <summary>
         /// Gets or Sets Weight
         /// </summary>
-        [Required]
-        [DataMember(Name = "weight")]
-        [ExcludeFromCodeCoverage]
         public float? Weight
         {
             get;
@@ -35,8 +35,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// <summary>
         /// Gets or Sets Recipient
         /// </summary>
-        [Required]
-        [DataMember(Name = "recipient")]
         public Recipient Recipient
         {
             get;
@@ -46,8 +44,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// <summary>
         /// Gets or Sets Sender
         /// </summary>
-        [Required]
-        [DataMember(Name = "sender")]
         public Recipient Sender
         {
             get;
@@ -57,8 +53,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// State of the parcel.
         /// </summary>
         /// <value>State of the parcel.</value>
-        [Required]
-        [DataMember(Name = "state")]
         public StateEnum? State
         {
             get;
@@ -69,8 +63,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Hops visited in the past.
         /// </summary>
         /// <value>Hops visited in the past.</value>
-        [Required]
-        [DataMember(Name = "visitedHops")]
         public List<HopArrival> VisitedHops
         {
             get;
@@ -81,16 +73,11 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Hops coming up in the future - their times are estimations.
         /// </summary>
         /// <value>Hops coming up in the future - their times are estimations.</value>
-        [Required]
-        [DataMember(Name = "futureHops")]
         public List<HopArrival> FutureHops
         {
             get;
             set;
         }
-
-        [RegularExpression("^[A-Z0-9]{9}$")]
-        [DataMember(Name = "trackingId")]
         public string TrackingId
         {
             get;
