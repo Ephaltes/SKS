@@ -1,76 +1,82 @@
 using System;
+
+using FakeItEasy;
+
 using FluentAssertions;
-using NUnit.Framework;
-using NLSL.SKS.Package.Services.DTOs;
-using NLSL.SKS.Package.Services.Controllers;
+
 using Microsoft.AspNetCore.Mvc;
+
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.Services.Controllers;
+
+using NUnit.Framework;
 
 namespace NLSL.SKS.Package.Services.Tests
 {
     public class StaffApiControllerBehaviour
     {
-        private StaffApiController testController = new();
+        private IParcelManagement _parcelManagement;
+        private StaffApiController _testController;
         [SetUp]
         public void Setup()
         {
+            _parcelManagement = A.Fake<IParcelManagement>();
+
+            _testController = new StaffApiController(_parcelManagement);
         }
 
         [Test]
-        public void ReportHop_ValidHop_DoesNotThrowException()
-        {           
+        public void ReportHop_ValidHop_Success()
+        {
             StatusCodeResult result;
+            A.CallTo(() => _parcelManagement.ReportHop(null)).WithAnyArguments().Returns(true);
 
-            result = (StatusCodeResult) testController.ReportHop("ABCDEFGHI", "ABCD5678");
+            result = (StatusCodeResult)_testController.ReportHop("ABCDEFGHI", "ABCD5678");
 
             result.StatusCode.Should().Be(200);
         }
         [Test]
-        public void ReportHop_InValidHopWithTrackingIDToShort_ArgumentException()
+        public void ReportHop_InvalidHop_StatusCode500()
         {
-            Action action;
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.ReportHop(null)).WithAnyArguments().Returns(false);
 
-            action = () => testController.ReportHop("ABCDEFGH", "ABCD56789");
+            result = (ObjectResult)_testController.ReportHop("ABCDEFGHI", "ABCD5678");
 
-            action.Should().Throw<ArgumentException>();
+            result.StatusCode.Should().Be(500);
         }
-        [Test]
-        public void ReportHop_InValidHopWithCodeToShort_ArgumentException()
-        {
-            Action action;
-
-            action = () => testController.ReportHop("ABCDEFGHI", "ABCD");
-
-            action.Should().Throw<ArgumentException>();
-        }
-        
+       
         [Test]
         public void ReportParcelDelivery_ValidReport_Success()
-        {           
+        {
             StatusCodeResult result;
+            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(true);
 
-            result = (StatusCodeResult) testController.ReportParcelDelivery("ABCDEFGHI");
+            result = (StatusCodeResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 
             result.StatusCode.Should().Be(200);
         }
-        
+
         [Test]
-        public void ReportParcelDelivery_WrongTrackingIdLength_ArgumentException()
-        {           
-            Action action;
+        public void ReportParcelDelivery_TrackingIDNotFound_NotFoundStatusCode()
+        {
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(null);
 
-            action = () => testController.ReportParcelDelivery("ABCDE");
+            result = (ObjectResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 
-            action.Should().Throw<ArgumentException>();
+            result.StatusCode.Should().Be(404);
         }
-        
+
         [Test]
-        public void ReportParcelDelivery_WrongTrackingIdLength_ArgumentNullException()
-        {           
-            Action action;
+        public void ReportParcelDelivery_SomethingWrong_BadRequest()
+        {
+            ObjectResult result;
+            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(false);
 
-            action = () => testController.ReportParcelDelivery(null);
+            result = (ObjectResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 
-            action.Should().Throw<ArgumentNullException>();
+            result.StatusCode.Should().Be(400);
         }
     }
 }

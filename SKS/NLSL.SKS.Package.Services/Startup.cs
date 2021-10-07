@@ -1,5 +1,10 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
+
+using AutoMapper;
+
+using FluentValidation;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +17,10 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-using NLSL.SKS.Package.Services.DTOs;
+using NLSL.SKS.Package.BusinessLogic;
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.BusinessLogic.Validators;
 using NLSL.SKS.Package.Services.Filter;
 
 namespace NLSL.SKS.Package.Services
@@ -38,8 +46,14 @@ namespace NLSL.SKS.Package.Services
         {
             services.AddControllers();
 
-            Warehouse warehouse = new Warehouse() { Code = "1234", HopType = "Truck" };
-            services.AddSingleton(warehouse);
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Singleton);
+
+            services.AddSingleton<IParcelManagement, ParcelManagement>();
+            services.AddSingleton<IWarehouseManagement, WarehouseManagement>();
+            
+            
 
             services
                 .AddMvc(options =>
