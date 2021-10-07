@@ -17,6 +17,7 @@ namespace NLSL.SKS.Package.Services.DTOs
     /// <summary>
     /// </summary>
     [DataContract]
+    [ExcludeFromCodeCoverage]
     public class Parcel
     {
         /// <summary>
@@ -24,7 +25,6 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// </summary>
         [Required]
         [DataMember(Name = "weight")]
-        [ExcludeFromCodeCoverage]
         public float? Weight
         {
             get;

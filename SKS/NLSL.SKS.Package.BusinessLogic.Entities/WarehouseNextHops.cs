@@ -16,15 +16,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public class WarehouseNextHops
     {
         /// <summary>
         /// Gets or Sets TraveltimeMins
         /// </summary>
-        [Required]
-        [DataMember(Name = "traveltimeMins")]
         public int? TraveltimeMins
         {
             get;
@@ -34,8 +31,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        [Required]
-        [DataMember(Name = "hop")]
         public Hop Hop
         {
             get;

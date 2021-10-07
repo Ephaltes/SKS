@@ -1,8 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-using System.Diagnostics.CodeAnalysis;
-
-namespace NLSL.SKS.Package.BusinessLogic.Entities
+namespace NLSL.SKS.Package.BusinessLogic.Entities.Enums
 {
         /// <summary>
         /// State of the parcel.

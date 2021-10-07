@@ -16,7 +16,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public class GeoCoordinate
     {
@@ -24,8 +23,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Latitude of the coordinate.
         /// </summary>
         /// <value>Latitude of the coordinate.</value>
-        [Required]
-        [DataMember(Name = "lat")]
         public double? Lat
         {
             get;
@@ -36,8 +33,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Longitude of the coordinate.
         /// </summary>
         /// <value>Longitude of the coordinate.</value>
-        [Required]
-        [DataMember(Name = "lon")]
         public double? Lon
         {
             get;

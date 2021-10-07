@@ -16,15 +16,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public abstract class Hop
     {
         /// <summary>
         /// Gets or Sets HopType
         /// </summary>
-        [Required]
-        [DataMember(Name = "hopType")]
         public string HopType
         {
             get;
@@ -35,9 +32,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Unique CODE of the hop.
         /// </summary>
         /// <value>Unique CODE of the hop.</value>
-        [Required]
-        [RegularExpression("^[A-Z]{4}\\d{1,4}$")]
-        [DataMember(Name = "code")]
         public string Code
         {
             get;
@@ -48,8 +42,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Description of the hop.
         /// </summary>
         /// <value>Description of the hop.</value>
-        [Required]
-        [DataMember(Name = "description")]
         public string Description
         {
             get;
@@ -60,8 +52,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Delay processing takes on the hop.
         /// </summary>
         /// <value>Delay processing takes on the hop.</value>
-        [Required]
-        [DataMember(Name = "processingDelayMins")]
         public int? ProcessingDelayMins
         {
             get;
@@ -72,8 +62,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Name of the location (village, city, ..) of the hop.
         /// </summary>
         /// <value>Name of the location (village, city, ..) of the hop.</value>
-        [Required]
-        [DataMember(Name = "locationName")]
         public string LocationName
         {
             get;
@@ -83,8 +71,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// <summary>
         /// Gets or Sets LocationCoordinates
         /// </summary>
-        [Required]
-        [DataMember(Name = "locationCoordinates")]
         public GeoCoordinate LocationCoordinates
         {
             get;
