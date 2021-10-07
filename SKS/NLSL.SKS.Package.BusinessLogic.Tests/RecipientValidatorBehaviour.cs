@@ -28,6 +28,14 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             result.ShouldHaveValidationErrorFor(entity => entity.Country);
         }
         [Test]
+        public void RecipientValidator_CountryIsValidButNotAustriaOrOesterreich_Success()
+        {
+            Recipient model = new Recipient { Country = "banane" };
+            TestValidationResult<Recipient> result = validator.TestValidate(model);
+            result.ShouldNotHaveValidationErrorFor(entity => entity.Country);
+        }
+
+        [Test]
         public void RecipientValidator_CityIsNull_ValidationError()
         {
             Recipient model = new Recipient { City = null, Country = "Austria" };
@@ -84,5 +92,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             TestValidationResult<Recipient> result = validator.TestValidate(model);
             result.ShouldNotHaveValidationErrorFor(entity => entity.City);
         }
+
     }
 }
