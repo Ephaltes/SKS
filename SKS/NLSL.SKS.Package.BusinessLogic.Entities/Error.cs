@@ -17,15 +17,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
     /// <summary>
     /// </summary>
     [ExcludeFromCodeCoverage]
-    [DataContract]
     public class Error
     {
         /// <summary>
         /// The error message.
         /// </summary>
         /// <value>The error message.</value>
-        [Required]
-        [DataMember(Name = "errorMessage")]
         public string ErrorMessage
         {
             get;

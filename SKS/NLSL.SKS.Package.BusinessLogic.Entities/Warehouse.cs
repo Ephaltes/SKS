@@ -17,15 +17,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public class Warehouse : Hop
     {
         /// <summary>
         /// Gets or Sets Level
         /// </summary>
-        [Required]
-        [DataMember(Name = "level")]
         public int? Level
         {
             get;
@@ -36,15 +33,11 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        [Required]
-        [DataMember(Name = "nextHops")]
         public List<WarehouseNextHops> NextHops
         {
             get;
             set;
         }
-        [Required]
-        [DataMember(Name = "regionGeoJson")]
         public string RegionGeoJson
         {
             get;
@@ -55,8 +48,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// The truck&#x27;s number plate.
         /// </summary>
         /// <value>The truck&#x27;s number plate.</value>
-        [Required]
-        [DataMember(Name = "numberPlate")]
         public string NumberPlate
         {
             get;
@@ -67,8 +58,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// Name of the logistics partner.
         /// </summary>
         /// <value>Name of the logistics partner.</value>
-        [Required]
-        [DataMember(Name = "logisticsPartner")]
         public string LogisticsPartner
         {
             get;
@@ -79,8 +68,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// BaseURL of the logistics partner&#x27;s REST service.
         /// </summary>
         /// <value>BaseURL of the logistics partner&#x27;s REST service.</value>
-        [Required]
-        [DataMember(Name = "logisticsPartnerUrl")]
         public string LogisticsPartnerUrl
         {
             get;

@@ -1,5 +1,8 @@
-﻿namespace NLSL.SKS.Package.BusinessLogic.Entities
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class ReportHop
     {
         public TrackingId TrackingId
