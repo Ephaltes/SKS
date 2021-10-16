@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics.CodeAnalysis;
+
+using AutoMapper;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.Services.DTOs;
@@ -9,6 +11,7 @@ using Warehouse = NLSL.SKS.Package.Services.DTOs.Warehouse;
 
 namespace NLSL.SKS.Package.Services.AutoMapperProfiles
 {
+    [ExcludeFromCodeCoverage]
     public class MapperProfile : Profile
     {
         public MapperProfile()
@@ -33,9 +36,6 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             
             CreateMap<Recipient, BusinessLogic.Entities.Recipient>();
             CreateMap<BusinessLogic.Entities.Recipient, Recipient>();
-
-            CreateMap<string, TrackingId>();
-            CreateMap<string, WarehouseCode>();
         }
     }
 }
