@@ -103,12 +103,13 @@ namespace NLSL.SKS.Package.Services.Controllers
             WarehouseCode warehouseCode = new WarehouseCode(code);
 
             BusinessLogic.Entities.Warehouse? warehouse = _warehouseManagement.Get(warehouseCode);
-            Warehouse retWarehouse = _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse);
-
-
-            if (retWarehouse is null)
+            
+            if (warehouse is null)
                 return new NotFoundObjectResult(new Error
                                                 { ErrorMessage = "Warehouse not found" });
+            
+            Warehouse retWarehouse = _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse);
+           
 
             return new ObjectResult(retWarehouse) { StatusCode = 200 };
         }
