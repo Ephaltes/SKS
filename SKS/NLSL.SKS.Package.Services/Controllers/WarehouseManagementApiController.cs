@@ -12,6 +12,7 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 using AutoMapper;
 
@@ -65,12 +66,13 @@ namespace NLSL.SKS.Package.Services.Controllers
             // return StatusCode(404);
 
             IReadOnlyCollection<BusinessLogic.Entities.Warehouse> warehouseList = _warehouseManagement.GetAll();
-            
-            if(warehouseList.Count <= 0)
+            List<Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse)).ToList();
+
+            if (rList.Count <= 0)
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "An error occurred loading." });
 
-            return new ObjectResult(warehouseList) { StatusCode = 200 };
+            return new ObjectResult(rList) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -101,12 +103,14 @@ namespace NLSL.SKS.Package.Services.Controllers
             WarehouseCode warehouseCode = new WarehouseCode(code);
 
             BusinessLogic.Entities.Warehouse? warehouse = _warehouseManagement.Get(warehouseCode);
-            
-            if(warehouse is null)
-                return new NotFoundObjectResult(new Error
-                                                  { ErrorMessage = "Warehouse not found" });
+            Warehouse retWarehouse = _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse);
 
-            return new ObjectResult(warehouse) { StatusCode = 200 };
+
+            if (retWarehouse is null)
+                return new NotFoundObjectResult(new Error
+                                                { ErrorMessage = "Warehouse not found" });
+
+            return new ObjectResult(retWarehouse) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -125,8 +129,8 @@ namespace NLSL.SKS.Package.Services.Controllers
             BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
 
             bool wasAdded = _warehouseManagement.Add(eWarehouse);
-            
-            if(!wasAdded)
+
+            if (!wasAdded)
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "The operation failed due to an error." });
 
