@@ -17,6 +17,12 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
     [ExcludeFromCodeCoverage]
     public class WarehouseNextHops
     {
+        public int Id
+        {
+            get;
+            set;
+        }
+        
         /// <summary>
         /// Gets or Sets TraveltimeMins
         /// </summary>

@@ -18,15 +18,7 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
     [ExcludeFromCodeCoverage]
     public abstract class Hop
     {
-        /// <summary>
-        /// Gets or Sets HopType
-        /// </summary>
-        public string HopType
-        {
-            get;
-            set;
-        }
-
+        
         /// <summary>
         /// Unique CODE of the hop.
         /// </summary>
@@ -37,6 +29,16 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
             get;
             set;
         }
+        
+        /// <summary>
+        /// Gets or Sets HopType
+        /// </summary>
+        public string HopType
+        {
+            get;
+            set;
+        }
+
 
         /// <summary>
         /// Description of the hop.
@@ -62,7 +64,7 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
         /// Name of the location (village, city, ..) of the hop.
         /// </summary>
         /// <value>Name of the location (village, city, ..) of the hop.</value>
-        public LocationName LocationName
+        public string LocationName
         {
             get;
             set;

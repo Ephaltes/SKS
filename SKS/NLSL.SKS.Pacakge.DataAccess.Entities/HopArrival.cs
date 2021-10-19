@@ -9,7 +9,6 @@
  */
 
 using System;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Pacakge.DataAccess.Entities
@@ -24,11 +23,12 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
             get;
             set;
         }
+        
         /// <summary>
         /// Unique CODE of the hop.
         /// </summary>
         /// <value>Unique CODE of the hop.</value>
-        public Hop Hop
+        public string Code
         {
             get;
             set;

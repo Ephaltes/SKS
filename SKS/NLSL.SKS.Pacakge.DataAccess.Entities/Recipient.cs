@@ -9,14 +9,13 @@
  */
 
 using System.Diagnostics.CodeAnalysis;
-using System.Net.Sockets;
 
 namespace NLSL.SKS.Pacakge.DataAccess.Entities
 {
     /// <summary>
     /// </summary>
     [ExcludeFromCodeCoverage]
-    public class Customer
+    public class Recipient
     {
         public int Id
         {
@@ -34,7 +33,41 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
             set;
         }
 
-        public Address Address
+        /// <summary>
+        /// Street
+        /// </summary>
+        /// <value>Street</value>
+        public string Street
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Postalcode
+        /// </summary>
+        /// <value>Postalcode</value>
+        public string PostalCode
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// City
+        /// </summary>
+        /// <value>City</value>
+        public string City
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Country
+        /// </summary>
+        /// <value>Country</value>
+        public string Country
         {
             get;
             set;

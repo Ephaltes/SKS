@@ -21,6 +21,12 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
 
     public class Parcel
     {
+        public int Id
+        {
+            get;
+            set;
+        }
+        
         /// <summary>
         /// Gets or Sets Weight
         /// </summary>
@@ -33,7 +39,7 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Recipient
         /// </summary>
-        public Customer Customer
+        public Recipient Recipient
         {
             get;
             set;
@@ -42,7 +48,7 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Sender
         /// </summary>
-        public Customer Sender
+        public Recipient Sender
         {
             get;
             set;
@@ -76,6 +82,7 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
             get;
             set;
         }
+        
         public string TrackingId
         {
             get;
