@@ -20,15 +20,15 @@ namespace NLSL.SKS.Package.Services.Tests
         private Recipient _testSender = new();
         private Recipient _testRecipient = new();
         private LogisticsPartnerApiController _testController;
-        private IParcelManagement _parcelManagement;
+        private IParcelLogic _parcelLogic;
         private IMapper _mapper;
         [SetUp]
         public void Setup()
         {
-            _parcelManagement = A.Fake<IParcelManagement>();
+            _parcelLogic = A.Fake<IParcelLogic>();
             _mapper = A.Fake<IMapper>();
 
-            _testController = new LogisticsPartnerApiController(_parcelManagement, _mapper);
+            _testController = new LogisticsPartnerApiController(_parcelLogic, _mapper);
             
             _testParcel = new();
             _testSender = new();
@@ -55,7 +55,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void TransitionParcel_ValidParcel_Success()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
+            A.CallTo(() => _parcelLogic.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
             
             result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 
@@ -65,7 +65,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void TransitionParcel_BadRequest_FromBL()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
+            A.CallTo(() => _parcelLogic.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
             
             result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 

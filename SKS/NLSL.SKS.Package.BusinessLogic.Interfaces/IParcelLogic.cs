@@ -4,7 +4,7 @@ using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Interfaces
 {
-    public interface IParcelManagement
+    public interface IParcelLogic
     {
         public Parcel? Transition(Parcel parcel);
 

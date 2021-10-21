@@ -23,22 +23,22 @@ namespace NLSL.SKS.Package.Services.Tests
     {
         private IMapper _mapper;
         private WarehouseManagementApiController _testController;
-        private IWarehouseManagement _warehouseManagement;
+        private IWarehouseLogic _warehouseLogic;
 
         [SetUp]
         public void Setup()
         {
             _mapper = A.Fake<IMapper>();
-            _warehouseManagement = A.Fake<IWarehouseManagement>();
+            _warehouseLogic = A.Fake<IWarehouseLogic>();
 
-            _testController = new WarehouseManagementApiController(_warehouseManagement, _mapper);
+            _testController = new WarehouseManagementApiController(_warehouseLogic, _mapper);
         }
         [Test]
         public void ExportWarehouses_ReturnsListOfWareHouses_Success()
         {
             ObjectResult result;
             IReadOnlyCollection<Warehouse> warehouseList = Builder<Warehouse>.CreateListOfSize(2).Build().ToList();
-            A.CallTo(() => _warehouseManagement.GetAll()).Returns(warehouseList);
+            A.CallTo(() => _warehouseLogic.GetAll()).Returns(warehouseList);
 
             result = (ObjectResult)_testController.ExportWarehouses();
 
@@ -48,7 +48,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ExportWarehouses_NoWarehouses_EmptyList()
         {
             ObjectResult result;
-            A.CallTo(() => _warehouseManagement.GetAll()).Returns(new List<Warehouse>());
+            A.CallTo(() => _warehouseLogic.GetAll()).Returns(new List<Warehouse>());
 
             result = (ObjectResult)_testController.ExportWarehouses();
 
@@ -58,7 +58,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void GetWarehouse_Code_Success()
         {
             ObjectResult result;
-            A.CallTo(() => _warehouseManagement.Get(A<WarehouseCode>.Ignored)).Returns(new Warehouse());
+            A.CallTo(() => _warehouseLogic.Get(A<WarehouseCode>.Ignored)).Returns(new Warehouse());
 
             result = (ObjectResult)_testController.GetWarehouse("test");
 
@@ -68,7 +68,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void GetWarehouse_CodeNotFound_StatusCode404()
         {
             ObjectResult result;
-            A.CallTo(() => _warehouseManagement.Get(A<WarehouseCode>.Ignored)).Returns(null);
+            A.CallTo(() => _warehouseLogic.Get(A<WarehouseCode>.Ignored)).Returns(null);
 
             result = (ObjectResult)_testController.GetWarehouse("test222");
 
@@ -80,7 +80,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             DTOs.Warehouse warehouse = new DTOs.Warehouse();
             StatusCodeResult result;
-            A.CallTo(() => _warehouseManagement.Add(null)).WithAnyArguments().Returns(true);
+            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments().Returns(true);
             
             result = (StatusCodeResult)_testController.ImportWarehouses(warehouse);
 
@@ -92,7 +92,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             DTOs.Warehouse warehouse = new DTOs.Warehouse();
             ObjectResult result;
-            A.CallTo(() => _warehouseManagement.Add(null)).WithAnyArguments().Returns(false);
+            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments().Returns(false);
             
             result = (ObjectResult)_testController.ImportWarehouses(warehouse);
 

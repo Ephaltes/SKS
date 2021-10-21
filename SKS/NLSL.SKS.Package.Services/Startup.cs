@@ -50,8 +50,8 @@ namespace NLSL.SKS.Package.Services
 
             services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Singleton);
 
-            services.AddSingleton<IParcelManagement, ParcelManagement>();
-            services.AddSingleton<IWarehouseManagement, WarehouseManagement>();
+            services.AddSingleton<IParcelLogic, ParcelLogic>();
+            services.AddSingleton<IWarehouseLogic, WarehouseLogic>();
             
             
 

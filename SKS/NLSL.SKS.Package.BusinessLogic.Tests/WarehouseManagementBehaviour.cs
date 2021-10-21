@@ -19,7 +19,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
     public class WarehouseManagementBehaviour
     {
         private IValidator<WarehouseCode> _warehouseCodeValidator;
-        private WarehouseManagement _warehouseManagement;
+        private WarehouseLogic _warehouseLogic;
         private IValidator<Warehouse> _warehouseValidator;
 
         [SetUp]
@@ -28,7 +28,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             _warehouseCodeValidator = A.Fake<IValidator<WarehouseCode>>();
             _warehouseValidator = A.Fake<IValidator<Warehouse>>();
 
-            _warehouseManagement = new WarehouseManagement(_warehouseValidator, _warehouseCodeValidator);
+            _warehouseLogic = new WarehouseLogic(_warehouseValidator, _warehouseCodeValidator);
         }
 
         [Test]
@@ -38,7 +38,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _warehouseCodeValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Warehouse? result = _warehouseManagement.Get(null);
+            Warehouse? result = _warehouseLogic.Get(null);
 
             result.Should().NotBeNull();
         }
@@ -51,7 +51,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _warehouseCodeValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Warehouse? result = _warehouseManagement.Get(null);
+            Warehouse? result = _warehouseLogic.Get(null);
 
             result.Should().BeNull();
         }
@@ -59,7 +59,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void GetAll_ReturnsWarehouseList()
         {
-            IReadOnlyCollection<Warehouse> result = _warehouseManagement.GetAll();
+            IReadOnlyCollection<Warehouse> result = _warehouseLogic.GetAll();
 
             result.Should().NotBeNull();
         }
@@ -71,7 +71,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _warehouseValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool result = _warehouseManagement.Add(null);
+            bool result = _warehouseLogic.Add(null);
 
             result.Should().BeTrue();
         }
@@ -84,7 +84,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _warehouseValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool result = _warehouseManagement.Add(null);
+            bool result = _warehouseLogic.Add(null);
 
             result.Should().BeFalse();
         }

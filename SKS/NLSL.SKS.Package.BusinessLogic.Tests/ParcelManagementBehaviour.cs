@@ -18,7 +18,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
     public class ParcelManagementBehaviour
     {
-        private ParcelManagement _parcelManagement;
+        private ParcelLogic _parcelLogic;
         private IValidator<Parcel> _parcelValidator;
         private IValidator<ReportHop> _reportHop;
         private IValidator<TrackingId> _trackingIdValidator;
@@ -29,7 +29,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             _trackingIdValidator = A.Fake<IValidator<TrackingId>>();
             _reportHop = A.Fake<IValidator<ReportHop>>();
 
-            _parcelManagement = new ParcelManagement(_parcelValidator, _trackingIdValidator, _reportHop);
+            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHop);
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Transition(null);
+            Parcel? result = _parcelLogic.Transition(null);
 
             result.Should().NotBeNull();
         }
@@ -52,7 +52,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Transition(null);
+            Parcel? result = _parcelLogic.Transition(null);
 
             result.Should().BeNull();
         }
@@ -64,7 +64,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Track(null);
+            Parcel? result = _parcelLogic.Track(null);
 
             result.Should().NotBeNull();
         }
@@ -77,7 +77,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Track(null);
+            Parcel? result = _parcelLogic.Track(null);
 
             result.Should().BeNull();
         }
@@ -89,7 +89,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Submit(null);
+            Parcel? result = _parcelLogic.Submit(null);
 
             result.Should().NotBeNull();
         }
@@ -102,7 +102,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            Parcel? result = _parcelManagement.Submit(null);
+            Parcel? result = _parcelLogic.Submit(null);
 
             result.Should().BeNull();
         }
@@ -114,7 +114,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool? result = _parcelManagement.Delivered(null);
+            bool? result = _parcelLogic.Delivered(null);
 
             result.Should().BeTrue();
         }
@@ -127,7 +127,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool? result = _parcelManagement.Delivered(null);
+            bool? result = _parcelLogic.Delivered(null);
 
             result.Should().BeNull();
         }
@@ -139,7 +139,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _reportHop.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool result = _parcelManagement.ReportHop(null);
+            bool result = _parcelLogic.ReportHop(null);
 
             result.Should().BeTrue();
         }
@@ -152,7 +152,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             A.CallTo(() => _reportHop.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            bool result = _parcelManagement.ReportHop(null);
+            bool result = _parcelLogic.ReportHop(null);
 
             result.Should().BeFalse();
         }

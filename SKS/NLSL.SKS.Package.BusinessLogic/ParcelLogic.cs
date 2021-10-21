@@ -9,12 +9,12 @@ using NLSL.SKS.Package.BusinessLogic.Validators;
 
 namespace NLSL.SKS.Package.BusinessLogic
 {
-    public class ParcelManagement : IParcelManagement
+    public class ParcelLogic : IParcelLogic
     {
         private IValidator<Parcel> _parcelValidator;
         private IValidator<TrackingId> _trackingIdValidator;
         private IValidator<ReportHop> _reportHopValidator;
-        public ParcelManagement(IValidator<Parcel> parcelValidator,IValidator<TrackingId> trackingIdValidator, IValidator<ReportHop> reportHopValidator)
+        public ParcelLogic(IValidator<Parcel> parcelValidator,IValidator<TrackingId> trackingIdValidator, IValidator<ReportHop> reportHopValidator)
         {
             _parcelValidator = parcelValidator;
             _trackingIdValidator = trackingIdValidator;

@@ -21,14 +21,14 @@ namespace NLSL.SKS.Package.Services.Tests
         private Recipient _testRecipient = new();
         private SenderApiController _testController;
         private IMapper _mapper;
-        private IParcelManagement _parcelManagement;
+        private IParcelLogic _parcelLogic;
         [SetUp]
         public void Setup()
         {
-            _parcelManagement = A.Fake<IParcelManagement>();
+            _parcelLogic = A.Fake<IParcelLogic>();
             _mapper = A.Fake<IMapper>();
 
-            _testController = new SenderApiController(_parcelManagement, _mapper);
+            _testController = new SenderApiController(_parcelLogic, _mapper);
 
             _testParcel = new();
             _testSender = new();
@@ -55,7 +55,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void SubmitParcel_ValidParcel_Success()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
+            A.CallTo(() => _parcelLogic.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
             
             result = (ObjectResult) _testController.SubmitParcel(_testParcel);
 
@@ -65,7 +65,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void SubmitParcel_InvalidParcel_BadRequest()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
+            A.CallTo(() => _parcelLogic.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
             
             result = (ObjectResult) _testController.SubmitParcel(_testParcel);
 

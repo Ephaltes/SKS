@@ -9,11 +9,11 @@ using NLSL.SKS.Package.BusinessLogic.Validators;
 
 namespace NLSL.SKS.Package.BusinessLogic
 {
-    public class WarehouseManagement : IWarehouseManagement
+    public class WarehouseLogic : IWarehouseLogic
     {
         private IValidator<WarehouseCode> _warehouseCodeValidator;
         private IValidator<Warehouse> _warehouseValidator;
-        public WarehouseManagement(IValidator<Warehouse> warehouseValidator, IValidator<WarehouseCode> warehouseCodeValidator)
+        public WarehouseLogic(IValidator<Warehouse> warehouseValidator, IValidator<WarehouseCode> warehouseCodeValidator)
         {
             _warehouseValidator = warehouseValidator;
             _warehouseCodeValidator = warehouseCodeValidator;

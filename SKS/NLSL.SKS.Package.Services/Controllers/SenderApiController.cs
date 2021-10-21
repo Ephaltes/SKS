@@ -26,10 +26,10 @@ namespace NLSL.SKS.Package.Services.Controllers
     public class SenderApiController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IParcelManagement _parcelManagement;
-        public SenderApiController(IParcelManagement parcelManagement, IMapper mapper)
+        private readonly IParcelLogic _parcelLogic;
+        public SenderApiController(IParcelLogic parcelLogic, IMapper mapper)
         {
-            _parcelManagement = parcelManagement;
+            _parcelLogic = parcelLogic;
             _mapper = mapper;
         }
         /// <summary>
@@ -48,7 +48,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         {
             BusinessLogic.Entities.Parcel eParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
 
-            BusinessLogic.Entities.Parcel? newParcelInfo = _parcelManagement.Submit(eParcel);
+            BusinessLogic.Entities.Parcel? newParcelInfo = _parcelLogic.Submit(eParcel);
 
             if (newParcelInfo is null)
                 return new BadRequestObjectResult(
