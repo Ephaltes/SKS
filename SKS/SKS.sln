@@ -31,7 +31,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Sql", "NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj", "{3909E966-4747-4241-8A7A-0AA392105317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Pacakge.DataAccess.Tests", "NLSL.SKS.Pacakge.DataAccess.Tests\NLSL.SKS.Pacakge.DataAccess.Tests.csproj", "{23BAAAA7-95FF-4F3F-9F95-76A92D07B289}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Tests", "NLSL.SKS.Package.DataAccess.Tests\NLSL.SKS.Package.DataAccess.Tests.csproj", "{23BAAAA7-95FF-4F3F-9F95-76A92D07B289}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

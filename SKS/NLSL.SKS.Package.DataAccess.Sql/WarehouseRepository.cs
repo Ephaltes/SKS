@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using NLSL.SKS.Pacakge.DataAccess.Entities;
-using NLSL.SKS.Pacakge.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Entities;
+using NLSL.SKS.Package.DataAccess.Interfaces;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Sql
+namespace NLSL.SKS.Package.DataAccess.Sql
 {
     public class WarehouseRepository : IWarehouseRepository
     {

@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 
-using NLSL.SKS.Pacakge.DataAccess.Entities;
-using NLSL.SKS.Pacakge.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Entities;
+using NLSL.SKS.Package.DataAccess.Interfaces;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Sql
+namespace NLSL.SKS.Package.DataAccess.Sql
 {
     public class ParcelRepository : IParcelRepository
     {
@@ -33,6 +33,10 @@ namespace NLSL.SKS.Pacakge.DataAccess.Sql
         public Parcel? GetParcelByTrackingId(string trackingId)
         {
             return _context.Parcels.FirstOrDefault(parcel => parcel.TrackingId == trackingId);
+        }
+        public Parcel? GetById(int id)
+        {
+            return _context.Parcels.FirstOrDefault(parcel => parcel.Id == id);
         }
     }
 }

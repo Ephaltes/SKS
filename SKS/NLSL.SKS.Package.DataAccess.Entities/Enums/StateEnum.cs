@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Entities.Enums
+namespace NLSL.SKS.Package.DataAccess.Entities.Enums
 {
         /// <summary>
         /// State of the parcel.

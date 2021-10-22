@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using AutoMapper;
 
@@ -11,26 +12,28 @@ namespace NLSL.SKS.Package.BusinessLogic.AutoMapperProfiles
     {
         public MapperProfile()
         {
-            CreateMap<GeoCoordinate,Pacakge.DataAccess.Entities.GeoCoordinate>();
-            CreateMap<Pacakge.DataAccess.Entities.GeoCoordinate, GeoCoordinate>();
+            CreateMap<GeoCoordinate,Package.DataAccess.Entities.GeoCoordinate>();
+            CreateMap<Package.DataAccess.Entities.GeoCoordinate, GeoCoordinate>();
 
-            CreateMap<Hop, Pacakge.DataAccess.Entities.Hop>();
-            CreateMap<Pacakge.DataAccess.Entities.Hop,Hop>();
+            CreateMap<Hop, Package.DataAccess.Entities.Hop>();
+            CreateMap<Package.DataAccess.Entities.Hop,Hop>();
             
-            CreateMap<HopArrival, Pacakge.DataAccess.Entities.HopArrival>();
-            CreateMap<Pacakge.DataAccess.Entities.HopArrival,HopArrival>();
+            CreateMap<HopArrival, Package.DataAccess.Entities.HopArrival>();
+            CreateMap<Package.DataAccess.Entities.HopArrival,HopArrival>();
             
-            CreateMap<Parcel, Pacakge.DataAccess.Entities.Parcel>();
-            CreateMap<Pacakge.DataAccess.Entities.Parcel,Parcel>();
+            CreateMap<Parcel, Package.DataAccess.Entities.Parcel>();
+            CreateMap<Package.DataAccess.Entities.Parcel,Parcel>();
             
-            CreateMap<Recipient, Pacakge.DataAccess.Entities.Recipient>();
-            CreateMap<Pacakge.DataAccess.Entities.Recipient,Recipient>();
+            CreateMap<Recipient, Package.DataAccess.Entities.Recipient>();
+            CreateMap<Package.DataAccess.Entities.Recipient,Recipient>();
             
-            CreateMap<Warehouse, Pacakge.DataAccess.Entities.Warehouse>();
-            CreateMap<Pacakge.DataAccess.Entities.Warehouse, Warehouse>();
+            CreateMap<Warehouse, Package.DataAccess.Entities.Warehouse>();
+            CreateMap<Package.DataAccess.Entities.Warehouse, Warehouse>();
             
-            CreateMap<WarehouseNextHops, Pacakge.DataAccess.Entities.WarehouseNextHops>();
-            CreateMap<Pacakge.DataAccess.Entities.WarehouseNextHops, WarehouseNextHops>();
+            CreateMap<WarehouseNextHops, Package.DataAccess.Entities.WarehouseNextHops>();
+            CreateMap<Package.DataAccess.Entities.WarehouseNextHops, WarehouseNextHops>();
+            
+            CreateMap<IReadOnlyCollection<Package.DataAccess.Entities.Warehouse>, IReadOnlyCollection<Warehouse>>();
         }
     }
 }

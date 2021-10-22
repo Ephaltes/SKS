@@ -7,7 +7,7 @@ using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Tests
+namespace NLSL.SKS.Package.DataAccess.Tests
 {
     public static class DbContextMock
     {

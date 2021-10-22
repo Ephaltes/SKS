@@ -54,7 +54,7 @@ namespace NLSL.SKS.Package.Services.Controllers
             BusinessLogic.Entities.Parcel eParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
             eParcel.TrackingId = trackingId;
 
-            BusinessLogic.Entities.Parcel? transitionResult = _parcelLogic.Transition(eParcel);
+            BusinessLogic.Entities.Parcel? transitionResult = _parcelLogic.Submit(eParcel);
 
             if (transitionResult is null)
                 return new BadRequestObjectResult(new Error

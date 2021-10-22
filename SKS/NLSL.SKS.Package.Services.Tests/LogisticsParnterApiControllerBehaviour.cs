@@ -55,7 +55,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void TransitionParcel_ValidParcel_Success()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelLogic.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
+            A.CallTo(() => _parcelLogic.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(new BusinessLogic.Entities.Parcel());
             
             result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 
@@ -65,7 +65,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void TransitionParcel_BadRequest_FromBL()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelLogic.Transition(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
+            A.CallTo(() => _parcelLogic.Submit(A<BusinessLogic.Entities.Parcel>.Ignored)).Returns(null);
             
             result = (ObjectResult) _testController.TransitionParcel(_testParcel, "ABCDEFGHI");
 

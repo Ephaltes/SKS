@@ -11,7 +11,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Entities
+namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
     /// </summary>

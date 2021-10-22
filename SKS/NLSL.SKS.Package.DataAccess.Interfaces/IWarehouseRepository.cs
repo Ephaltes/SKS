@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-using NLSL.SKS.Pacakge.DataAccess.Entities;
+using NLSL.SKS.Package.DataAccess.Entities;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Interfaces
+namespace NLSL.SKS.Package.DataAccess.Interfaces
 {
     public interface IWarehouseRepository
     {

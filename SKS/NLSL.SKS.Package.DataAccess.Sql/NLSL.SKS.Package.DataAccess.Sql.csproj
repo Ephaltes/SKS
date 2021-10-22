@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>NLSL.SKS.Pacakge.DataAccess.Sql</RootNamespace>
+        <RootNamespace>NLSL.SKS.Package.DataAccess.Sql</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>

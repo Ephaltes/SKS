@@ -2,9 +2,9 @@
 
 using Microsoft.EntityFrameworkCore;
 
-using NLSL.SKS.Pacakge.DataAccess.Entities;
+using NLSL.SKS.Package.DataAccess.Entities;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Sql
+namespace NLSL.SKS.Package.DataAccess.Sql
 {
     public sealed class PackageContext : DbContext
     {

@@ -11,9 +11,9 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-using NLSL.SKS.Pacakge.DataAccess.Entities.Enums;
+using NLSL.SKS.Package.DataAccess.Entities.Enums;
 
-namespace NLSL.SKS.Pacakge.DataAccess.Entities
+namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
     /// </summary>

@@ -6,8 +6,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Interfaces
 {
     public interface IParcelLogic
     {
-        public Parcel? Transition(Parcel parcel);
-
         public Parcel? Track(TrackingId trackingId);
 
         public Parcel? Submit(Parcel parcel);

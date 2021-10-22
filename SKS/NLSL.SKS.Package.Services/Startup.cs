@@ -19,8 +19,8 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-using NLSL.SKS.Pacakge.DataAccess.Interfaces;
-using NLSL.SKS.Pacakge.DataAccess.Sql;
+using NLSL.SKS.Package.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.BusinessLogic;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
