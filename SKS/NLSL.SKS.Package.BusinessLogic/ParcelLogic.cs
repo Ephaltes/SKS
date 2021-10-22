@@ -3,6 +3,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 
+using NLSL.SKS.Pacakge.DataAccess.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
@@ -28,7 +29,6 @@ namespace NLSL.SKS.Package.BusinessLogic
         }
         public Parcel? Track(TrackingId trackingId)
         {
-
             ValidationResult result = _trackingIdValidator.Validate(trackingId);
 
             return result.IsValid ? new Parcel() : null;

@@ -15,10 +15,16 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Interfaces\NLSL.SKS.Pacakge.DataAccess.Interfaces.csproj" />
+		<ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Sql\NLSL.SKS.Pacakge.DataAccess.Sql.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.Services.Interfaces\NLSL.SKS.Package.Services.Interfaces.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="appsettings.json" />
 	</ItemGroup>
 
 </Project>

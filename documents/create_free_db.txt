@@ -1,0 +1,3 @@
+$credentials = Get-Credential
+New-AzSqlServer -ServerName nlsl -Location westeurope -ResourceGroupName nlsl -SqlAdministratorCredentials $credentials -ErrorAction Stop -Verbose
+New-AzSqlDatabase -DatabaseName nlsl_db  -ServerName nlsl -ResourceGroupName nlsl -Edition 'Free' -RequestedServiceObjectiveName 'Free' -CollationName Latin1_General_CI_AS
