@@ -25,11 +25,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Tests", "NLSL.SKS.Package.BusinessLogic.Tests\NLSL.SKS.Package.BusinessLogic.Tests.csproj", "{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Pacakge.DataAccess.Entities", "NLSL.SKS.Pacakge.DataAccess.Entities\NLSL.SKS.Pacakge.DataAccess.Entities.csproj", "{9A4C1153-EFB8-48AE-A45E-1E6101B7430E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Entities", "NLSL.SKS.Package.DataAccess.Entities\NLSL.SKS.Package.DataAccess.Entities.csproj", "{9A4C1153-EFB8-48AE-A45E-1E6101B7430E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Pacakge.DataAccess.Interfaces", "NLSL.SKS.Pacakge.DataAccess.Interfaces\NLSL.SKS.Pacakge.DataAccess.Interfaces.csproj", "{08F6B904-491B-4142-953E-48683B59EF89}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Interfaces", "NLSL.SKS.Package.DataAccess.Interfaces\NLSL.SKS.Package.DataAccess.Interfaces.csproj", "{08F6B904-491B-4142-953E-48683B59EF89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Pacakge.DataAccess.Sql", "NLSL.SKS.Pacakge.DataAccess.Sql\NLSL.SKS.Pacakge.DataAccess.Sql.csproj", "{3909E966-4747-4241-8A7A-0AA392105317}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Sql", "NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj", "{3909E966-4747-4241-8A7A-0AA392105317}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Pacakge.DataAccess.Tests", "NLSL.SKS.Pacakge.DataAccess.Tests\NLSL.SKS.Pacakge.DataAccess.Tests.csproj", "{23BAAAA7-95FF-4F3F-9F95-76A92D07B289}"
 EndProject

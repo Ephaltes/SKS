@@ -3,10 +3,11 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <RootNamespace>NLSL.SKS.Pacakge.DataAccess.Entities</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Entities\NLSL.SKS.Pacakge.DataAccess.Entities.csproj" />
+      <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     </ItemGroup>
 
 </Project>

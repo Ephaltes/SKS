@@ -3,6 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <RootNamespace>NLSL.SKS.Pacakge.DataAccess.Sql</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -12,7 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Interfaces\NLSL.SKS.Pacakge.DataAccess.Interfaces.csproj" />
+      <ProjectReference Include="..\NLSL.SKS.Package.DataAccess.Interfaces\NLSL.SKS.Package.DataAccess.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>
