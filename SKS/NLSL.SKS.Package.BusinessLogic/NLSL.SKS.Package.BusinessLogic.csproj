@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Interfaces\NLSL.SKS.Pacakge.DataAccess.Interfaces.csproj" />
+    <ProjectReference Include="..\NLSL.SKS.Pacakge.DataAccess.Sql\NLSL.SKS.Pacakge.DataAccess.Sql.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj" />
   </ItemGroup>

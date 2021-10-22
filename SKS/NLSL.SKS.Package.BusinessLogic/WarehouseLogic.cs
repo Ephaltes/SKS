@@ -3,6 +3,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 
+using NLSL.SKS.Pacakge.DataAccess.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
@@ -13,10 +14,12 @@ namespace NLSL.SKS.Package.BusinessLogic
     {
         private IValidator<WarehouseCode> _warehouseCodeValidator;
         private IValidator<Warehouse> _warehouseValidator;
-        public WarehouseLogic(IValidator<Warehouse> warehouseValidator, IValidator<WarehouseCode> warehouseCodeValidator)
+        private IWarehouseRepository _parcelRepository;
+        public WarehouseLogic(IValidator<Warehouse> warehouseValidator, IValidator<WarehouseCode> warehouseCodeValidator, IWarehouseRepository parcelRepository)
         {
             _warehouseValidator = warehouseValidator;
             _warehouseCodeValidator = warehouseCodeValidator;
+            _parcelRepository = parcelRepository;
         }
         public Warehouse? Get(WarehouseCode warehouseCode)
         {

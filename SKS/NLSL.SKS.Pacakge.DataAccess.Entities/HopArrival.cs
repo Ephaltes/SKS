@@ -9,6 +9,8 @@
  */
 
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Pacakge.DataAccess.Entities
@@ -29,6 +31,12 @@ namespace NLSL.SKS.Pacakge.DataAccess.Entities
         /// </summary>
         /// <value>Unique CODE of the hop.</value>
         public string Code
+        {
+            get;
+            set;
+        }
+        [ForeignKey("Code")]
+        public Warehouse Warehouse
         {
             get;
             set;
