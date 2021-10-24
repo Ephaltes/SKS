@@ -6,15 +6,15 @@ using NLSL.SKS.Package.DataAccess.Entities;
 
 namespace NLSL.SKS.Package.DataAccess.Sql
 {
-    public sealed class PackageContext : DbContext
+    public class PackageContext : DbContext
     {
-        public DbSet<Parcel> Parcels
+        public virtual DbSet<Parcel> Parcels
         {
             get;
             set;
         }
 
-        public DbSet<Warehouse> Warehouses
+        public virtual DbSet<Warehouse> Warehouses
         {
             get;
             set;
@@ -23,6 +23,11 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         public PackageContext(DbContextOptions<PackageContext> options) : base(options)
         {
             Database.EnsureCreated();
+        }
+
+        public PackageContext()
+        {
+            
         }
     }
 }

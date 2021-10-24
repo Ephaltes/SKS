@@ -16,8 +16,8 @@ namespace NLSL.SKS.Package.DataAccess.Tests
         public static DbSet<T> GetQueryableMockDbSet<T>(List<T> sourceList) where T : class
         {
             IQueryable<T> queryable = sourceList.AsQueryable();
-            DbSet<T> dbSet = A.Fake<DbSet<T>>();
-
+            DbSet<T> dbSet = A.Fake<DbSet<T>>(option => option.Implements<IQueryable<T>>());
+            
             A.CallTo(() => dbSet.As<IQueryable<T>>().Provider).Returns(queryable.Provider);
             A.CallTo(() => dbSet.As<IQueryable<T>>().Expression).Returns(queryable.Expression);
             A.CallTo(() => dbSet.As<IQueryable<T>>().ElementType).Returns(queryable.ElementType);
