@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>NLSL.SKS.Pacakge.DataAccess.Tests</RootNamespace>
     </PropertyGroup>
 
 	<ItemGroup>

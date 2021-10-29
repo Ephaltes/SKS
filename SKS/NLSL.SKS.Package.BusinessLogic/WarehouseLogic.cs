@@ -7,19 +7,18 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 
-using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
-using NLSL.SKS.Package.BusinessLogic.Validators;
+using NLSL.SKS.Package.DataAccess.Interfaces;
 
 namespace NLSL.SKS.Package.BusinessLogic
 {
     public class WarehouseLogic : IWarehouseLogic
     {
-        private IValidator<WarehouseCode> _warehouseCodeValidator;
-        private IValidator<Warehouse> _warehouseValidator;
-        private IWarehouseRepository _warehouseRepository;
         private readonly IMapper _mapper;
+        private readonly IValidator<WarehouseCode> _warehouseCodeValidator;
+        private readonly IWarehouseRepository _warehouseRepository;
+        private readonly IValidator<Warehouse> _warehouseValidator;
         public WarehouseLogic(IValidator<Warehouse> warehouseValidator, IValidator<WarehouseCode> warehouseCodeValidator, IWarehouseRepository warehouseRepository, IMapper mapper)
         {
             _warehouseValidator = warehouseValidator;
@@ -34,18 +33,20 @@ namespace NLSL.SKS.Package.BusinessLogic
             {
                 throw new ArgumentException(result.Errors.First().ErrorMessage);
             }
-            Package.DataAccess.Entities.Warehouse? warehouseFromDb = _warehouseRepository.GetWarehouseByCode(warehouseCode.Code);
-            if (warehouseFromDb == null)
+
+            DataAccess.Entities.Warehouse? warehouseFromDb = _warehouseRepository.GetWarehouseByCode(warehouseCode.Code);
+            if (warehouseFromDb is null)
             {
                 return null;
             }
-            return _mapper.Map<Package.DataAccess.Entities.Warehouse,Warehouse>(warehouseFromDb);
+
+            return _mapper.Map<DataAccess.Entities.Warehouse, Warehouse>(warehouseFromDb);
         }
         public IReadOnlyCollection<Warehouse> GetAll()
         {
-            var warehouseFromDb = _warehouseRepository.GetAllWarehouses();
-            
-            return _mapper.Map<IReadOnlyCollection<Package.DataAccess.Entities.Warehouse>,IReadOnlyCollection<Warehouse>>(warehouseFromDb.ToList());
+            IReadOnlyCollection<DataAccess.Entities.Warehouse> warehouseFromDb = _warehouseRepository.GetAllWarehouses();
+
+            return _mapper.Map<IReadOnlyCollection<DataAccess.Entities.Warehouse>, IReadOnlyCollection<Warehouse>>(warehouseFromDb.ToList());
         }
         public bool Add(Warehouse warehouse)
         {
@@ -55,10 +56,10 @@ namespace NLSL.SKS.Package.BusinessLogic
                 throw new ArgumentException(result.Errors.First().ErrorMessage);
             }
 
-            var mappedWarehouse = _mapper.Map<Warehouse, Package.DataAccess.Entities.Warehouse>(warehouse);
-            var warehouseCode = _warehouseRepository.Create(mappedWarehouse);
-            
-            
+            DataAccess.Entities.Warehouse mappedWarehouse = _mapper.Map<Warehouse, DataAccess.Entities.Warehouse>(warehouse);
+            string warehouseCode = _warehouseRepository.Create(mappedWarehouse);
+
+
             return !string.IsNullOrWhiteSpace(warehouseCode);
         }
     }

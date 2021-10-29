@@ -13,7 +13,7 @@ using NUnit.Framework;
 
 namespace NLSL.SKS.Package.DataAccess.Tests
 {
-    public class WarehouseRpositoryTest
+    public class WarehouseRepositoryBehaviour
     {
         private WarehouseRepository _repository;
         private PackageContext _context;

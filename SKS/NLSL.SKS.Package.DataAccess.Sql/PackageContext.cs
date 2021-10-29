@@ -24,10 +24,5 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         {
             Database.EnsureCreated();
         }
-
-        public PackageContext()
-        {
-            
-        }
     }
 }

@@ -41,6 +41,7 @@ namespace NLSL.SKS.Package.BusinessLogic
 
             DataAccess.Entities.Parcel? parcelFromDb = _parcelRepository.GetParcelByTrackingId(trackingId.Id);
             Parcel? newParcel = _mapper.Map<DataAccess.Entities.Parcel, Parcel>(parcelFromDb);
+
             return newParcel;
         }
 
@@ -97,9 +98,10 @@ namespace NLSL.SKS.Package.BusinessLogic
             {
                 return false;
             }
+
             parcel.VisitedHops.Add(matchedHop);
             parcel.FutureHops.Remove(matchedHop);
-            
+
             _parcelRepository.Update(parcel);
 
             return true;
