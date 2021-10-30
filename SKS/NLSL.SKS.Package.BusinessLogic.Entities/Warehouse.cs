@@ -37,7 +37,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = new List<WarehouseNextHops>();
         public string RegionGeoJson
         {
             get;

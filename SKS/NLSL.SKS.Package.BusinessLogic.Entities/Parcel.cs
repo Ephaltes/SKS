@@ -67,7 +67,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
 
         /// <summary>
         /// Hops coming up in the future - their times are estimations.
@@ -77,7 +77,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
         public string TrackingId
         {
             get;
