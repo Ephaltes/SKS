@@ -49,6 +49,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
             get;
             set;
         }
+
         /// <summary>
         /// State of the parcel.
         /// </summary>
@@ -57,7 +58,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = StateEnum.Pickup;
 
         /// <summary>
         /// Hops visited in the past.
