@@ -48,7 +48,7 @@ namespace NLSL.SKS.Package.Services.DTOs
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
 
         /// <summary>
         /// Hops coming up in the future - their times are estimations.
@@ -60,6 +60,6 @@ namespace NLSL.SKS.Package.Services.DTOs
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
     }
 }

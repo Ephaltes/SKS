@@ -42,6 +42,6 @@ namespace NLSL.SKS.Package.Services.DTOs
         {
             get;
             set;
-        }
+        } = new List<WarehouseNextHops>();
     }
 }

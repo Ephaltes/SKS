@@ -35,7 +35,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         {
             get;
             set;
-        }
+        } = new List<WarehouseNextHops>();
         public string RegionGeoJson
         {
             get;
