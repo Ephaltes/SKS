@@ -12,6 +12,8 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Linq;
 
 using AutoMapper;
 
@@ -69,8 +71,10 @@ namespace NLSL.SKS.Package.Services.Controllers
             if(warehouseList.Count <= 0)
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "An error occurred loading." });
+            
+            List<Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse)).ToList();
 
-            return new ObjectResult(warehouseList) { StatusCode = 200 };
+            return new ObjectResult(rList) { StatusCode = 200 };
         }
 
         /// <summary>
@@ -104,9 +108,12 @@ namespace NLSL.SKS.Package.Services.Controllers
             
             if(warehouse is null)
                 return new NotFoundObjectResult(new Error
-                                                  { ErrorMessage = "Warehouse not found" });
+                                                { ErrorMessage = "Warehouse not found" });
+            
+            Warehouse retWarehouse = _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse);
+           
 
-            return new ObjectResult(warehouse) { StatusCode = 200 };
+            return new ObjectResult(retWarehouse) { StatusCode = 200 };
         }
 
         /// <summary>
