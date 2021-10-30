@@ -15,21 +15,21 @@ namespace NLSL.SKS.Package.Services.Tests
 {
     public class StaffApiControllerBehaviour
     {
-        private IParcelManagement _parcelManagement;
+        private IParcelLogic _parcelLogic;
         private StaffApiController _testController;
         [SetUp]
         public void Setup()
         {
-            _parcelManagement = A.Fake<IParcelManagement>();
+            _parcelLogic = A.Fake<IParcelLogic>();
 
-            _testController = new StaffApiController(_parcelManagement);
+            _testController = new StaffApiController(_parcelLogic);
         }
 
         [Test]
         public void ReportHop_ValidHop_Success()
         {
             StatusCodeResult result;
-            A.CallTo(() => _parcelManagement.ReportHop(null)).WithAnyArguments().Returns(true);
+            A.CallTo(() => _parcelLogic.ReportHop(null)).WithAnyArguments().Returns(true);
 
             result = (StatusCodeResult)_testController.ReportHop("ABCDEFGHI", "ABCD5678");
 
@@ -39,7 +39,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ReportHop_InvalidHop_StatusCode500()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.ReportHop(null)).WithAnyArguments().Returns(false);
+            A.CallTo(() => _parcelLogic.ReportHop(null)).WithAnyArguments().Returns(false);
 
             result = (ObjectResult)_testController.ReportHop("ABCDEFGHI", "ABCD5678");
 
@@ -50,7 +50,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ReportParcelDelivery_ValidReport_Success()
         {
             StatusCodeResult result;
-            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(true);
+            A.CallTo(() => _parcelLogic.Delivered(null)).WithAnyArguments().Returns(true);
 
             result = (StatusCodeResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 
@@ -61,7 +61,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ReportParcelDelivery_TrackingIDNotFound_NotFoundStatusCode()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(null);
+            A.CallTo(() => _parcelLogic.Delivered(null)).WithAnyArguments().Returns(null);
 
             result = (ObjectResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 
@@ -72,7 +72,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ReportParcelDelivery_SomethingWrong_BadRequest()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Delivered(null)).WithAnyArguments().Returns(false);
+            A.CallTo(() => _parcelLogic.Delivered(null)).WithAnyArguments().Returns(false);
 
             result = (ObjectResult)_testController.ReportParcelDelivery("ABCDEFGHI");
 

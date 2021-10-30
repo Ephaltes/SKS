@@ -29,10 +29,10 @@ namespace NLSL.SKS.Package.Services.Controllers
     {
         private readonly IMapper _mapper;
 
-        private readonly IParcelManagement _parcelManagement;
-        public LogisticsPartnerApiController(IParcelManagement parcelManagement, IMapper mapper)
+        private readonly IParcelLogic _parcelLogic;
+        public LogisticsPartnerApiController(IParcelLogic parcelLogic, IMapper mapper)
         {
-            _parcelManagement = parcelManagement;
+            _parcelLogic = parcelLogic;
             _mapper = mapper;
         }
         /// <summary>
@@ -54,7 +54,7 @@ namespace NLSL.SKS.Package.Services.Controllers
             BusinessLogic.Entities.Parcel eParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
             eParcel.TrackingId = trackingId;
 
-            BusinessLogic.Entities.Parcel? transitionResult = _parcelManagement.Transition(eParcel);
+            BusinessLogic.Entities.Parcel? transitionResult = _parcelLogic.Submit(eParcel);
 
             if (transitionResult is null)
                 return new BadRequestObjectResult(new Error

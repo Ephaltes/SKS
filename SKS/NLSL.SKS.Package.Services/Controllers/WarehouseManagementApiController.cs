@@ -13,6 +13,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Linq;
 
 using AutoMapper;
 
@@ -35,11 +36,11 @@ namespace NLSL.SKS.Package.Services.Controllers
     public class WarehouseManagementApiController : ControllerBase
     {
         private readonly IMapper _mapper;
-        private readonly IWarehouseManagement _warehouseManagement;
+        private readonly IWarehouseLogic _warehouseLogic;
 
-        public WarehouseManagementApiController(IWarehouseManagement warehouseManagement, IMapper mapper)
+        public WarehouseManagementApiController(IWarehouseLogic warehouseLogic, IMapper mapper)
         {
-            _warehouseManagement = warehouseManagement;
+            _warehouseLogic = warehouseLogic;
             _mapper = mapper;
         }
         /// <summary>
@@ -65,12 +66,13 @@ namespace NLSL.SKS.Package.Services.Controllers
             //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             // return StatusCode(404);
 
-            IReadOnlyCollection<BusinessLogic.Entities.Warehouse> warehouseList = _warehouseManagement.GetAll();
-            List<Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse)).ToList();
-
-            if (rList.Count <= 0)
+            IReadOnlyCollection<BusinessLogic.Entities.Warehouse> warehouseList = _warehouseLogic.GetAll();
+            
+            if(warehouseList.Count <= 0)
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "An error occurred loading." });
+            
+            List<Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse)).ToList();
 
             return new ObjectResult(rList) { StatusCode = 200 };
         }
@@ -102,9 +104,9 @@ namespace NLSL.SKS.Package.Services.Controllers
 
             WarehouseCode warehouseCode = new WarehouseCode(code);
 
-            BusinessLogic.Entities.Warehouse? warehouse = _warehouseManagement.Get(warehouseCode);
+            BusinessLogic.Entities.Warehouse? warehouse = _warehouseLogic.Get(warehouseCode);
             
-            if (warehouse is null)
+            if(warehouse is null)
                 return new NotFoundObjectResult(new Error
                                                 { ErrorMessage = "Warehouse not found" });
             
@@ -129,9 +131,9 @@ namespace NLSL.SKS.Package.Services.Controllers
         {
             BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
 
-            bool wasAdded = _warehouseManagement.Add(eWarehouse);
-
-            if (!wasAdded)
+            bool wasAdded = _warehouseLogic.Add(eWarehouse);
+            
+            if(!wasAdded)
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "The operation failed due to an error." });
 
