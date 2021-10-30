@@ -32,8 +32,6 @@ namespace NLSL.SKS.Package.BusinessLogic.AutoMapperProfiles
             
             CreateMap<WarehouseNextHops, Package.DataAccess.Entities.WarehouseNextHops>();
             CreateMap<Package.DataAccess.Entities.WarehouseNextHops, WarehouseNextHops>();
-            
-            CreateMap<IReadOnlyCollection<Package.DataAccess.Entities.Warehouse>, IReadOnlyCollection<Warehouse>>();
         }
     }
 }
