@@ -46,7 +46,7 @@ namespace NLSL.SKS.Package.BusinessLogic
         {
             IReadOnlyCollection<DataAccess.Entities.Warehouse> warehouseFromDb = _warehouseRepository.GetAllWarehouses();
 
-            return _mapper.Map<IReadOnlyCollection<DataAccess.Entities.Warehouse>, IReadOnlyCollection<Warehouse>>(warehouseFromDb.ToList());
+            return warehouseFromDb.Select(warehouse => _mapper.Map<DataAccess.Entities.Warehouse, Warehouse>(warehouse)).ToList();
         }
         public bool Add(Warehouse warehouse)
         {

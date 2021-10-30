@@ -1,6 +1,6 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Reflection;
 
 using AutoMapper;
 
@@ -13,18 +13,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
-using NLSL.SKS.Package.DataAccess.Interfaces;
-using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.BusinessLogic;
-using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
+using NLSL.SKS.Package.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql;
+using NLSL.SKS.Package.Services.AutoMapperProfiles;
 using NLSL.SKS.Package.Services.Filter;
 
 namespace NLSL.SKS.Package.Services
@@ -50,7 +49,10 @@ namespace NLSL.SKS.Package.Services
         {
             services.AddControllers();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            List<Profile> mappingProfiles = new List<Profile>
+                                            { new MapperProfile(), 
+                                                new BusinessLogic.AutoMapperProfiles.MapperProfile() };
+            services.AddAutoMapper(cfg => cfg.AddProfiles(mappingProfiles));
 
             services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Singleton);
 
@@ -63,7 +65,6 @@ namespace NLSL.SKS.Package.Services
             string connectionString = Configuration.GetConnectionString("Database");
             services.AddDbContext<PackageContext>(options =>
                                                       options.UseSqlServer(connectionString));
-
 
 
             services
