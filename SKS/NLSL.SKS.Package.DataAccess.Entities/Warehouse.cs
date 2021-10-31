@@ -9,23 +9,18 @@
  */
 
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
-namespace NLSL.SKS.Package.Services.DTOs
+namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
     public class Warehouse : Hop
     {
         /// <summary>
         /// Gets or Sets Level
         /// </summary>
-        [Required]
-        [DataMember(Name = "level")]
         public int? Level
         {
             get;
@@ -36,12 +31,45 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        [Required]
-        [DataMember(Name = "nextHops")]
         public List<WarehouseNextHops> NextHops
         {
             get;
             set;
         } = new List<WarehouseNextHops>();
+        public string RegionGeoJson
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The truck&#x27;s number plate.
+        /// </summary>
+        /// <value>The truck&#x27;s number plate.</value>
+        public string NumberPlate
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Name of the logistics partner.
+        /// </summary>
+        /// <value>Name of the logistics partner.</value>
+        public string LogisticsPartner
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// BaseURL of the logistics partner&#x27;s REST service.
+        /// </summary>
+        /// <value>BaseURL of the logistics partner&#x27;s REST service.</value>
+        public string LogisticsPartnerUrl
+        {
+            get;
+            set;
+        }
     }
 }

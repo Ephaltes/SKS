@@ -9,29 +9,54 @@
  */
 
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Runtime.Serialization;
-
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-using NLSL.SKS.Package.Services.DTOs.Enums;
 using System.Diagnostics.CodeAnalysis;
 
-namespace NLSL.SKS.Package.Services.DTOs
+using NLSL.SKS.Package.DataAccess.Entities.Enums;
+
+namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
     /// </summary>
-    [DataContract]
     [ExcludeFromCodeCoverage]
-    public class TrackingInformation
+
+    public class Parcel
     {
+        public int Id
+        {
+            get;
+            set;
+        }
+        
+        /// <summary>
+        /// Gets or Sets Weight
+        /// </summary>
+        public float? Weight
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or Sets Recipient
+        /// </summary>
+        public Recipient Recipient
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Gets or Sets Sender
+        /// </summary>
+        public Recipient Sender
+        {
+            get;
+            set;
+        }
         /// <summary>
         /// State of the parcel.
         /// </summary>
         /// <value>State of the parcel.</value>
-        [Required]
-        [DataMember(Name = "state")]
         public StateEnum? State
         {
             get;
@@ -42,8 +67,6 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// Hops visited in the past.
         /// </summary>
         /// <value>Hops visited in the past.</value>
-        [Required]
-        [DataMember(Name = "visitedHops")]
         public List<HopArrival> VisitedHops
         {
             get;
@@ -54,12 +77,16 @@ namespace NLSL.SKS.Package.Services.DTOs
         /// Hops coming up in the future - their times are estimations.
         /// </summary>
         /// <value>Hops coming up in the future - their times are estimations.</value>
-        [Required]
-        [DataMember(Name = "futureHops")]
         public List<HopArrival> FutureHops
         {
             get;
             set;
         } = new List<HopArrival>();
+        
+        public string TrackingId
+        {
+            get;
+            set;
+        }
     }
 }

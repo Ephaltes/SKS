@@ -49,6 +49,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
             get;
             set;
         }
+
         /// <summary>
         /// State of the parcel.
         /// </summary>
@@ -57,7 +58,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = StateEnum.Pickup;
 
         /// <summary>
         /// Hops visited in the past.
@@ -67,7 +68,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
 
         /// <summary>
         /// Hops coming up in the future - their times are estimations.
@@ -77,7 +78,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         {
             get;
             set;
-        }
+        } = new List<HopArrival>();
         public string TrackingId
         {
             get;

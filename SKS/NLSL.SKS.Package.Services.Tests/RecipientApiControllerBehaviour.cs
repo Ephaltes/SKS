@@ -17,23 +17,23 @@ namespace NLSL.SKS.Package.Services.Tests
     public class RecipientApiControllerBehaviour
     {
         private IMapper _mapper;
-        private IParcelManagement _parcelManagement;
+        private IParcelLogic _parcelLogic;
         private RecipientApiController _testController;
 
         [SetUp]
         public void Setup()
         {
-            _parcelManagement = A.Fake<IParcelManagement>();
+            _parcelLogic = A.Fake<IParcelLogic>();
             _mapper = A.Fake<IMapper>();
 
-            _testController = new RecipientApiController(_parcelManagement, _mapper);
+            _testController = new RecipientApiController(_parcelLogic, _mapper);
         }
 
         [Test]
         public void TrackParcel_ParcelFound_Success()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Track(A<TrackingId>.Ignored)).Returns(new Parcel());
+            A.CallTo(() => _parcelLogic.Track(A<TrackingId>.Ignored)).Returns(new Parcel());
 
             result = (ObjectResult)_testController.TrackParcel("ABCDEFGHI");
 
@@ -43,7 +43,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void TrackParcel_ParcelNotFound_BadRequest()
         {
             ObjectResult result;
-            A.CallTo(() => _parcelManagement.Track(A<TrackingId>.Ignored)).Returns(null);
+            A.CallTo(() => _parcelLogic.Track(A<TrackingId>.Ignored)).Returns(null);
 
             result = (ObjectResult)_testController.TrackParcel("ABCDEFGHI");
 

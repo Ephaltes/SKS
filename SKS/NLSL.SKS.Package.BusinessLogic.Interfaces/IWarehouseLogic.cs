@@ -4,7 +4,7 @@ using NLSL.SKS.Package.BusinessLogic.Entities;
 
 namespace NLSL.SKS.Package.BusinessLogic.Interfaces
 {
-    public interface IWarehouseManagement
+    public interface IWarehouseLogic
     {
         public Warehouse? Get(WarehouseCode warehouseCode);
         public IReadOnlyCollection<Warehouse> GetAll();

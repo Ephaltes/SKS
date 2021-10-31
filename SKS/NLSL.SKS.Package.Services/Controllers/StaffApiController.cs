@@ -27,10 +27,10 @@ namespace NLSL.SKS.Package.Services.Controllers
     [ApiController]
     public class StaffApiController : ControllerBase
     {
-        private readonly IParcelManagement _parcelManagement;
-        public StaffApiController(IParcelManagement parcelManagement)
+        private readonly IParcelLogic _parcelLogic;
+        public StaffApiController(IParcelLogic parcelLogic)
         {
-            _parcelManagement = parcelManagement;
+            _parcelLogic = parcelLogic;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace NLSL.SKS.Package.Services.Controllers
             TrackingId trackingIdObject = new TrackingId(trackingId);
             ReportHop reportHop = new ReportHop() { HopCode = code, TrackingId = trackingIdObject };
             
-            bool isSuccessful = _parcelManagement.ReportHop(reportHop);
+            bool isSuccessful = _parcelLogic.ReportHop(reportHop);
 
             if (!isSuccessful)
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
@@ -78,7 +78,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         public virtual IActionResult ReportParcelDelivery([FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")] string trackingId)
         {
             TrackingId trackingIdObject = new TrackingId(trackingId);
-            bool? isDelivered = _parcelManagement.Delivered(trackingIdObject);
+            bool? isDelivered = _parcelLogic.Delivered(trackingIdObject);
             
             if(isDelivered is null)
                 return new NotFoundObjectResult(new Error() { ErrorMessage = "Parcel does not exist with this tracking ID. " });

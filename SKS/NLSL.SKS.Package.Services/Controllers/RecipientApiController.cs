@@ -35,10 +35,10 @@ namespace NLSL.SKS.Package.Services.Controllers
     {
         private readonly IMapper _mapper;
 
-        private readonly IParcelManagement _parcelManagement;
-        public RecipientApiController(IParcelManagement parcelManagement, IMapper mapper)
+        private readonly IParcelLogic _parcelLogic;
+        public RecipientApiController(IParcelLogic parcelLogic, IMapper mapper)
         {
-            _parcelManagement = parcelManagement;
+            _parcelLogic = parcelLogic;
             _mapper = mapper;
         }
         /// <summary>
@@ -61,7 +61,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         {
             TrackingId trackingIdObject = new TrackingId(trackingId);
 
-            Parcel? trackingParcel = _parcelManagement.Track(trackingIdObject);
+            Parcel? trackingParcel = _parcelLogic.Track(trackingIdObject);
 
             if (trackingParcel is null)
                 return new BadRequestObjectResult(

@@ -1,16 +1,26 @@
-version: '3.3'
+# docker-compose up -d (muss im Folder dieser datei sein und die datei muss docker-compose.yaml heißen)
+version: '3'
 services:
-  db:
-    image: mcr.microsoft.com/mssql/server:latest
-    restart: unless-stopped
-    container_name: sks_sql_server
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2017-latest
     environment:
-      SA_PASSWORD: 'SKS_PASSWORD'
-      ACCEPT_EULA: 'Y'
-    ports:
-      - '1433:1433'
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=SKS_P@ssword_S3cur3
+    ports: 
+      - 1433:1433
     volumes:
-      - "sql_db:/var/opt/mssql/data"
-
+      - mssqldata:/var/opt/mssql
+  adminer:
+    image: knom/adminer-mssql
+    ports:
+      - 8080:8080
+    environment:
+       - ADMINER_PLUGINS=tinymce
+       - ADMINER_DESIGN=flat
+       - ADMINER_DEFAULT_SERVER=sqlserver
+#  rabbitmq:
+#    image: rabbitmq
+#    ports:
+#      - 5672:5672
 volumes:
-  sql_db:
+    mssqldata:

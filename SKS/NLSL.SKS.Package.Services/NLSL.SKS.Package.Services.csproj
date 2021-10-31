@@ -9,12 +9,14 @@
 	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.1" />
-		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.1" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.2.3" />
+		<PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.2.3" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\NLSL.SKS.Package.DataAccess.Interfaces\NLSL.SKS.Package.DataAccess.Interfaces.csproj" />
+		<ProjectReference Include="..\NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj" />
 		<ProjectReference Include="..\NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj" />
