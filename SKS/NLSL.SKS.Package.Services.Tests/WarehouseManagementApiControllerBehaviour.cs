@@ -10,6 +10,7 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
@@ -24,14 +25,16 @@ namespace NLSL.SKS.Package.Services.Tests
         private IMapper _mapper;
         private WarehouseManagementApiController _testController;
         private IWarehouseLogic _warehouseLogic;
+        private ILogger<WarehouseManagementApiController> _logger;
 
         [SetUp]
         public void Setup()
         {
             _mapper = A.Fake<IMapper>();
             _warehouseLogic = A.Fake<IWarehouseLogic>();
+            _logger = A.Fake<ILogger<WarehouseManagementApiController>>();
 
-            _testController = new WarehouseManagementApiController(_warehouseLogic, _mapper);
+            _testController = new WarehouseManagementApiController(_warehouseLogic, _mapper,_logger);
         }
         [Test]
         public void ExportWarehouses_ReturnsListOfWareHouses_Success()
@@ -52,7 +55,7 @@ namespace NLSL.SKS.Package.Services.Tests
 
             result = (ObjectResult)_testController.ExportWarehouses();
 
-            result.StatusCode.Should().Be(400);
+            result.StatusCode.Should().Be(404);
         }
         [Test]
         public void GetWarehouse_Code_Success()
