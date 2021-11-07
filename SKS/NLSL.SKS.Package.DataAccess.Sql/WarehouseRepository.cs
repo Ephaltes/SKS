@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Extensions.Logging;
@@ -24,6 +23,7 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             _context.Warehouses.Add(warehouse);
             _context.SaveChanges();
             _logger.LogDebug("create warehouse complete");
+
             return warehouse.Code;
         }
         public void Update(Warehouse warehouse)
@@ -37,7 +37,7 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         {
             _logger.LogDebug("starting, delete warehouse");
             Warehouse temp = new Warehouse
-                              { Code = id };
+                             { Code = id };
 
             _context.Warehouses.Remove(temp);
             _context.SaveChanges();
@@ -46,15 +46,17 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         public IReadOnlyCollection<Warehouse> GetAllWarehouses()
         {
             _logger.LogDebug("starting, get all warehouses");
-            var warehouses = _context.Warehouses.ToList();
+            List<Warehouse>? warehouses = _context.Warehouses.ToList();
             _logger.LogDebug("get all warehouses complete");
+
             return warehouses;
         }
         public Warehouse? GetWarehouseByCode(string code)
         {
             _logger.LogDebug("starting, get warehouse by code");
-            var warehouse = _context.Warehouses.FirstOrDefault(warehouse => warehouse.Code == code);
+            Warehouse? warehouse = _context.Warehouses.FirstOrDefault(warehouse => warehouse.Code == code);
             _logger.LogDebug("get warehouse by code complete");
+
             return warehouse;
         }
     }
