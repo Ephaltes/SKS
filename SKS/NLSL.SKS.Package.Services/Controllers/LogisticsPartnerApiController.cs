@@ -14,6 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
@@ -31,10 +32,13 @@ namespace NLSL.SKS.Package.Services.Controllers
         private readonly IMapper _mapper;
 
         private readonly IParcelLogic _parcelLogic;
-        public LogisticsPartnerApiController(IParcelLogic parcelLogic, IMapper mapper)
+
+        private readonly ILogger<LogisticsPartnerApiController> _logger;
+        public LogisticsPartnerApiController(IParcelLogic parcelLogic, IMapper mapper, ILogger<LogisticsPartnerApiController> logger)
         {
             _parcelLogic = parcelLogic;
             _mapper = mapper;
+            _logger = logger;
         }
         /// <summary>
         /// Transfer an existing parcel into the system from the service of a logistics partner.
@@ -53,6 +57,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         {
             try
             {
+                _logger.LogDebug($"Request for TransitionParcel received");
                 //automapper 
                 BusinessLogic.Entities.Parcel eParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
                 eParcel.TrackingId = trackingId;
@@ -60,17 +65,27 @@ namespace NLSL.SKS.Package.Services.Controllers
                 BusinessLogic.Entities.Parcel? transitionResult = _parcelLogic.Submit(eParcel);
 
                 if (transitionResult is null)
+                {
+                    _logger.LogWarning($"TransitionParcel failed transitionResult is null");
+
+                    
                     return new BadRequestObjectResult(new Error
                                                       { ErrorMessage = "The operation failed due to an error." });
+                }
+                   
 
                 NewParcelInfo? newParcel = _mapper.Map<BusinessLogic.Entities.Parcel, NewParcelInfo>(transitionResult);
 
+                
+                _logger.LogDebug("TransitionParcel successful");
                 return new OkObjectResult(newParcel);
             }
             catch (Exception exception)
             {
+                _logger.LogError($"TransitionParcel failed with {exception.Message}");
+                
                 return new BadRequestObjectResult(new Error
-                                                  { ErrorMessage = $"The operation failed due to an error. {exception.Message}" });
+                                                  { ErrorMessage = $"The operation failed due to an error." });
             }
          
         }

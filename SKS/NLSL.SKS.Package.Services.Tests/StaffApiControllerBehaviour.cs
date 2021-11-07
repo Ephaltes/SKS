@@ -5,6 +5,7 @@ using FakeItEasy;
 using FluentAssertions;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Controllers;
@@ -17,12 +18,14 @@ namespace NLSL.SKS.Package.Services.Tests
     {
         private IParcelLogic _parcelLogic;
         private StaffApiController _testController;
+        private ILogger<StaffApiController> _logger;
         [SetUp]
         public void Setup()
         {
             _parcelLogic = A.Fake<IParcelLogic>();
+            _logger = A.Fake<ILogger<StaffApiController>>();
 
-            _testController = new StaffApiController(_parcelLogic);
+            _testController = new StaffApiController(_parcelLogic,_logger);
         }
 
         [Test]

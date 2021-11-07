@@ -19,7 +19,19 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             get;
             set;
         }
-
+        
+        public virtual DbSet<Truck> Trucks 
+        {
+            get;
+            set;
+        }
+        
+        public virtual DbSet<Transferwarehouse> Transferwarehouses
+        {
+            get;
+            set;
+        }
+        
         public PackageContext(DbContextOptions<PackageContext> options) : base(options)
         {
             Database.EnsureCreated();

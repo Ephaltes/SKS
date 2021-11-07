@@ -49,12 +49,9 @@ namespace NLSL.SKS.Package.Services
         {
             services.AddControllers();
 
-            List<Profile> mappingProfiles = new List<Profile>
-                                            { new MapperProfile(), 
-                                                new BusinessLogic.AutoMapperProfiles.MapperProfile() };
-            services.AddAutoMapper(cfg => cfg.AddProfiles(mappingProfiles));
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Singleton);
+            services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Transient);
 
             services.AddTransient<IParcelLogic, ParcelLogic>();
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();

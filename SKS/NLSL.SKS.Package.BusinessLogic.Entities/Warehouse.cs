@@ -38,40 +38,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
             get;
             set;
         } = new List<WarehouseNextHops>();
-        public string RegionGeoJson
-        {
-            get;
-            set;
-        }
 
-        /// <summary>
-        /// The truck&#x27;s number plate.
-        /// </summary>
-        /// <value>The truck&#x27;s number plate.</value>
-        public string NumberPlate
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Name of the logistics partner.
-        /// </summary>
-        /// <value>Name of the logistics partner.</value>
-        public string LogisticsPartner
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// BaseURL of the logistics partner&#x27;s REST service.
-        /// </summary>
-        /// <value>BaseURL of the logistics partner&#x27;s REST service.</value>
-        public string LogisticsPartnerUrl
-        {
-            get;
-            set;
-        }
     }
 }

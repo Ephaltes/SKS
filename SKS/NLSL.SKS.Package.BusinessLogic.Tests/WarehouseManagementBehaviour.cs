@@ -4,6 +4,8 @@ using System.Linq;
 
 using AutoMapper;
 
+using Castle.Core.Logging;
+
 using FakeItEasy;
 
 using FizzWare.NBuilder;
@@ -13,10 +15,14 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 
+using Microsoft.Extensions.Logging;
+
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 
 using NUnit.Framework;
+
+using ILogger = Castle.Core.Logging.ILogger;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
@@ -27,6 +33,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         private IValidator<Warehouse> _warehouseValidator;
         private IWarehouseRepository _warehouseRepository;
         private IMapper _mapper;
+        private ILogger<WarehouseLogic> _logger;
         [SetUp]
         public void Setup()
         {
@@ -34,7 +41,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             _warehouseValidator = A.Fake<IValidator<Warehouse>>();
             _warehouseRepository = A.Fake<IWarehouseRepository>();
             _mapper = A.Fake<IMapper>();
-            _warehouseLogic = new WarehouseLogic(_warehouseValidator, _warehouseCodeValidator,_warehouseRepository,_mapper);
+            _logger = A.Fake<ILogger<WarehouseLogic>>();
+            _warehouseLogic = new WarehouseLogic(_warehouseValidator, _warehouseCodeValidator,_warehouseRepository,_mapper,_logger);
         }
 
         [Test]

@@ -10,11 +10,13 @@
 
 #nullable enable
 
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
@@ -36,10 +38,12 @@ namespace NLSL.SKS.Package.Services.Controllers
         private readonly IMapper _mapper;
 
         private readonly IParcelLogic _parcelLogic;
-        public RecipientApiController(IParcelLogic parcelLogic, IMapper mapper)
+        private readonly ILogger<RecipientApiController> _logger;
+        public RecipientApiController(IParcelLogic parcelLogic, IMapper mapper, ILogger<RecipientApiController> logger)
         {
             _parcelLogic = parcelLogic;
             _mapper = mapper;
+            _logger = logger;
         }
         /// <summary>
         /// Find the latest state of a parcel by its tracking ID.
@@ -59,25 +63,38 @@ namespace NLSL.SKS.Package.Services.Controllers
             [FromRoute] [Required] [RegularExpression("^[A-Z0-9]{9}$")]
             string trackingId)
         {
-            TrackingId trackingIdObject = new TrackingId(trackingId);
+            try
+            {
+                _logger.LogDebug("TrackParcel Request received");
+            
+                TrackingId trackingIdObject = new TrackingId(trackingId);
 
-            Parcel? trackingParcel = _parcelLogic.Track(trackingIdObject);
+                Parcel? trackingParcel = _parcelLogic.Track(trackingIdObject);
 
-            if (trackingParcel is null)
+                if (trackingParcel is null)
+                {
+                    _logger.LogWarning($"TrackParcel failed trackingParcel is null");
+                    
+                    return new BadRequestObjectResult(
+                        new Error { ErrorMessage = "The operation failed due to an error." });
+                }
+
+                TrackingInformation? resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
+
+                
+                _logger.LogDebug("TrackParcel successful");
+                return new OkObjectResult(resultParcel);
+
+            }
+            catch (Exception exception)
+            {
+                
+                _logger.LogError($"TrackParcel failed with {exception.Message}");
+                
                 return new BadRequestObjectResult(
                     new Error { ErrorMessage = "The operation failed due to an error." });
-
-            TrackingInformation? resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
-
-            return new OkObjectResult(resultParcel);
-
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-
-            //TODO: Uncomment the next line to return response 400 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(400, default(Error));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
+            }
+           
         }
     }
 }
