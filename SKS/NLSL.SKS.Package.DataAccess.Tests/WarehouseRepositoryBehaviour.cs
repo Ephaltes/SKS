@@ -5,6 +5,7 @@ using FakeItEasy;
 using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Sql;
@@ -17,7 +18,7 @@ namespace NLSL.SKS.Package.DataAccess.Tests
     {
         private WarehouseRepository _repository;
         private PackageContext _context;
-        
+        private ILogger<WarehouseRepository> _logger;
         
         [SetUp]
         public void Setup()
@@ -25,8 +26,9 @@ namespace NLSL.SKS.Package.DataAccess.Tests
             DbContextOptions<PackageContext> options = new DbContextOptions<PackageContext>();
             _context = A.Fake<PackageContext>(x=> 
                                                   x.WithArgumentsForConstructor(() => new PackageContext(options)));
-            _repository = new WarehouseRepository(_context);
-            
+            _logger = A.Fake<ILogger<WarehouseRepository>>();
+            _repository = new WarehouseRepository(_context,_logger);
+
             A.CallTo(() => _context.Database.EnsureCreated()).Returns(true);
         }
         [Test]

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using FluentValidation;
+﻿using FluentValidation;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
 
@@ -16,6 +10,14 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
         {
             RuleFor(p => p.TraveltimeMins).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.Hop).NotNull().WithMessage("{PropertyName} was null");
+
+            RuleFor(p => p.Hop)
+                .SetInheritanceValidator(v =>
+                                         {
+                                             v.Add(new TruckValidator());
+                                             v.Add(new TransferWarehouseValidator());
+                                             //v.Add(new WarehouseValidator());
+                                         });
         }
     }
 }

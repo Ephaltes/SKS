@@ -13,6 +13,8 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 
+using Microsoft.Extensions.Logging;
+
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
@@ -32,6 +34,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         private IValidator<TrackingId> _trackingIdValidator;
         private IMapper _mapper;
         private IParcelRepository _parcelRepository;
+        private ILogger<ParcelLogic> _logger;
         [SetUp]
         public void Setup()
         {
@@ -41,8 +44,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             _parcelRepository = A.Fake<IParcelRepository>();
             _mapper = A.Fake<IMapper>();
-            
-            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHop,_parcelRepository,_mapper);
+            _logger = A.Fake<ILogger<ParcelLogic>>();
+            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHop,_parcelRepository,_mapper,_logger);
         }
 
         [Test]

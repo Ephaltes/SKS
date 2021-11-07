@@ -13,6 +13,7 @@ using System;
 using AutoMapper;
 
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
@@ -29,10 +30,12 @@ namespace NLSL.SKS.Package.Services.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IParcelLogic _parcelLogic;
-        public SenderApiController(IParcelLogic parcelLogic, IMapper mapper)
+        private readonly ILogger<SenderApiController> _logger;
+        public SenderApiController(IParcelLogic parcelLogic, IMapper mapper, ILogger<SenderApiController> logger)
         {
             _parcelLogic = parcelLogic;
             _mapper = mapper;
+            _logger = logger;
         }
         /// <summary>
         /// Submit a new parcel to the logistics service.
@@ -50,20 +53,27 @@ namespace NLSL.SKS.Package.Services.Controllers
         {
             try
             {
+                _logger.LogDebug("SubmitParcel Request recieved");
+                
                 BusinessLogic.Entities.Parcel eParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
 
                 BusinessLogic.Entities.Parcel? newParcelInfo = _parcelLogic.Submit(eParcel);
 
                 if (newParcelInfo is null)
+                {
+                    _logger.LogWarning("SubmitParcel failed newParcelInfo is null");
                     return new BadRequestObjectResult(
                         new Error { ErrorMessage = "The operation failed due to an error." });
+                }
 
                 NewParcelInfo? resultNewParcelInfo = _mapper.Map<BusinessLogic.Entities.Parcel, NewParcelInfo>(newParcelInfo);
 
+                _logger.LogDebug("SubmitParcel successful");
                 return new ObjectResult(resultNewParcelInfo) { StatusCode = 201 };
             }
             catch (Exception exception)
             {
+                _logger.LogError($"SubmitParcel failed with {exception.Message}");
                 return new BadRequestObjectResult(
                     new Error { ErrorMessage = $"The operation failed due to an error. {exception.Message}" });
             }

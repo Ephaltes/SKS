@@ -2,6 +2,7 @@ using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace NLSL.SKS.Package.Services
 {
@@ -17,6 +18,13 @@ namespace NLSL.SKS.Package.Services
         public static IHostBuilder CreateHostBuilder(string[] args)
         {
             return Host.CreateDefaultBuilder(args)
+                .ConfigureLogging(logging =>
+                                  {
+                                      logging.ClearProviders();
+                                      logging.AddConsole();
+                                      logging.AddDebug();
+                                      logging.AddEventLog();
+                                  })
                 .ConfigureWebHostDefaults(webBuilder =>
                                           {
                                               webBuilder.UseStartup<Startup>();

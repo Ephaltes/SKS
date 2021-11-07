@@ -9,6 +9,7 @@ using NUnit.Framework;
 using NLSL.SKS.Package.Services.DTOs;
 using NLSL.SKS.Package.Services.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 
@@ -22,13 +23,15 @@ namespace NLSL.SKS.Package.Services.Tests
         private LogisticsPartnerApiController _testController;
         private IParcelLogic _parcelLogic;
         private IMapper _mapper;
+        private ILogger<LogisticsPartnerApiController> _logger;
         [SetUp]
         public void Setup()
         {
             _parcelLogic = A.Fake<IParcelLogic>();
             _mapper = A.Fake<IMapper>();
+            _logger = A.Fake<ILogger<LogisticsPartnerApiController>>();
 
-            _testController = new LogisticsPartnerApiController(_parcelLogic, _mapper);
+            _testController = new LogisticsPartnerApiController(_parcelLogic, _mapper,_logger);
             
             _testParcel = new();
             _testSender = new();

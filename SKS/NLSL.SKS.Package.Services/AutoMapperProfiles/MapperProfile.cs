@@ -2,13 +2,6 @@
 
 using AutoMapper;
 
-using NLSL.SKS.Package.BusinessLogic.Entities;
-using NLSL.SKS.Package.Services.DTOs;
-
-using Parcel = NLSL.SKS.Package.Services.DTOs.Parcel;
-using Recipient = NLSL.SKS.Package.Services.DTOs.Recipient;
-using Warehouse = NLSL.SKS.Package.Services.DTOs.Warehouse;
-
 namespace NLSL.SKS.Package.Services.AutoMapperProfiles
 {
     [ExcludeFromCodeCoverage]
@@ -16,26 +9,82 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
     {
         public MapperProfile()
         {
-            CreateMap<Parcel, BusinessLogic.Entities.Parcel>();
-            CreateMap<BusinessLogic.Entities.Parcel, Parcel>();
+            CreateMap<DTOs.Parcel, BusinessLogic.Entities.Parcel>();
+            CreateMap<BusinessLogic.Entities.Parcel, DTOs.Parcel>();
 
-            CreateMap<TrackingInformation, BusinessLogic.Entities.Parcel>();
-            CreateMap<BusinessLogic.Entities.Parcel, TrackingInformation>();
+            CreateMap<DTOs.TrackingInformation, BusinessLogic.Entities.Parcel>();
+            CreateMap<BusinessLogic.Entities.Parcel, DTOs.TrackingInformation>();
             
-            CreateMap<NewParcelInfo, BusinessLogic.Entities.Parcel>();
-            CreateMap<BusinessLogic.Entities.Parcel, NewParcelInfo>();
+            CreateMap<DTOs.NewParcelInfo, BusinessLogic.Entities.Parcel>();
+            CreateMap<BusinessLogic.Entities.Parcel, DTOs.NewParcelInfo>();
             
-            CreateMap<Warehouse, BusinessLogic.Entities.Warehouse>();
-            CreateMap<BusinessLogic.Entities.Warehouse, Warehouse>();
+            CreateMap<DTOs.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>();
+            CreateMap<BusinessLogic.Entities.TransferWarehouse, DTOs.Transferwarehouse>();
             
-            CreateMap<Transferwarehouse, BusinessLogic.Entities.Warehouse>();
-            CreateMap<BusinessLogic.Entities.Warehouse, Transferwarehouse>();
+            CreateMap<DTOs.Truck, BusinessLogic.Entities.Truck>();
+            CreateMap<BusinessLogic.Entities.Truck, DTOs.Truck>();
+
+            CreateMap<DTOs.Warehouse, BusinessLogic.Entities.Warehouse>();
+            CreateMap<BusinessLogic.Entities.Warehouse, DTOs.Warehouse>();
             
-            CreateMap<Truck, BusinessLogic.Entities.Warehouse>();
-            CreateMap<BusinessLogic.Entities.Warehouse, Truck>();
+            CreateMap<DTOs.GeoCoordinate, BusinessLogic.Entities.GeoCoordinate>();
+            CreateMap<BusinessLogic.Entities.GeoCoordinate, DTOs.GeoCoordinate>();
             
-            CreateMap<Recipient, BusinessLogic.Entities.Recipient>();
-            CreateMap<BusinessLogic.Entities.Recipient, Recipient>();
+            
+            CreateMap<DTOs.Recipient, BusinessLogic.Entities.Recipient>();
+            CreateMap<BusinessLogic.Entities.Recipient, DTOs.Recipient>();
+            
+            CreateMap<DTOs.WarehouseNextHops,BusinessLogic.Entities.WarehouseNextHops>();
+            CreateMap<BusinessLogic.Entities.WarehouseNextHops, DTOs.WarehouseNextHops>();
+
+            CreateMap<DTOs.Hop, BusinessLogic.Entities.Hop>()
+                .Include<DTOs.Truck,BusinessLogic.Entities.Truck>()
+                .Include<DTOs.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>()
+                .Include<DTOs.Warehouse,BusinessLogic.Entities.Warehouse>();
+            
+            CreateMap<BusinessLogic.Entities.Hop, DTOs.Hop>()
+                .Include<BusinessLogic.Entities.Truck,DTOs.Truck>()
+                .Include<BusinessLogic.Entities.TransferWarehouse,DTOs.Transferwarehouse>()
+                .Include<BusinessLogic.Entities.Warehouse,DTOs.Warehouse>();
+            
+            
+            // BL to DAL
+            
+            CreateMap<BusinessLogic.Entities.GeoCoordinate,Package.DataAccess.Entities.GeoCoordinate>();
+            CreateMap<Package.DataAccess.Entities.GeoCoordinate, BusinessLogic.Entities.GeoCoordinate>();
+            
+            
+            CreateMap<BusinessLogic.Entities.HopArrival, Package.DataAccess.Entities.HopArrival>();
+            CreateMap<Package.DataAccess.Entities.HopArrival,BusinessLogic.Entities.HopArrival>();
+            
+            CreateMap<BusinessLogic.Entities.Parcel, Package.DataAccess.Entities.Parcel>();
+            CreateMap<Package.DataAccess.Entities.Parcel,BusinessLogic.Entities.Parcel>();
+            
+            CreateMap<BusinessLogic.Entities.Recipient, Package.DataAccess.Entities.Recipient>();
+            CreateMap<Package.DataAccess.Entities.Recipient,BusinessLogic.Entities.Recipient>();
+            
+            CreateMap<BusinessLogic.Entities.Warehouse, Package.DataAccess.Entities.Warehouse>();
+            CreateMap<Package.DataAccess.Entities.Warehouse, BusinessLogic.Entities.Warehouse>();
+            
+            CreateMap<BusinessLogic.Entities.WarehouseNextHops, Package.DataAccess.Entities.WarehouseNextHops>();
+            CreateMap<Package.DataAccess.Entities.WarehouseNextHops, BusinessLogic.Entities.WarehouseNextHops>();
+
+            CreateMap<BusinessLogic.Entities.Truck, DataAccess.Entities.Truck>();
+            CreateMap<DataAccess.Entities.Truck, BusinessLogic.Entities.Truck>();
+            
+            CreateMap<BusinessLogic.Entities.TransferWarehouse, DataAccess.Entities.Transferwarehouse>();
+            CreateMap<DataAccess.Entities.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>();
+            
+            CreateMap<BusinessLogic.Entities.Hop, Package.DataAccess.Entities.Hop>()
+                .Include<BusinessLogic.Entities.Truck,DataAccess.Entities.Truck>()
+                .Include<BusinessLogic.Entities.Warehouse,DataAccess.Entities.Warehouse>()
+                .Include<BusinessLogic.Entities.TransferWarehouse,DataAccess.Entities.Transferwarehouse>();
+
+            CreateMap<Package.DataAccess.Entities.Hop, BusinessLogic.Entities.Hop>()
+                .Include<DataAccess.Entities.Truck, BusinessLogic.Entities.Truck>()
+                .Include<DataAccess.Entities.Warehouse, BusinessLogic.Entities.Warehouse>()
+                .Include<DataAccess.Entities.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>();
+
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Immutable;
 using System.Linq;
 
+using Castle.Core.Logging;
+
 using NUnit.Framework;
 using FakeItEasy;
 
@@ -10,11 +12,14 @@ using FizzWare.NBuilder;
 using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Sql;
 
 using NUnit.Framework.Constraints;
+
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace NLSL.SKS.Package.DataAccess.Tests
 {
@@ -22,7 +27,7 @@ namespace NLSL.SKS.Package.DataAccess.Tests
     {
         private ParcelRepository _repository;
         private PackageContext _context;
-        
+        private ILogger<ParcelRepository> _logger;
         
         [SetUp]
         public void Setup()
@@ -30,7 +35,9 @@ namespace NLSL.SKS.Package.DataAccess.Tests
             DbContextOptions<PackageContext> options = new DbContextOptions<PackageContext>();
             _context = A.Fake<PackageContext>(x=> 
                                                   x.WithArgumentsForConstructor(() => new PackageContext(options)));
-            _repository = new ParcelRepository(_context);
+            _logger = A.Fake<ILogger<ParcelRepository>>();
+            
+            _repository = new ParcelRepository(_context,_logger);
             
             A.CallTo(() => _context.Database.EnsureCreated()).Returns(true);
         }
