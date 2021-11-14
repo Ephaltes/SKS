@@ -36,5 +36,10 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         {
             Database.EnsureCreated();
         }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+           //Placeholder for future implementation
+        }
     }
 }
