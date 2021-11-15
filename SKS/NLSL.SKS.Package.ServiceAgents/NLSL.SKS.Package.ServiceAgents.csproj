@@ -5,4 +5,13 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="Nominatim.API" Version="1.6.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NLSL.SKS.Package.ServiceAgents.Interface\NLSL.SKS.Package.ServiceAgents.Interface.csproj" />
+    </ItemGroup>
+
 </Project>
