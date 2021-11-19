@@ -18,8 +18,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -75,8 +78,8 @@ namespace NLSL.SKS.Package.Services.Controllers
                 {
                     _logger.LogWarning($"TrackParcel failed trackingParcel is null");
                     
-                    return new BadRequestObjectResult(
-                        new Error { ErrorMessage = "The operation failed due to an error." });
+                    return new NotFoundObjectResult(
+                        new Error { ErrorMessage = "tracked parcel not found" });
                 }
 
                 TrackingInformation? resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
@@ -86,13 +89,28 @@ namespace NLSL.SKS.Package.Services.Controllers
                 return new OkObjectResult(resultParcel);
 
             }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
+            {
+                _logger.LogError($"TrackParcel failed with {e.Message}");
+                return new NotFoundObjectResult(new Error() {ErrorMessage = $"Parcel does not exist with this tracking ID."});
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
+            {
+                _logger.LogError($"TrackParcel failed with {e.Message}");
+                return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
+            {
+                _logger.LogError($"TrackParcel failed with {e.Message}");
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = $"The operation failed due to an error." });
+            }
             catch (Exception exception)
             {
-                
                 _logger.LogError($"TrackParcel failed with {exception.Message}");
                 
-                return new BadRequestObjectResult(
-                    new Error { ErrorMessage = "The operation failed due to an error." });
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = $"The operation failed due to an error." });
             }
            
         }

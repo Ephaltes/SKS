@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 
 using NLSL.SKS.Package.ServiceAgents.Entities;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.ServiceAgents.Interface;
 
 using Nominatim.API.Geocoders;
@@ -23,22 +24,35 @@ namespace NLSL.SKS.Package.ServiceAgents
         }
         public List<GeoCoordinates> GetGeoCoordinates(Address address)
         {
-            List<GeoCoordinates> resultList = new List<GeoCoordinates>();
+            try
+            {
+                List<GeoCoordinates> resultList = new List<GeoCoordinates>();
 
-            ForwardGeocodeRequest request = _mapper.Map<Address, ForwardGeocodeRequest>(address);
-            request.ShowGeoJSON = true;
+                ForwardGeocodeRequest request = _mapper.Map<Address, ForwardGeocodeRequest>(address);
+                request.ShowGeoJSON = true;
 
-            Task<GeocodeResponse[]>? geoCodeResponseTask = _geocoder.Geocode(request);
-            geoCodeResponseTask.Wait();
+                Task<GeocodeResponse[]>? geoCodeResponseTask = _geocoder.Geocode(request);
+                geoCodeResponseTask.Wait();
+                
+                List<GeocodeResponse>? geoCodeResponseList = geoCodeResponseTask.Result.ToList();
+                if (geoCodeResponseList.Count == 0)
+                {
+                    throw new ServiceAgentsNoDataException("No Data found in geoCodeResponseList");
+                }
+                
+                
+                geoCodeResponseList.ForEach(response =>
+                                            {
+                                                resultList.Add(_mapper.Map<GeocodeResponse, GeoCoordinates>(response));
+                                            });
 
-            List<GeocodeResponse>? geoCodeResponseList = geoCodeResponseTask.Result.ToList();
+                return resultList;
+            }
+            catch(ServiceAgentsNoDataException e)
+            {
+                throw new ServiceAgentsExceptionBase("No data found", e);
+            }
 
-            geoCodeResponseList.ForEach(response =>
-                                        {
-                                            resultList.Add(_mapper.Map<GeocodeResponse, GeoCoordinates>(response));
-                                        });
-
-            return resultList;
         }
     }
 }
