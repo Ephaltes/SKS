@@ -15,6 +15,7 @@ using FluentValidation.Results;
 
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
@@ -71,7 +72,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = ()=> _parcelLogic.Submit(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
 
         [Test]
@@ -99,7 +100,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = () => _parcelLogic.Track(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
 
         [Test]
@@ -124,7 +125,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = () => _parcelLogic.Submit(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
 
         [Test]
@@ -151,7 +152,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             
             Action act = () => _parcelLogic.Delivered(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
 
         [Test]
@@ -188,7 +189,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = () => _parcelLogic.ReportHop(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
     }
 }

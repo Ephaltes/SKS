@@ -43,14 +43,14 @@ namespace NLSL.SKS.Package.Services.Tests
             result.StatusCode.Should().Be(200);
         }
         [Test]
-        public void TrackParcel_ParcelNotFound_BadRequest()
+        public void TrackParcel_ParcelNotFound_NotFound()
         {
             ObjectResult result;
             A.CallTo(() => _parcelLogic.Track(A<TrackingId>.Ignored)).Returns(null);
 
             result = (ObjectResult)_testController.TrackParcel("ABCDEFGHI");
 
-            result.StatusCode.Should().Be(400);
+            result.StatusCode.Should().Be(404);
         }
     }
 }

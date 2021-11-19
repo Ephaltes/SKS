@@ -17,6 +17,7 @@ using FluentValidation.Results;
 
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 
@@ -68,7 +69,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = () => _warehouseLogic.Get(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
 
         [Test]
@@ -103,7 +104,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
 
             act = () => _warehouseLogic.Add(null);
 
-            act.Should().Throw<ArgumentException>();
+            act.Should().Throw<BusinessLayerExceptionBase>();
         }
     }
 }
