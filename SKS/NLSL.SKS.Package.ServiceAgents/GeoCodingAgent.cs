@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using AutoMapper;
+
+using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Exceptions;
@@ -17,9 +20,11 @@ namespace NLSL.SKS.Package.ServiceAgents
     {
         private readonly ForwardGeocoder _geocoder;
         private readonly IMapper _mapper;
-        public GeoCodingAgent(IMapper mapper)
+        private readonly ILogger<GeoCodingAgent> _logger;
+        public GeoCodingAgent(IMapper mapper, ILogger<GeoCodingAgent> logger)
         {
             _mapper = mapper;
+            _logger = logger;
             _geocoder = new ForwardGeocoder();
         }
         public List<GeoCoordinates> GetGeoCoordinates(Address address)
@@ -33,14 +38,14 @@ namespace NLSL.SKS.Package.ServiceAgents
 
                 Task<GeocodeResponse[]>? geoCodeResponseTask = _geocoder.Geocode(request);
                 geoCodeResponseTask.Wait();
-                
+
                 List<GeocodeResponse>? geoCodeResponseList = geoCodeResponseTask.Result.ToList();
                 if (geoCodeResponseList.Count == 0)
                 {
                     throw new ServiceAgentsNoDataException("No Data found in geoCodeResponseList");
                 }
-                
-                
+
+
                 geoCodeResponseList.ForEach(response =>
                                             {
                                                 resultList.Add(_mapper.Map<GeocodeResponse, GeoCoordinates>(response));
@@ -48,9 +53,17 @@ namespace NLSL.SKS.Package.ServiceAgents
 
                 return resultList;
             }
-            catch(ServiceAgentsNoDataException e)
+            catch (ServiceAgentsNoDataException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new ServiceAgentsExceptionBase("No data found", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new ServiceAgentsExceptionBase("Something went wrong", e);
             }
 
         }

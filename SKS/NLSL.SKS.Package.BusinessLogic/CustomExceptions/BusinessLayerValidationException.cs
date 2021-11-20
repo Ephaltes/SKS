@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.BusinessLogic.CustomExceptions
 {
+    [ExcludeFromCodeCoverage]
     public class BusinessLayerValidationException : Exception
     {
         public BusinessLayerValidationException() 

@@ -1,5 +1,8 @@
-﻿namespace NLSL.SKS.Package.ServiceAgents.Entities
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace NLSL.SKS.Package.ServiceAgents.Entities
 {
+    [ExcludeFromCodeCoverage]
     public class Address
     {
         public string Street { get; set; }

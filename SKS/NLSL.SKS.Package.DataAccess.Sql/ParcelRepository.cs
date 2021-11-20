@@ -31,19 +31,32 @@ namespace NLSL.SKS.Package.DataAccess.Sql
                 _context.SaveChanges();
 
                 _logger.LogDebug("create parcel complete");
+
                 return parcel.Id;
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -59,15 +72,27 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -77,22 +102,34 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             {
                 _logger.LogDebug("starting, delete parcel");
                 Parcel parcel = new()
-                                {Id = id};
+                                { Id = id };
                 _context.Parcels.Remove(parcel);
                 _context.SaveChanges();
                 _logger.LogDebug("delete parcel complete");
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e, $"{e.Message}");
+
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -122,7 +159,14 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
     }

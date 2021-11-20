@@ -65,18 +65,22 @@ namespace NLSL.SKS.Package.BusinessLogic
             }
             catch (BusinessLayerValidationException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in Validation", e);
             }
             catch (BusinessLayerDataNotFoundException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
             catch (DataAccessExceptionbase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
             }
             catch (ServiceAgentsExceptionBase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in ServiceAgents", e);
             }
         }
@@ -115,18 +119,22 @@ namespace NLSL.SKS.Package.BusinessLogic
             }
             catch (BusinessLayerValidationException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in Validation", e);
             }
             catch (BusinessLayerDataNotFoundException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
             catch (DataAccessExceptionbase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
             }
             catch (ServiceAgentsExceptionBase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in ServiceAgents", e);
             }
         }
@@ -158,18 +166,22 @@ namespace NLSL.SKS.Package.BusinessLogic
             }
             catch (BusinessLayerValidationException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in Validation", e);
             }
             catch (BusinessLayerDataNotFoundException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
             catch (DataAccessExceptionbase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
             }
             catch (ServiceAgentsExceptionBase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in ServiceAgents", e);
             }
         }
@@ -211,18 +223,22 @@ namespace NLSL.SKS.Package.BusinessLogic
             }
             catch (BusinessLayerValidationException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in Validation", e);
             }
             catch (BusinessLayerDataNotFoundException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
             catch (DataAccessExceptionbase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
             }
             catch (ServiceAgentsExceptionBase e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in ServiceAgents", e);
             }
         }

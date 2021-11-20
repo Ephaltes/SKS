@@ -69,9 +69,24 @@ namespace NLSL.SKS.Package.Services.Controllers
                     
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
             catch (Exception exception)
             {
-                _logger.LogWarning($"ReportHop failed with {exception.Message}");
+                _logger.LogWarning(exception,$"ReportHop failed with {exception.Message}");
 
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
@@ -114,23 +129,23 @@ namespace NLSL.SKS.Package.Services.Controllers
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
             {
-                _logger.LogError($"TrackParcel failed with {e.Message}");
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
                 return new NotFoundObjectResult(new Error() {ErrorMessage = $"Parcel does not exist with this tracking ID."});
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
             {
-                _logger.LogError($"TrackParcel failed with {e.Message}");
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
                 return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
             {
-                _logger.LogError($"TrackParcel failed with {e.Message}");
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = $"The operation failed due to an error." });
             }
             catch (Exception exception)
             {
-                _logger.LogError($"ExportWarehouses failed with {exception.Message}");
+                _logger.LogError(exception,$"ExportWarehouses failed with {exception.Message}");
                 
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = "The operation failed due to an error." });

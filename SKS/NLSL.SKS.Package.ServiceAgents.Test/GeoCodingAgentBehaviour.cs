@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using AutoMapper;
 
+using FakeItEasy;
+
 using FluentAssertions;
 
+using Microsoft.Extensions.Logging;
+
 using NLSL.SKS.Package.ServiceAgents.Entities;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 
 using NUnit.Framework;
 
@@ -15,6 +21,7 @@ namespace NLSL.SKS.Package.ServiceAgents.Test
     {
         private GeoCodingAgent _agent;
         private IMapper _mapper;
+        private ILogger<GeoCodingAgent> _logger;
 
         [SetUp]
         public void Setup()
@@ -25,8 +32,9 @@ namespace NLSL.SKS.Package.ServiceAgents.Test
                                                                  });
 
             _mapper = new Mapper(config);
-
-            _agent = new GeoCodingAgent(_mapper);
+            _logger = A.Fake<ILogger<GeoCodingAgent>>();
+            
+            _agent = new GeoCodingAgent(_mapper,_logger);
         }
 
         [Test]
@@ -51,15 +59,15 @@ namespace NLSL.SKS.Package.ServiceAgents.Test
         [Test]
         public void GetGeoCoordinates_Failed_NotFound()
         {
+            Action action;
             Address request = new Address
                               {
                                   Street = "asdadawdawd 21d 12d1 2d1212dadwadwa",
                               };
 
-            List<GeoCoordinates>? results = _agent.GetGeoCoordinates(request);
-            GeoCoordinates result = results.FirstOrDefault();
+            action = () => _agent.GetGeoCoordinates(request);
 
-            result.Should().BeNull();
+            action.Should().Throw<ServiceAgentsExceptionBase>();
         }
     }
 }

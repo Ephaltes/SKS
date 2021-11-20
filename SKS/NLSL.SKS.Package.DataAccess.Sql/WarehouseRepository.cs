@@ -36,15 +36,24 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -60,15 +69,24 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -87,15 +105,24 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (DbUpdateConcurrencyException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Db Concurrency error", e);
             }
             catch (DbUpdateException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("error during saving", e);
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -112,7 +139,14 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
 
@@ -129,7 +163,14 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             }
             catch (SqlException e)
             {
+                _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,$"{e.Message}");
+
+                throw new DataAccessExceptionbase("something went wrong", e);
             }
         }
     }

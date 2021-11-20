@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos
 {
+    [ExcludeFromCodeCoverage]
     public class DataAccessConnectionException : Exception
     {
         public DataAccessConnectionException() 
