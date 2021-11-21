@@ -68,7 +68,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
@@ -90,7 +90,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogDebug("get all warehouses complete");
                 return warehouseFromDb.Select(warehouse => _mapper.Map<DataAccess.Entities.Warehouse, Warehouse>(warehouse)).ToList();
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
@@ -127,7 +127,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in Validation", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);

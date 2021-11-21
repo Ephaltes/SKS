@@ -1,3 +1,5 @@
+using System;
+
 using AutoMapper;
 
 using FakeItEasy;
@@ -7,8 +9,10 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
 using NLSL.SKS.Package.Services.Controllers;
 
 using NUnit.Framework;
@@ -51,6 +55,48 @@ namespace NLSL.SKS.Package.Services.Tests
             result = (ObjectResult)_testController.TrackParcel("ABCDEFGHI");
 
             result.StatusCode.Should().Be(404);
+        }
+        
+        [Test]
+        public void TrackParcel_BadRequest_FromBusinessLayerValidationException()
+        {
+            ObjectResult result;
+            BusinessLayerExceptionBase exception = new BusinessLayerExceptionBase("test",new BusinessLayerValidationException());
+            A.CallTo(() => _parcelLogic.Track(null)).WithAnyArguments()
+                .Throws(exception);
+            
+            
+            
+            result = (ObjectResult) _testController.TrackParcel("ABCDEFGHI");
+
+            result.StatusCode.Should().Be(400);
+        }
+        
+        [Test]
+        public void TrackParcel_BadRequest_FromDataAccessException()
+        {
+            ObjectResult result;
+            BusinessLayerExceptionBase exception = new BusinessLayerExceptionBase("test",new DataAccessExceptionBase());
+            A.CallTo(() => _parcelLogic.Track(null)).WithAnyArguments()
+                .Throws(exception);
+            
+            
+            
+            result = (ObjectResult) _testController.TrackParcel("ABCDEFGHI");
+
+            result.StatusCode.Should().Be(400);
+        }
+        
+        [Test]
+        public void TrackParcel_BadRequest_FromException()
+        {
+            ObjectResult result;
+            A.CallTo(() => _parcelLogic.Track(null)).WithAnyArguments()
+                .Throws<Exception>();
+            
+            result = (ObjectResult) _testController.TrackParcel("ABCDEFGHI");
+
+            result.StatusCode.Should().Be(400);
         }
     }
 }

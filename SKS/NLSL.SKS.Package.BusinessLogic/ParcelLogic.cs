@@ -73,7 +73,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
@@ -127,7 +127,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
@@ -174,7 +174,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);
@@ -231,7 +231,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("No Data found", e);
             }
-            catch (DataAccessExceptionbase e)
+            catch (DataAccessExceptionBase e)
             {
                 _logger.LogError(e,$"{e.Message}");
                 throw new BusinessLayerExceptionBase("Error in DataAccessLayer", e);

@@ -88,7 +88,7 @@ namespace NLSL.SKS.Package.Services.Controllers
                 _logger.LogError(exception,$"TransitionParcel failed with {exception.Message}");
                 return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
             }
-            catch (BusinessLayerExceptionBase exception) when (exception.InnerException is DataAccessExceptionbase)
+            catch (BusinessLayerExceptionBase exception) when (exception.InnerException is DataAccessExceptionBase)
             {
                 _logger.LogError(exception,$"TransitionParcel failed with {exception.Message}");
                 return new BadRequestObjectResult(new Error

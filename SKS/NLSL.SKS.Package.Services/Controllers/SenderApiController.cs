@@ -84,7 +84,7 @@ namespace NLSL.SKS.Package.Services.Controllers
                 _logger.LogError(e,$"TrackParcel failed with {e.Message}");
                 return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
             }
-            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionBase)
             {
                 _logger.LogError(e,$"TrackParcel failed with {e.Message}");
                 return new BadRequestObjectResult(new Error
