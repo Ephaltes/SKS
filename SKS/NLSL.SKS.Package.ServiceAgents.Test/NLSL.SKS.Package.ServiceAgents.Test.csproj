@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj" />
+      <ProjectReference Include="..\NLSL.SKS.Package.ServiceAgents\NLSL.SKS.Package.ServiceAgents.csproj" />
     </ItemGroup>
 
 </Project>

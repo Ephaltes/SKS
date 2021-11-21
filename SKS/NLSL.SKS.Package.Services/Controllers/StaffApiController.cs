@@ -14,8 +14,10 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
 using NLSL.SKS.Package.Services.Attributes;
 
 using Swashbuckle.AspNetCore.Annotations;
@@ -67,9 +69,24 @@ namespace NLSL.SKS.Package.Services.Controllers
                     
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
+            {
+                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
+            }
             catch (Exception exception)
             {
-                _logger.LogWarning($"ReportHop failed with {exception.Message}");
+                _logger.LogWarning(exception,$"ReportHop failed with {exception.Message}");
 
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
@@ -110,13 +127,29 @@ namespace NLSL.SKS.Package.Services.Controllers
                 return new BadRequestObjectResult(new Error() { ErrorMessage = "The operation failed due to an error." });
 
             }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
+            {
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
+                return new NotFoundObjectResult(new Error() {ErrorMessage = $"Parcel does not exist with this tracking ID."});
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
+            {
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
+                return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
+            }
+            catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionbase)
+            {
+                _logger.LogError(e,$"TrackParcel failed with {e.Message}");
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = $"The operation failed due to an error." });
+            }
             catch (Exception exception)
             {
-                _logger.LogError($"ReportParcelDelivery failed with {exception.Message}");
-                return new ObjectResult(new Error() { ErrorMessage = "The operation failed due to an error." })
-                        {
-                            StatusCode = 500
-                        };
+                _logger.LogError(exception,$"ExportWarehouses failed with {exception.Message}");
+                
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = "The operation failed due to an error." });
+
             }
         }
     }

@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
-    <PackageReference Include="FluentValidation" Version="10.3.3" />
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.3" />
+    <PackageReference Include="FluentValidation" Version="10.3.4" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.3.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -15,6 +15,7 @@
     <ProjectReference Include="..\NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj" />
+    <ProjectReference Include="..\NLSL.SKS.Package.ServiceAgents\NLSL.SKS.Package.ServiceAgents.csproj" />
   </ItemGroup>
 
 </Project>

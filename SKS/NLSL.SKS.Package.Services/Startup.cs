@@ -23,6 +23,9 @@ using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.DataAccess.Sql;
+using NLSL.SKS.Package.ServiceAgents;
+using NLSL.SKS.Package.ServiceAgents.Entities;
+using NLSL.SKS.Package.ServiceAgents.Interface;
 using NLSL.SKS.Package.Services.AutoMapperProfiles;
 using NLSL.SKS.Package.Services.Filter;
 
@@ -57,6 +60,7 @@ namespace NLSL.SKS.Package.Services
             services.AddTransient<IWarehouseLogic, WarehouseLogic>();
             services.AddTransient<IWarehouseRepository, WarehouseRepository>();
             services.AddTransient<IParcelRepository, ParcelRepository>();
+            services.AddTransient<IGeoCodingAgent, GeoCodingAgent>();
 
 
             string connectionString = Configuration.GetConnectionString("Database");
