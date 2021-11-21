@@ -4,7 +4,7 @@ using NLSL.SKS.Package.ServiceAgents.Entities;
 
 using Nominatim.API.Models;
 
-namespace NLSL.SKS.Package.ServiceAgents.Test
+namespace NLSL.SKS.Package.ServiceAgents.Tests
 {
     public class MapperProfile : Profile
     {

@@ -37,7 +37,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAge
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Interface", "NLSL.SKS.Package.ServiceAgents.Interface\NLSL.SKS.Package.ServiceAgents.Interface.csproj", "{CDAFEAB6-99F7-407A-99FA-7030B83AB0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Test", "NLSL.SKS.Package.ServiceAgents.Test\NLSL.SKS.Package.ServiceAgents.Test.csproj", "{8385CB6E-B1BD-4C45-87B0-E37EBAD54864}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Tests", "NLSL.SKS.Package.ServiceAgents.Tests\NLSL.SKS.Package.ServiceAgents.Tests.csproj", "{8385CB6E-B1BD-4C45-87B0-E37EBAD54864}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Entities", "NLSL.SKS.Package.ServiceAgents.Entities\NLSL.SKS.Package.ServiceAgents.Entities.csproj", "{7C453415-EB79-4A81-9C46-47FE6E1BCB46}"
 EndProject

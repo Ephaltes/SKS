@@ -15,7 +15,7 @@ using NLSL.SKS.Package.ServiceAgents.Exceptions;
 
 using NUnit.Framework;
 
-namespace NLSL.SKS.Package.ServiceAgents.Test
+namespace NLSL.SKS.Package.ServiceAgents.Tests
 {
     public class GeoCodingAgentBehaviour
     {
