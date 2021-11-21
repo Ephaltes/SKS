@@ -59,13 +59,6 @@ namespace NLSL.SKS.Package.ServiceAgents
 
                 throw new ServiceAgentsExceptionBase("No data found", e);
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e,$"{e.Message}");
-
-                throw new ServiceAgentsExceptionBase("Something went wrong", e);
-            }
-
         }
     }
 }

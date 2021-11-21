@@ -162,12 +162,6 @@ namespace NLSL.SKS.Package.DataAccess.Sql
                 _logger.LogError(e,$"{e.Message}");
                 throw new DataAccessExceptionbase("Error during Sql Connection", e);
             }
-            catch (Exception e)
-            {
-                _logger.LogError(e,$"{e.Message}");
-
-                throw new DataAccessExceptionbase("something went wrong", e);
-            }
         }
     }
 }
