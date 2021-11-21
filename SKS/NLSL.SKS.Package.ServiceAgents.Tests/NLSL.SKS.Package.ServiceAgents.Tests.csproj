@@ -5,6 +5,8 @@
         <Nullable>enable</Nullable>
 
         <IsPackable>false</IsPackable>
+
+        <RootNamespace>NLSL.SKS.Package.ServiceAgents.Tests</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
