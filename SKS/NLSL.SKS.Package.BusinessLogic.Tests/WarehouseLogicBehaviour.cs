@@ -20,6 +20,8 @@ using Microsoft.Extensions.Logging;
 using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 
 using NUnit.Framework;
 
@@ -27,7 +29,7 @@ using ILogger = Castle.Core.Logging.ILogger;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
-    public class WarehouseManagementBehaviour
+    public class WarehouseLogicBehaviour
     {
         private IValidator<WarehouseCode> _warehouseCodeValidator;
         private WarehouseLogic _warehouseLogic;
@@ -105,6 +107,94 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             act = () => _warehouseLogic.Add(null);
 
             act.Should().Throw<BusinessLayerExceptionBase>();
+        }
+        
+        [Test]
+        public void Get_WarehouseIsNull_BusinessLayerDataNotFoundException()
+        {
+            ValidationResult validationResult = new ValidationResult();
+
+            A.CallTo(() => _warehouseCodeValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
+           A.CallTo(() => _warehouseRepository.GetWarehouseByCode(null)).WithAnyArguments().Returns(null);
+           Action act;
+
+           act = () => _warehouseLogic.Get(new WarehouseCode("ABC"));
+           
+           act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
+        }
+        
+        [Test]
+        public void Get_Throws_DataAccessExceptionBase()
+        {
+            ValidationResult validationResult = new ValidationResult();
+
+            A.CallTo(() => _warehouseCodeValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
+            A.CallTo(() => _warehouseRepository.GetWarehouseByCode(null)).WithAnyArguments().Throws<DataAccessExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.Get(new WarehouseCode("ABC"));
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void Get_Throws_ServiceAgentsExceptionBase()
+        {
+            ValidationResult validationResult = new ValidationResult();
+
+            A.CallTo(() => _warehouseCodeValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
+            A.CallTo(() => _warehouseRepository.GetWarehouseByCode(null)).WithAnyArguments().Throws<ServiceAgentsExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.Get(new WarehouseCode("ABC"));
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        [Test]
+        public void GetAll_Throws_ServiceAgentsExceptionBase()
+        {
+            A.CallTo(() => _warehouseRepository.GetAllWarehouses()).Throws<ServiceAgentsExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.GetAll();
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        [Test]
+        public void GetAll_Throws_DataAccessException()
+        {
+            A.CallTo(() => _warehouseRepository.GetAllWarehouses()).Throws<DataAccessExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.GetAll();
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void Add_Throws_ServiceException()
+        {
+            A.CallTo(() => _warehouseValidator.Validate(null)).WithAnyArguments()
+                .Throws<ServiceAgentsExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.Add(null);
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        [Test]
+        public void Add_Throws_DataAccessException()
+        {
+            A.CallTo(() => _warehouseValidator.Validate(null)).WithAnyArguments()
+                .Throws<DataAccessExceptionBase>();
+            Action act;
+
+            act = () => _warehouseLogic.Add(null);
+           
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }
     }
 }

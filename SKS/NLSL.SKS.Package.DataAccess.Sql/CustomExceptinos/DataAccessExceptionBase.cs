@@ -4,18 +4,18 @@ using System.Diagnostics.CodeAnalysis;
 namespace NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos
 {
     [ExcludeFromCodeCoverage]
-    public class DataAccessExceptionbase : Exception
+    public class DataAccessExceptionBase : Exception
     {
-        public DataAccessExceptionbase() 
+        public DataAccessExceptionBase() 
         {
         }
 
-        public DataAccessExceptionbase(string message)
+        public DataAccessExceptionBase(string message)
             : base(message)
         {
         }
 
-        public DataAccessExceptionbase(string message, Exception inner)
+        public DataAccessExceptionBase(string message, Exception inner)
             : base(message, inner)
         {
         } 

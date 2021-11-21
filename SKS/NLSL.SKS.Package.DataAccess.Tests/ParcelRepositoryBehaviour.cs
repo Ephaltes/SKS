@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -11,11 +12,13 @@ using FizzWare.NBuilder;
 
 using FluentAssertions;
 
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Sql;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
 
 using NUnit.Framework.Constraints;
 
@@ -157,5 +160,79 @@ namespace NLSL.SKS.Package.DataAccess.Tests
             
             result.Should().Be(null);
         }
+
+        [Test]
+        public void Create_Throws_DbUpdateConcurencyException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Add(null)).WithAnyArguments()
+                .Throws<DbUpdateConcurrencyException>();
+            
+            Action action = () => _repository.Create(null);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateConcurrencyException>();
+        }
+        
+        [Test]
+        public void Create_Throws_DbUpdateException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Add(null)).WithAnyArguments()
+                .Throws<DbUpdateException>();
+            
+            Action action = () => _repository.Create(null);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateException>();
+        }
+        
+        [Test]
+        public void Update_Throws_DbUpdateConcurencyException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Update(null)).WithAnyArguments()
+                .Throws<DbUpdateConcurrencyException>();
+            
+            Action action = () => _repository.Update(null);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateConcurrencyException>();
+        }
+        
+        [Test]
+        public void Update_Throws_DbUpdateException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Update(null)).WithAnyArguments()
+                .Throws<DbUpdateException>();
+            
+            Action action = () => _repository.Update(null);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateException>();
+        }
+        
+        [Test]
+        public void Delete_Throws_DbUpdateConcurencyException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Remove(null)).WithAnyArguments()
+                .Throws<DbUpdateConcurrencyException>();
+            
+            Action action = () => _repository.Delete(1);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateConcurrencyException>();
+        }
+        
+        [Test]
+        public void Delete_Throws_DbUpdateException()
+        {
+            A.CallTo(() => _context.Parcels).Returns(DbContextMock.GetQueryableMockDbSet(new List<Parcel>()));
+            A.CallTo(() => _context.Parcels.Remove(null)).WithAnyArguments()
+                .Throws<DbUpdateException>();
+            
+            Action action = () => _repository.Delete(1);
+            
+            action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateException>();
+        }
+        
+       
     }
 }

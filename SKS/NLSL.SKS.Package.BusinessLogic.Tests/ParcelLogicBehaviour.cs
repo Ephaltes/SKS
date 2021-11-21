@@ -19,6 +19,8 @@ using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 
 using NUnit.Framework;
 using NUnit.Framework.Constraints;
@@ -27,11 +29,11 @@ using Parcel = NLSL.SKS.Package.BusinessLogic.Entities.Parcel;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
-    public class ParcelManagementBehaviour
+    public class ParcelLogicBehaviour
     {
         private ParcelLogic _parcelLogic;
         private IValidator<Parcel> _parcelValidator;
-        private IValidator<ReportHop> _reportHop;
+        private IValidator<ReportHop> _reportHopValidator;
         private IValidator<TrackingId> _trackingIdValidator;
         private IMapper _mapper;
         private IParcelRepository _parcelRepository;
@@ -41,12 +43,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         {
             _parcelValidator = A.Fake<IValidator<Parcel>>();
             _trackingIdValidator = A.Fake<IValidator<TrackingId>>();
-            _reportHop = A.Fake<IValidator<ReportHop>>();
+            _reportHopValidator = A.Fake<IValidator<ReportHop>>();
 
             _parcelRepository = A.Fake<IParcelRepository>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelLogic>>();
-            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHop,_parcelRepository,_mapper,_logger);
+            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHopValidator,_parcelRepository,_mapper,_logger);
         }
 
         [Test]
@@ -160,7 +162,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         {
             ValidationResult validationResult = new ValidationResult();
 
-            A.CallTo(() => _reportHop.Validate(null)).WithAnyArguments().Returns(validationResult);
+            A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
             A.CallTo(() => _parcelRepository.GetParcelByTrackingId(null)).WithAnyArguments().Returns(new Package.DataAccess.Entities.Parcel()
                                                                                                      {
                                                                                                          FutureHops = new()
@@ -185,11 +187,144 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             IReadOnlyCollection<ValidationFailure> validationFailures = Builder<ValidationFailure>.CreateListOfSize(2).Build().ToList();
             ValidationResult validationResult = new ValidationResult(validationFailures);
             Action act;
-            A.CallTo(() => _reportHop.Validate(null)).WithAnyArguments().Returns(validationResult);
+            A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
             act = () => _parcelLogic.ReportHop(null);
 
             act.Should().Throw<BusinessLayerExceptionBase>();
+        }
+
+        [Test]
+        public void Track_Throws_BusinessLayerDataNotfoundException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<BusinessLayerDataNotFoundException>();
+
+            Action act = () => _parcelLogic.Track(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
+        }
+        
+        [Test]
+        public void Track_Throws_DataAccessException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<DataAccessExceptionBase>();
+
+            Action act = () => _parcelLogic.Track(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void Track_Throws_ServiceAgentException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<ServiceAgentsExceptionBase>();
+
+            Action act = () => _parcelLogic.Track(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        [Test]
+        public void Submit_Throws_BusinessLayerDataNotfoundException()
+        {
+            A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments()
+                .Throws<BusinessLayerDataNotFoundException>();
+
+            Action act = () => _parcelLogic.Submit(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
+        }
+        
+        [Test]
+        public void Submit_Throws_DataAccessException()
+        {
+            A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments()
+                .Throws<DataAccessExceptionBase>();
+
+            Action act = () => _parcelLogic.Submit(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void Submit_Throws_ServiceAgentException()
+        {
+            A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments()
+                .Throws<ServiceAgentsExceptionBase>();
+
+            Action act = () => _parcelLogic.Submit(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        
+        [Test]
+        public void Delivered_Throws_BusinessLayerDataNotfoundException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<BusinessLayerDataNotFoundException>();
+
+            Action act = () => _parcelLogic.Delivered(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
+        }
+        
+        [Test]
+        public void Delivered_Throws_DataAccessException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<DataAccessExceptionBase>();
+
+            Action act = () => _parcelLogic.Delivered(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void Delivered_Throws_ServiceAgentException()
+        {
+            A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments()
+                .Throws<ServiceAgentsExceptionBase>();
+
+            Action act = () => _parcelLogic.Delivered(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
+        }
+        
+        [Test]
+        public void ReportHop_Throws_BusinessLayerDataNotfoundException()
+        {
+            A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments()
+                .Throws<BusinessLayerDataNotFoundException>();
+
+            Action act = () => _parcelLogic.ReportHop(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
+        }
+        
+        [Test]
+        public void ReportHop_Throws_DataAccessException()
+        {
+            A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments()
+                .Throws<DataAccessExceptionBase>();
+
+            Action act = () => _parcelLogic.ReportHop(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
+        }
+        
+        [Test]
+        public void ReportHop_Throws_ServiceAgentException()
+        {
+            A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments()
+                .Throws<ServiceAgentsExceptionBase>();
+
+            Action act = () => _parcelLogic.ReportHop(null);
+            
+            act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
     }
 }
