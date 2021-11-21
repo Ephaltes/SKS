@@ -16,7 +16,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
+using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.Services.Attributes;
 using NLSL.SKS.Package.Services.DTOs;
 
@@ -68,21 +71,32 @@ namespace NLSL.SKS.Package.Services.Controllers
                 {
                     _logger.LogWarning($"TransitionParcel failed transitionResult is null");
 
-                    
+
                     return new BadRequestObjectResult(new Error
-                                                      { ErrorMessage = "The operation failed due to an error." });
+                                                      {ErrorMessage = "The operation failed due to an error."});
                 }
-                   
+
 
                 NewParcelInfo? newParcel = _mapper.Map<BusinessLogic.Entities.Parcel, NewParcelInfo>(transitionResult);
 
-                
+
                 _logger.LogDebug("TransitionParcel successful");
                 return new OkObjectResult(newParcel);
             }
+            catch (BusinessLayerExceptionBase exception) when (exception.InnerException is BusinessLayerValidationException)
+            {
+                _logger.LogError(exception,$"TransitionParcel failed with {exception.Message}");
+                return new BadRequestObjectResult(new Error() {ErrorMessage = $"The operation failed due to an error."});
+            }
+            catch (BusinessLayerExceptionBase exception) when (exception.InnerException is DataAccessExceptionbase)
+            {
+                _logger.LogError(exception,$"TransitionParcel failed with {exception.Message}");
+                return new BadRequestObjectResult(new Error
+                                                  { ErrorMessage = $"The operation failed due to an error." });
+            }
             catch (Exception exception)
             {
-                _logger.LogError($"TransitionParcel failed with {exception.Message}");
+                _logger.LogError(exception,$"TransitionParcel failed with {exception.Message}");
                 
                 return new BadRequestObjectResult(new Error
                                                   { ErrorMessage = $"The operation failed due to an error." });

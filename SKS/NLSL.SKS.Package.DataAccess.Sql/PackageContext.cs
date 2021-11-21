@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,7 @@ using NLSL.SKS.Package.DataAccess.Entities;
 
 namespace NLSL.SKS.Package.DataAccess.Sql
 {
+    [ExcludeFromCodeCoverage]
     public class PackageContext : DbContext
     {
         public virtual DbSet<Parcel> Parcels
