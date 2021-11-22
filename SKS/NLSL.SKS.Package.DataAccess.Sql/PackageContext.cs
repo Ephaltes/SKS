@@ -41,7 +41,8 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-           //Placeholder for future implementation
+            //placeholder
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

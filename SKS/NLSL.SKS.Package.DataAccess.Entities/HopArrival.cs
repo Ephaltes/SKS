@@ -9,6 +9,8 @@
  */
 
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Diagnostics.CodeAnalysis;
@@ -57,6 +59,19 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// </summary>
         /// <value>The date/time the parcel arrived at the hop.</value>
         public DateTime? DateTime
+        {
+            get;
+            set;
+        }
+
+        [InverseProperty("FutureHops")]
+        public virtual ICollection<Parcel> FutureHopsParcel
+        {
+            get;
+            set;
+        }
+        [InverseProperty("VisitedHops")]
+        public virtual ICollection<Parcel> VisitedHopsParcel
         {
             get;
             set;
