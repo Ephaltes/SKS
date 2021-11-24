@@ -185,7 +185,7 @@ namespace NLSL.SKS.Package.Services.Controllers
                 
                 BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
 
-                bool wasAdded = _warehouseLogic.Add(eWarehouse);
+                bool wasAdded = _warehouseLogic.ReplaceHierarchy(eWarehouse);
 
                 if (wasAdded)
                     return new OkResult();

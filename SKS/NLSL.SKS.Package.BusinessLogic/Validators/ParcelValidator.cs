@@ -20,8 +20,9 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
             RuleFor(p => p.FutureHops).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.State).NotNull().WithMessage("{PropertyName} was null");
 
-            RuleFor(p => p.TrackingId).NotNull().WithMessage("{PropertyName} was null")
-                .Matches("^[A-Z0-9]{9}$").WithMessage("{PropertyName} does not Match ^[A-Z0-9]{9}$ Regex");
+            RuleFor(p => p.TrackingId).Matches("^[A-Z0-9]{9}$")
+                .When(x=> !string.IsNullOrEmpty(x.TrackingId))
+                .WithMessage("{PropertyName} does not Match ^[A-Z0-9]{9}$ Regex");
             RuleFor(p => p.Weight).NotNull().WithMessage("{PropertyName} was null")
                 .GreaterThan(0.0f).WithMessage("{PropertyName} is to light");
         }

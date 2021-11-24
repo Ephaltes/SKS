@@ -39,7 +39,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Recipient
         /// </summary>
-        public Recipient Recipient
+        public virtual Recipient Recipient
         {
             get;
             set;
@@ -48,7 +48,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Sender
         /// </summary>
-        public Recipient Sender
+        public virtual Recipient Sender
         {
             get;
             set;
@@ -67,7 +67,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// Hops visited in the past.
         /// </summary>
         /// <value>Hops visited in the past.</value>
-        public List<HopArrival> VisitedHops
+        public virtual List<HopArrival> VisitedHops
         {
             get;
             set;
@@ -77,7 +77,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// Hops coming up in the future - their times are estimations.
         /// </summary>
         /// <value>Hops coming up in the future - their times are estimations.</value>
-        public List<HopArrival> FutureHops
+        public virtual List<HopArrival> FutureHops
         {
             get;
             set;

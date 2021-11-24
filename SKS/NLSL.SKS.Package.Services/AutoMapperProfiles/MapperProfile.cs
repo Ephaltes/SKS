@@ -2,7 +2,11 @@
 
 using AutoMapper;
 
+using NetTopologySuite.Geometries;
+
+using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.ServiceAgents.Entities;
+using NLSL.SKS.Package.Services.Converter;
 
 using Nominatim.API.Models;
 
@@ -21,19 +25,36 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             
             CreateMap<DTOs.NewParcelInfo, BusinessLogic.Entities.Parcel>();
             CreateMap<BusinessLogic.Entities.Parcel, DTOs.NewParcelInfo>();
+
+            CreateMap<DTOs.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>()
+                .ForMember(p => p.RegionGeometry,
+                p => p.ConvertUsing<GeometryConverter, string>(p => p.RegionGeoJson));
+            CreateMap<BusinessLogic.Entities.TransferWarehouse, DTOs.Transferwarehouse>()
+                .ForMember(p => p.RegionGeoJson,
+                p => p.ConvertUsing<GeometryConverter, Geometry>(p => p.RegionGeometry));
             
-            CreateMap<DTOs.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>();
-            CreateMap<BusinessLogic.Entities.TransferWarehouse, DTOs.Transferwarehouse>();
-            
-            CreateMap<DTOs.Truck, BusinessLogic.Entities.Truck>();
-            CreateMap<BusinessLogic.Entities.Truck, DTOs.Truck>();
+            CreateMap<DTOs.Truck, BusinessLogic.Entities.Truck>()
+                .ForMember(p => p.RegionGeometry,
+                p => p.ConvertUsing<GeometryConverter, string>(p => p.RegionGeoJson));
+            CreateMap<BusinessLogic.Entities.Truck, DTOs.Truck>()
+                .ForMember(p => p.RegionGeoJson,
+                p => p.ConvertUsing<GeometryConverter, Geometry>(p => p.RegionGeometry));
 
             CreateMap<DTOs.Warehouse, BusinessLogic.Entities.Warehouse>();
             CreateMap<BusinessLogic.Entities.Warehouse, DTOs.Warehouse>();
             
-            CreateMap<DTOs.GeoCoordinate, BusinessLogic.Entities.GeoCoordinate>();
-            CreateMap<BusinessLogic.Entities.GeoCoordinate, DTOs.GeoCoordinate>();
+            CreateMap<DTOs.GeoCoordinate, BusinessLogic.Entities.GeoCoordinate>()
+                .ForMember(dest => dest.Location,
+                    opt => 
+                        opt.MapFrom(src => new Point(src.Lon.Value, src.Lat.Value){SRID = 4326}));
             
+            CreateMap<BusinessLogic.Entities.GeoCoordinate, DTOs.GeoCoordinate>()
+                .ForMember(dest => dest.Lat,
+                    opt => 
+                        opt.MapFrom(src => src.Location.Y))
+                .ForMember(dest => dest.Lon,
+                    opt => 
+                        opt.MapFrom(src => src.Location.X));
             
             CreateMap<DTOs.Recipient, BusinessLogic.Entities.Recipient>();
             CreateMap<BusinessLogic.Entities.Recipient, DTOs.Recipient>();
@@ -53,10 +74,10 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             
             
             // BL to DAL
-            
-            CreateMap<BusinessLogic.Entities.GeoCoordinate,Package.DataAccess.Entities.GeoCoordinate>();
+
+            CreateMap<BusinessLogic.Entities.GeoCoordinate, Package.DataAccess.Entities.GeoCoordinate>();
             CreateMap<Package.DataAccess.Entities.GeoCoordinate, BusinessLogic.Entities.GeoCoordinate>();
-            
+               
             
             CreateMap<BusinessLogic.Entities.HopArrival, Package.DataAccess.Entities.HopArrival>();
             CreateMap<Package.DataAccess.Entities.HopArrival,BusinessLogic.Entities.HopArrival>();
@@ -66,7 +87,7 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             
             CreateMap<BusinessLogic.Entities.Recipient, Package.DataAccess.Entities.Recipient>();
             CreateMap<Package.DataAccess.Entities.Recipient,BusinessLogic.Entities.Recipient>();
-            
+
             CreateMap<BusinessLogic.Entities.Warehouse, Package.DataAccess.Entities.Warehouse>();
             CreateMap<Package.DataAccess.Entities.Warehouse, BusinessLogic.Entities.Warehouse>();
             
@@ -74,11 +95,13 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             CreateMap<Package.DataAccess.Entities.WarehouseNextHops, BusinessLogic.Entities.WarehouseNextHops>();
 
             CreateMap<BusinessLogic.Entities.Truck, DataAccess.Entities.Truck>();
+
             CreateMap<DataAccess.Entities.Truck, BusinessLogic.Entities.Truck>();
-            
+
+
             CreateMap<BusinessLogic.Entities.TransferWarehouse, DataAccess.Entities.Transferwarehouse>();
             CreateMap<DataAccess.Entities.Transferwarehouse, BusinessLogic.Entities.TransferWarehouse>();
-            
+
             CreateMap<BusinessLogic.Entities.Hop, Package.DataAccess.Entities.Hop>()
                 .Include<BusinessLogic.Entities.Truck,DataAccess.Entities.Truck>()
                 .Include<BusinessLogic.Entities.Warehouse,DataAccess.Entities.Warehouse>()
@@ -98,12 +121,15 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
                         src => src.Street))
                 .ForMember(dest => dest.PostalCode,
                     opt => opt.MapFrom(
-                        src => src.ZipCode));
+                        src => src.PostalCode));
             
             CreateMap<GeocodeResponse, GeoCoordinates>()
                 .ForMember(dest => dest.Address,
                     opt => opt.MapFrom(
                         src => src.DisplayName));
+
+            CreateMap<BusinessLogic.Entities.Recipient, Address>();
+            CreateMap<Address, BusinessLogic.Entities.Recipient>();
 
         }
     }

@@ -91,7 +91,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             A.CallTo(_mapper).Where(call => call.Method.Name == "Map").WithNonVoidReturnType().Returns(new Package.DataAccess.Entities.Warehouse());
             A.CallTo(() => _warehouseRepository.Create(null)).WithAnyArguments().Returns("A");
 
-            bool result = _warehouseLogic.Add(Builder<Warehouse>.CreateNew().Build());
+            bool result = _warehouseLogic.ReplaceHierarchy(Builder<Warehouse>.CreateNew().Build());
             
             result.Should().BeTrue();
         }
@@ -104,7 +104,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             Action act;
             A.CallTo(() => _warehouseValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            act = () => _warehouseLogic.Add(null);
+            act = () => _warehouseLogic.ReplaceHierarchy(null);
 
             act.Should().Throw<BusinessLayerExceptionBase>();
         }
@@ -180,7 +180,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<ServiceAgentsExceptionBase>();
             Action act;
 
-            act = () => _warehouseLogic.Add(null);
+            act = () => _warehouseLogic.ReplaceHierarchy(null);
            
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
@@ -192,7 +192,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<DataAccessExceptionBase>();
             Action act;
 
-            act = () => _warehouseLogic.Add(null);
+            act = () => _warehouseLogic.ReplaceHierarchy(null);
            
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using NetTopologySuite.Geometries;
+
 using NLSL.SKS.Package.DataAccess.Entities;
 
 namespace NLSL.SKS.Package.DataAccess.Interfaces
@@ -13,5 +15,13 @@ namespace NLSL.SKS.Package.DataAccess.Interfaces
         //Gets
         public IReadOnlyCollection<Warehouse> GetAllWarehouses();
         public Warehouse? GetWarehouseByCode(string code);
+        
+        public void DeleteHierarchy();
+        
+        public Warehouse? GetRootWarehouse();
+
+        public Hop? GetHopForPoint(Point point);
+
+        public Warehouse? GetParentOfHopByCode(string code);
     }
 }

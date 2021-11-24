@@ -73,7 +73,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets LocationCoordinates
         /// </summary>
-        public GeoCoordinate LocationCoordinates
+        public virtual GeoCoordinate LocationCoordinates
         {
             get;
             set;

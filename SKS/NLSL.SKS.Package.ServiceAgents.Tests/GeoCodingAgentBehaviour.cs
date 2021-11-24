@@ -43,11 +43,11 @@ namespace NLSL.SKS.Package.ServiceAgents.Tests
             Address request = new Address
                               {
                                   Street = "Höchstädtplatz 6",
-                                  ZipCode = "1200",
+                                  PostalCode = "1200",
                                   Country = "Austria"
                               };
 
-            List<GeoCoordinates>? results = _agent.GetGeoCoordinates(request);
+            IReadOnlyCollection<GeoCoordinates>? results = _agent.GetGeoCoordinates(request);
             GeoCoordinates result = results.FirstOrDefault();
 
             result.Should().NotBeNull();

@@ -11,5 +11,7 @@ namespace NLSL.SKS.Package.DataAccess.Interfaces
         
         //Gets
         public Parcel? GetParcelByTrackingId(string trackingId);
+
+        public string GenerateTrackingId();
     }
 }

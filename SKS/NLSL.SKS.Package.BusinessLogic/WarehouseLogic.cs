@@ -102,7 +102,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             }
         }
 
-        public bool Add(Warehouse warehouse)
+        public bool ReplaceHierarchy(Warehouse warehouse)
         {
             try
             {
@@ -117,6 +117,7 @@ namespace NLSL.SKS.Package.BusinessLogic
                 }
 
                 DataAccess.Entities.Warehouse mappedWarehouse = _mapper.Map<Warehouse, DataAccess.Entities.Warehouse>(warehouse);
+                _warehouseRepository.DeleteHierarchy();
                 string warehouseCode = _warehouseRepository.Create(mappedWarehouse);
 
                 _logger.LogDebug("add warehouse complete");

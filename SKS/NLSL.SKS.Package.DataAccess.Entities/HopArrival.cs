@@ -38,7 +38,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
             set;
         }
         [ForeignKey("Code")]
-        public Warehouse Warehouse
+        public virtual Warehouse Warehouse
         {
             get;
             set;

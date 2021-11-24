@@ -10,6 +10,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+using NetTopologySuite.Geometries;
+
 namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
@@ -21,7 +23,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// GeoJSON of the are covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
-        public string RegionGeoJson
+        public Geometry RegionGeometry
         {
             get;
             set;

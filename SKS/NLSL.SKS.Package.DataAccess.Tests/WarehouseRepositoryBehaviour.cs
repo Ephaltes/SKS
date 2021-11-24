@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.DataAccess.Sql.Extensions;
 
 using NUnit.Framework;
 
@@ -212,5 +213,6 @@ namespace NLSL.SKS.Package.DataAccess.Tests
             
             action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateException>();
         }
+        
     }
 }

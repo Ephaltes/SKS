@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -34,6 +35,12 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             set;
         }
         
+        public virtual DbSet<WarehouseNextHops> WarehouseNextHops
+        {
+            get;
+            set;
+        }
+        
         public PackageContext(DbContextOptions<PackageContext> options) : base(options)
         {
             Database.EnsureCreated();
@@ -42,7 +49,7 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //placeholder
-            base.OnModelCreating(modelBuilder);
+          base.OnModelCreating(modelBuilder);
         }
     }
 }

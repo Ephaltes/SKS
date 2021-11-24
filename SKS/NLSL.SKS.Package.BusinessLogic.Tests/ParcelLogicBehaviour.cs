@@ -20,45 +20,66 @@ using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Exceptions;
+using NLSL.SKS.Package.ServiceAgents.Interface;
 
 using NUnit.Framework;
-using NUnit.Framework.Constraints;
 
+using GeoCoordinate = NLSL.SKS.Package.DataAccess.Entities.GeoCoordinate;
+using HopArrival = NLSL.SKS.Package.DataAccess.Entities.HopArrival;
 using Parcel = NLSL.SKS.Package.BusinessLogic.Entities.Parcel;
 
 namespace NLSL.SKS.Package.BusinessLogic.Tests
 {
     public class ParcelLogicBehaviour
     {
+        private IGeoCodingAgent _geoCodingAgent;
+        private ILogger<ParcelLogic> _logger;
+        private IMapper _mapper;
         private ParcelLogic _parcelLogic;
+        private IParcelRepository _parcelRepository;
         private IValidator<Parcel> _parcelValidator;
         private IValidator<ReportHop> _reportHopValidator;
         private IValidator<TrackingId> _trackingIdValidator;
-        private IMapper _mapper;
-        private IParcelRepository _parcelRepository;
-        private ILogger<ParcelLogic> _logger;
+        private IWarehouseRepository _warehouseRepository;
         [SetUp]
         public void Setup()
         {
             _parcelValidator = A.Fake<IValidator<Parcel>>();
             _trackingIdValidator = A.Fake<IValidator<TrackingId>>();
             _reportHopValidator = A.Fake<IValidator<ReportHop>>();
+            _warehouseRepository = A.Fake<IWarehouseRepository>();
+            _geoCodingAgent = A.Fake<IGeoCodingAgent>();
 
             _parcelRepository = A.Fake<IParcelRepository>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelLogic>>();
-            _parcelLogic = new ParcelLogic(_parcelValidator, _trackingIdValidator, _reportHopValidator,_parcelRepository,_mapper,_logger);
+            _parcelLogic = new ParcelLogic(_parcelValidator,
+                _trackingIdValidator,
+                _reportHopValidator,
+                _parcelRepository,
+                _mapper,
+                _logger,
+                _geoCodingAgent,
+                _warehouseRepository);
         }
 
         [Test]
         public void Transition_ValidParcel_ReturnsParcel()
         {
+            IReadOnlyCollection<GeoCoordinates> geoCoordinateList = Builder<GeoCoordinates>.CreateListOfSize(2).Build().ToList();
+
             ValidationResult validationResult = new ValidationResult();
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
+            A.CallTo(() => _geoCodingAgent.GetGeoCoordinates(null)).WithAnyArguments().Returns(geoCoordinateList);
+            A.CallTo(() => _warehouseRepository.GetHopForPoint(null)).WithAnyArguments()
+                .Returns(new DataAccess.Entities.Truck());
+            A.CallTo(() => _warehouseRepository.GetParentOfHopByCode(null)).WithAnyArguments()
+                .Returns(new DataAccess.Entities.Warehouse(){Code = "123123123"});
 
-            Parcel? result = _parcelLogic.Submit(null);
+            Parcel? result = _parcelLogic.Submit(new Parcel());
 
             result.Should().NotBeNull();
         }
@@ -69,10 +90,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             IReadOnlyCollection<ValidationFailure> validationFailures = Builder<ValidationFailure>.CreateListOfSize(2).Build().ToList();
             ValidationResult validationResult = new ValidationResult(validationFailures);
             Action act;
-            
+
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
 
-            act = ()=> _parcelLogic.Submit(null);
+            act = () => _parcelLogic.Submit(null);
 
             act.Should().Throw<BusinessLayerExceptionBase>();
         }
@@ -108,11 +129,18 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void Submit_ValidParcel_ReturnsParcel()
         {
+            IReadOnlyCollection<GeoCoordinates> geoCoordinateList = Builder<GeoCoordinates>.CreateListOfSize(2).Build().ToList();
+
             ValidationResult validationResult = new ValidationResult();
 
             A.CallTo(() => _parcelValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
-
-            Parcel? result = _parcelLogic.Submit(null);
+            A.CallTo(() => _geoCodingAgent.GetGeoCoordinates(null)).WithAnyArguments().Returns(geoCoordinateList);
+            A.CallTo(() => _warehouseRepository.GetHopForPoint(null)).WithAnyArguments()
+                .Returns(new DataAccess.Entities.Truck());
+            A.CallTo(() => _warehouseRepository.GetParentOfHopByCode(null)).WithAnyArguments()
+                .Returns(new DataAccess.Entities.Warehouse(){Code = "123123123"});
+            
+            Parcel? result = _parcelLogic.Submit(new Parcel());
 
             result.Should().NotBeNull();
         }
@@ -134,11 +162,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         public void Delivered_ValidTrackingId_ReturnsTrue()
         {
             ValidationResult validationResult = new ValidationResult();
-            
+
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
-            A.CallTo(() => _parcelRepository.GetParcelByTrackingId(null)).WithAnyArguments().Returns(new Package.DataAccess.Entities.Parcel(){FutureHops = new()});
-            
-            
+            A.CallTo(() => _parcelRepository.GetParcelByTrackingId(null)).WithAnyArguments().Returns(new DataAccess.Entities.Parcel
+                                                                                                     { FutureHops = new() });
+
+
             bool? result = _parcelLogic.Delivered(new TrackingId("ABCABC123"));
 
             result.Should().BeTrue();
@@ -151,7 +180,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             ValidationResult validationResult = new ValidationResult(validationFailures);
 
             A.CallTo(() => _trackingIdValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
-            
+
             Action act = () => _parcelLogic.Delivered(null);
 
             act.Should().Throw<BusinessLayerExceptionBase>();
@@ -163,20 +192,21 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             ValidationResult validationResult = new ValidationResult();
 
             A.CallTo(() => _reportHopValidator.Validate(null)).WithAnyArguments().Returns(validationResult);
-            A.CallTo(() => _parcelRepository.GetParcelByTrackingId(null)).WithAnyArguments().Returns(new Package.DataAccess.Entities.Parcel()
+            A.CallTo(() => _parcelRepository.GetParcelByTrackingId(null)).WithAnyArguments().Returns(new DataAccess.Entities.Parcel
                                                                                                      {
                                                                                                          FutureHops = new()
                                                                                                                       {
-                                                                                                                          new Package.DataAccess.Entities.HopArrival()
+                                                                                                                          new HopArrival
                                                                                                                           {
-                                                                                                                              Code="Warehouse123"
+                                                                                                                              Code = "Warehouse123"
                                                                                                                           }
                                                                                                                       },
                                                                                                          VisitedHops = new(),
-                                                                                                         TrackingId = "ABCABC123",
+                                                                                                         TrackingId = "ABCABC123"
                                                                                                      });
-            
-            bool result = _parcelLogic.ReportHop(new ReportHop(){TrackingId = new TrackingId("ABCABC123"),HopCode = "Warehouse123"});
+
+            bool result = _parcelLogic.ReportHop(new ReportHop
+                                                 { TrackingId = new TrackingId("ABCABC123"), HopCode = "Warehouse123" });
 
             result.Should().BeTrue();
         }
@@ -201,10 +231,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<BusinessLayerDataNotFoundException>();
 
             Action act = () => _parcelLogic.Track(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
         }
-        
+
         [Test]
         public void Track_Throws_DataAccessException()
         {
@@ -212,10 +242,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<DataAccessExceptionBase>();
 
             Action act = () => _parcelLogic.Track(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }
-        
+
         [Test]
         public void Track_Throws_ServiceAgentException()
         {
@@ -223,10 +253,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<ServiceAgentsExceptionBase>();
 
             Action act = () => _parcelLogic.Track(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
-        
+
         [Test]
         public void Submit_Throws_BusinessLayerDataNotfoundException()
         {
@@ -234,10 +264,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<BusinessLayerDataNotFoundException>();
 
             Action act = () => _parcelLogic.Submit(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
         }
-        
+
         [Test]
         public void Submit_Throws_DataAccessException()
         {
@@ -245,10 +275,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<DataAccessExceptionBase>();
 
             Action act = () => _parcelLogic.Submit(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }
-        
+
         [Test]
         public void Submit_Throws_ServiceAgentException()
         {
@@ -256,11 +286,11 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<ServiceAgentsExceptionBase>();
 
             Action act = () => _parcelLogic.Submit(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
-        
-        
+
+
         [Test]
         public void Delivered_Throws_BusinessLayerDataNotfoundException()
         {
@@ -268,10 +298,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<BusinessLayerDataNotFoundException>();
 
             Action act = () => _parcelLogic.Delivered(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
         }
-        
+
         [Test]
         public void Delivered_Throws_DataAccessException()
         {
@@ -279,10 +309,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<DataAccessExceptionBase>();
 
             Action act = () => _parcelLogic.Delivered(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }
-        
+
         [Test]
         public void Delivered_Throws_ServiceAgentException()
         {
@@ -290,10 +320,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<ServiceAgentsExceptionBase>();
 
             Action act = () => _parcelLogic.Delivered(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
-        
+
         [Test]
         public void ReportHop_Throws_BusinessLayerDataNotfoundException()
         {
@@ -301,10 +331,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<BusinessLayerDataNotFoundException>();
 
             Action act = () => _parcelLogic.ReportHop(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<BusinessLayerDataNotFoundException>();
         }
-        
+
         [Test]
         public void ReportHop_Throws_DataAccessException()
         {
@@ -312,10 +342,10 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<DataAccessExceptionBase>();
 
             Action act = () => _parcelLogic.ReportHop(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<DataAccessExceptionBase>();
         }
-        
+
         [Test]
         public void ReportHop_Throws_ServiceAgentException()
         {
@@ -323,7 +353,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 .Throws<ServiceAgentsExceptionBase>();
 
             Action act = () => _parcelLogic.ReportHop(null);
-            
+
             act.Should().Throw<BusinessLayerExceptionBase>().WithInnerException<ServiceAgentsExceptionBase>();
         }
     }

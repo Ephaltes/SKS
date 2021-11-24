@@ -8,6 +8,6 @@ namespace NLSL.SKS.Package.BusinessLogic.Interfaces
     {
         public Warehouse? Get(WarehouseCode warehouseCode);
         public IReadOnlyCollection<Warehouse> GetAll();
-        public bool Add(Warehouse warehouse);
+        public bool ReplaceHierarchy(Warehouse warehouse);
     }
 }

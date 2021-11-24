@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-
-using AutoMapper;
 
 using FluentValidation;
 
@@ -15,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
+using NetTopologySuite.IO.Converters;
+
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
@@ -24,9 +23,7 @@ using NLSL.SKS.Package.BusinessLogic.Validators;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.ServiceAgents;
-using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Interface;
-using NLSL.SKS.Package.Services.AutoMapperProfiles;
 using NLSL.SKS.Package.Services.Filter;
 
 namespace NLSL.SKS.Package.Services
@@ -51,6 +48,7 @@ namespace NLSL.SKS.Package.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -65,7 +63,10 @@ namespace NLSL.SKS.Package.Services
 
             string connectionString = Configuration.GetConnectionString("Database");
             services.AddDbContext<PackageContext>(options =>
-                                                      options.UseSqlServer(connectionString));
+                                                      options
+                                                          .UseLazyLoadingProxies()
+                                                          .UseSqlServer(connectionString,
+                                                              x => x.UseNetTopologySuite()));
 
 
             services

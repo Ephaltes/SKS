@@ -31,7 +31,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// Next hops after this warehouse (warehouses or trucks).
         /// </summary>
         /// <value>Next hops after this warehouse (warehouses or trucks).</value>
-        public List<WarehouseNextHops> NextHops
+        public virtual List<WarehouseNextHops> NextHops
         {
             get;
             set;

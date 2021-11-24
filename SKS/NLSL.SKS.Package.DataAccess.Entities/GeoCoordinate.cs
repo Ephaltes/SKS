@@ -10,6 +10,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
+using NetTopologySuite.Geometries;
+
 namespace NLSL.SKS.Package.DataAccess.Entities
 {
     /// <summary>
@@ -23,24 +25,11 @@ namespace NLSL.SKS.Package.DataAccess.Entities
             set;
         }
         
-        /// <summary>
-        /// Latitude of the coordinate.
-        /// </summary>
-        /// <value>Latitude of the coordinate.</value>
-        public double Lat
+       public Point Location
         {
             get;
             set;
         }
-
-        /// <summary>
-        /// Longitude of the coordinate.
-        /// </summary>
-        /// <value>Longitude of the coordinate.</value>
-        public double Lon
-        {
-            get;
-            set;
-        }
+        
     }
 }

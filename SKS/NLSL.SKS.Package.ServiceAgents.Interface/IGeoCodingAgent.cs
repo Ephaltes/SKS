@@ -6,6 +6,6 @@ namespace NLSL.SKS.Package.ServiceAgents.Interface
 {
     public interface IGeoCodingAgent
     {
-        List<GeoCoordinates> GetGeoCoordinates(Address address);
+        IReadOnlyCollection<GeoCoordinates> GetGeoCoordinates(Address address);
     }
 }
