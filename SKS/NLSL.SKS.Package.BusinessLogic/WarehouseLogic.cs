@@ -3,6 +3,8 @@ using System.Linq;
 
 using AutoMapper;
 
+using Castle.DynamicProxy.Generators.Emitters.SimpleAST;
+
 using FluentValidation;
 using FluentValidation.Results;
 
@@ -34,7 +36,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             _logger = logger;
         }
 
-        public Warehouse? Get(WarehouseCode warehouseCode)
+        public Hop? Get(WarehouseCode warehouseCode)
         {
             try
             {
@@ -48,15 +50,26 @@ namespace NLSL.SKS.Package.BusinessLogic
                     throw new BusinessLayerValidationException(result.Errors.First().ErrorMessage);
                 }
 
-                DataAccess.Entities.Warehouse? warehouseFromDb = _warehouseRepository.GetWarehouseByCode(warehouseCode.Code);
+                DataAccess.Entities.Hop? warehouseFromDb = _warehouseRepository.GetWarehouseByCode(warehouseCode.Code);
                 if (warehouseFromDb is null)
                 {
                     _logger.LogInformation("Could not find Warehouse in db");
                     throw new BusinessLayerDataNotFoundException("no warehouse found that matches code");
                 }
-
-                _logger.LogDebug("get warehouse complete");
-                return _mapper.Map<DataAccess.Entities.Warehouse, Warehouse>(warehouseFromDb);
+                switch(warehouseFromDb)
+                {
+                    case DataAccess.Entities.Truck c: 
+                        _logger.LogDebug("get warehouse complete");
+                        return _mapper.Map<DataAccess.Entities.Truck,BusinessLogic.Entities.Truck>(c);
+                    case DataAccess.Entities.Warehouse c: 
+                        _logger.LogDebug("get warehouse complete");
+                        return _mapper.Map<DataAccess.Entities.Warehouse,BusinessLogic.Entities.Warehouse>(c);
+                    case DataAccess.Entities.Transferwarehouse c: 
+                        _logger.LogDebug("get warehouse complete");
+                        return _mapper.Map<DataAccess.Entities.Transferwarehouse,BusinessLogic.Entities.TransferWarehouse>(c);
+                    default: throw new BusinessLayerDataNotFoundException("no hop found");
+                }
+                
             }
             catch (BusinessLayerValidationException e)
             {

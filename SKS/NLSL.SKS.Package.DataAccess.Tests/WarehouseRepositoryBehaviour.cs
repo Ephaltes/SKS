@@ -112,7 +112,9 @@ namespace NLSL.SKS.Package.DataAccess.Tests
         public void GetWarehouseByCode_PackageDoesNotExist_null()
         {
             A.CallTo(() => _context.Warehouses).Returns(DbContextMock.GetQueryableMockDbSet(new List<Warehouse>()));
-
+            A.CallTo(() => _context.Trucks).Returns(DbContextMock.GetQueryableMockDbSet(new List<Truck>()));
+            A.CallTo(() => _context.Transferwarehouses).Returns(DbContextMock.GetQueryableMockDbSet(new List<Transferwarehouse>()));
+            
             var result =  _repository.GetWarehouseByCode("aaaaaaaaaaaaaa");
             
             result.Should().Be(null);

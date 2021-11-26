@@ -56,7 +56,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             A.CallTo(() => _warehouseRepository.GetWarehouseByCode(null)).WithAnyArguments().Returns(Builder<Package.DataAccess.Entities.Warehouse>.CreateNew().Build());
             A.CallTo(_mapper).Where(x => x.Method.Name == "Map").WithNonVoidReturnType().Returns(Builder<Warehouse>.CreateNew().Build());
            
-            Warehouse? result = _warehouseLogic.Get(new WarehouseCode("ABC"));
+            Hop? result = _warehouseLogic.Get(new WarehouseCode("ABC"));
 
             result.Should().NotBeNull();
         }

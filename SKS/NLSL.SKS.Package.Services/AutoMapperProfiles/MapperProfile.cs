@@ -21,7 +21,7 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             CreateMap<BusinessLogic.Entities.Parcel, DTOs.Parcel>();
 
             CreateMap<DTOs.TrackingInformation, BusinessLogic.Entities.Parcel>();
-            CreateMap<BusinessLogic.Entities.Parcel, DTOs.TrackingInformation>();
+            CreateMap<BusinessLogic.Entities.Parcel, DTOs.TrackingInformation>();//.ForMember(p => p.FutureHops, p => p.MapFrom<BusinessLogic.Entities.HopArrival, DTOs.HopArrival>(p => p.FutureHops));
             
             CreateMap<DTOs.NewParcelInfo, BusinessLogic.Entities.Parcel>();
             CreateMap<BusinessLogic.Entities.Parcel, DTOs.NewParcelInfo>();
@@ -72,6 +72,8 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
                 .Include<BusinessLogic.Entities.TransferWarehouse,DTOs.Transferwarehouse>()
                 .Include<BusinessLogic.Entities.Warehouse,DTOs.Warehouse>();
             
+            CreateMap<DTOs.HopArrival, BusinessLogic.Entities.HopArrival>();
+            CreateMap<BusinessLogic.Entities.HopArrival,DTOs.HopArrival>();
             
             // BL to DAL
 

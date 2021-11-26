@@ -14,7 +14,7 @@ namespace NLSL.SKS.Package.DataAccess.Interfaces
 
         //Gets
         public IReadOnlyCollection<Warehouse> GetAllWarehouses();
-        public Warehouse? GetWarehouseByCode(string code);
+        public Hop? GetWarehouseByCode(string code);
         
         public void DeleteHierarchy();
         

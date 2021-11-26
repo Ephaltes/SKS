@@ -48,8 +48,8 @@ namespace NLSL.SKS.Package.Services
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            
 
+            services.AddHttpClient();
             services.AddAutoMapper(typeof(Startup));
 
             services.AddValidatorsFromAssemblyContaining<ParcelValidator>(ServiceLifetime.Transient);
@@ -59,7 +59,7 @@ namespace NLSL.SKS.Package.Services
             services.AddTransient<IWarehouseRepository, WarehouseRepository>();
             services.AddTransient<IParcelRepository, ParcelRepository>();
             services.AddTransient<IGeoCodingAgent, GeoCodingAgent>();
-
+            services.AddTransient<IHttpAgent, HttpAgent>();
 
             string connectionString = Configuration.GetConnectionString("Database");
             services.AddDbContext<PackageContext>(options =>

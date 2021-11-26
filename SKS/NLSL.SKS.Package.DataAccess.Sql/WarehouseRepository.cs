@@ -139,15 +139,26 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         }
 
 
-        public Warehouse? GetWarehouseByCode(string code)
+        public Hop? GetWarehouseByCode(string code)
         {
             try
             {
                 _logger.LogDebug("starting, get warehouse by code");
-                Warehouse? warehouse = _context.Warehouses.FirstOrDefault(warehouse => warehouse.Code == code);
+                Hop? maybeWarehouse = _context.Warehouses.FirstOrDefault(warehouse => warehouse.Code == code);
+                if (maybeWarehouse is not null)
+                {
+                    _logger.LogDebug("get warehouse by code complete");
+                    return maybeWarehouse;
+                }
+                Hop? maybeTruck = _context.Trucks.FirstOrDefault(warehouse => warehouse.Code == code);
+                if (maybeTruck is not null)
+                {
+                    _logger.LogDebug("get warehouse by code complete");
+                    return maybeTruck;
+                }
+                Hop? maybeTransferwarehouse = _context.Transferwarehouses.FirstOrDefault(warehouse => warehouse.Code == code);
                 _logger.LogDebug("get warehouse by code complete");
-
-                return warehouse;
+                return maybeTransferwarehouse;
             }
             catch (SqlException e)
             {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 
 using AutoMapper;
 
@@ -43,6 +45,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         private IValidator<ReportHop> _reportHopValidator;
         private IValidator<TrackingId> _trackingIdValidator;
         private IWarehouseRepository _warehouseRepository;
+        private IHttpAgent _httpClient;
         [SetUp]
         public void Setup()
         {
@@ -51,7 +54,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             _reportHopValidator = A.Fake<IValidator<ReportHop>>();
             _warehouseRepository = A.Fake<IWarehouseRepository>();
             _geoCodingAgent = A.Fake<IGeoCodingAgent>();
-
+            _httpClient = A.Fake<IHttpAgent>();
+            
             _parcelRepository = A.Fake<IParcelRepository>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelLogic>>();
@@ -62,7 +66,9 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 _mapper,
                 _logger,
                 _geoCodingAgent,
-                _warehouseRepository);
+                _warehouseRepository,
+                _httpClient
+                );
         }
 
         [Test]
@@ -198,7 +204,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                                                                                                                       {
                                                                                                                           new HopArrival
                                                                                                                           {
-                                                                                                                              Code = "Warehouse123"
+                                                                                                                              Code = "Warehouse123",
+                                                                                                                              Hop = new DataAccess.Entities.Warehouse()
                                                                                                                           }
                                                                                                                       },
                                                                                                          VisitedHops = new(),
@@ -206,7 +213,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                                                                                                      });
 
             bool result = _parcelLogic.ReportHop(new ReportHop
-                                                 { TrackingId = new TrackingId("ABCABC123"), HopCode = "Warehouse123" });
+                                                 { TrackingId = new TrackingId("ABCABC123"), HopCode = "Warehouse123", });
 
             result.Should().BeTrue();
         }

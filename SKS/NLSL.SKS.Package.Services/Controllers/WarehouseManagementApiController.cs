@@ -29,7 +29,6 @@ using NLSL.SKS.Package.Services.Attributes;
 using Swashbuckle.AspNetCore.Annotations;
 
 using Error = NLSL.SKS.Package.Services.DTOs.Error;
-using Warehouse = NLSL.SKS.Package.Services.DTOs.Warehouse;
 
 namespace NLSL.SKS.Package.Services.Controllers
 {
@@ -126,7 +125,7 @@ namespace NLSL.SKS.Package.Services.Controllers
                 _logger.LogDebug("GetWarehouse Request received");
                 WarehouseCode warehouseCode = new WarehouseCode(code);
 
-                BusinessLogic.Entities.Warehouse? warehouse = _warehouseLogic.Get(warehouseCode);
+                BusinessLogic.Entities.Hop? warehouse = _warehouseLogic.Get(warehouseCode);
             
                 if(warehouse is null)
                 {
@@ -135,10 +134,20 @@ namespace NLSL.SKS.Package.Services.Controllers
                                                     { ErrorMessage = "Warehouse not found" });
                 }
             
-                Warehouse retWarehouse = _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse);
-           
-
-                return new ObjectResult(retWarehouse) { StatusCode = 200 };
+                switch(warehouse)
+                {
+                    case BusinessLogic.Entities.Truck c: 
+                        _logger.LogDebug("GetWarehouse Request complete");
+                        return new ObjectResult(_mapper.Map<BusinessLogic.Entities.Truck,DTOs.Truck>(c)) { StatusCode = 200 };
+                    case BusinessLogic.Entities.Warehouse c: 
+                        _logger.LogDebug("GetWarehouse Request complete");
+                        return new ObjectResult(_mapper.Map<BusinessLogic.Entities.Warehouse,DTOs.Warehouse>(c)) { StatusCode = 200 };
+                    case BusinessLogic.Entities.TransferWarehouse c: 
+                        _logger.LogDebug("GetWarehouse Request complete");
+                        return new ObjectResult(_mapper.Map<BusinessLogic.Entities.TransferWarehouse,DTOs.Transferwarehouse>(c)) { StatusCode = 200 };
+                    default: return new NotFoundObjectResult(new Error
+                                                                                 { ErrorMessage = "Warehouse not found" });;
+                }
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
             {
@@ -177,13 +186,13 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ImportWarehouses")]
         [SwaggerResponse(400, type: typeof(Error), description: "The operation failed due to an error.")]
-        public virtual IActionResult ImportWarehouses([FromBody] Warehouse warehouse)
+        public virtual IActionResult ImportWarehouses([FromBody] DTOs.Warehouse warehouse)
         {
             try
             {
                 _logger.LogDebug("ImportWarehouses Request received");
                 
-                BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
+                BusinessLogic.Entities.Warehouse eWarehouse = _mapper.Map<DTOs.Warehouse, BusinessLogic.Entities.Warehouse>(warehouse);
 
                 bool wasAdded = _warehouseLogic.ReplaceHierarchy(eWarehouse);
 

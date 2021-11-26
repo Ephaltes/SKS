@@ -1,5 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Reflection.PortableExecutable;
+using System.Text;
 
 using AutoMapper;
 
@@ -10,16 +15,19 @@ using Microsoft.Extensions.Logging;
 
 using NetTopologySuite.Geometries;
 
+using Newtonsoft.Json;
+
 using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Entities.Enums;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.ServiceAgents;
 using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.ServiceAgents.Interface;
-
+//using NLSL.SKS.Package.Services.DTOs;
 using Hop = NLSL.SKS.Package.DataAccess.Entities.Hop;
 using Parcel = NLSL.SKS.Package.BusinessLogic.Entities.Parcel;
 using Truck = NLSL.SKS.Package.DataAccess.Entities.Truck;
@@ -39,7 +47,8 @@ namespace NLSL.SKS.Package.BusinessLogic
         private readonly List<Hop> _startTruckToWarehouse = new List<Hop>();
         private readonly IValidator<TrackingId> _trackingIdValidator;
         private readonly IWarehouseRepository _warehouseRepository;
-
+        private readonly IHttpAgent _httpAgent;
+        
         public ParcelLogic(IValidator<Parcel> parcelValidator,
             IValidator<TrackingId> trackingIdValidator,
             IValidator<ReportHop> reportHopValidator,
@@ -47,7 +56,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             IMapper mapper,
             ILogger<ParcelLogic> logger,
             IGeoCodingAgent geoCodingAgent,
-            IWarehouseRepository warehouseRepository)
+            IWarehouseRepository warehouseRepository, IHttpAgent httpAgent)
         {
             _parcelValidator = parcelValidator;
             _trackingIdValidator = trackingIdValidator;
@@ -57,6 +66,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             _logger = logger;
             _geoCodingAgent = geoCodingAgent;
             _warehouseRepository = warehouseRepository;
+            _httpAgent = httpAgent;
         }
 
         public Parcel? Track(TrackingId trackingId)
@@ -205,6 +215,9 @@ namespace NLSL.SKS.Package.BusinessLogic
                 }
 
                 bool status = parcelFromDb?.FutureHops.Count == 0;
+                parcelFromDb.State = DataAccess.Entities.Enums.StateEnum.Delivered;
+                _parcelRepository.Update(parcelFromDb);
+                
                 _logger.LogDebug("parcel delivery status complete");
 
                 return status;
@@ -268,8 +281,28 @@ namespace NLSL.SKS.Package.BusinessLogic
 
                 parcel.VisitedHops.Add(matchedHop);
                 parcel.FutureHops.Remove(matchedHop);
+                //throw new BusinessLayerExceptionBase(JsonConvert.SerializeObject(matchedHop));
+                switch (matchedHop.Hop)
+                {
+                    case DataAccess.Entities.Truck:
+                        parcel.State = DataAccess.Entities.Enums.StateEnum.InTruckDelivery;
+                        break;
+                    case DataAccess.Entities.Warehouse: 
+                        parcel.State = DataAccess.Entities.Enums.StateEnum.InTransport;
+                        break;
+                    case DataAccess.Entities.Transferwarehouse c:
 
+                        _httpAgent.SendParcelToLogisticPartnerPost(c.LogisticsPartnerUrl,parcel);
+                        
+                        parcel.State = DataAccess.Entities.Enums.StateEnum.Transferred;
+                        break;
+                    default:
+                        _logger.LogDebug("Hoptype not recognised");
+                        throw new BusinessLayerExceptionBase("Hoptype not recognised");
+                }
                 _parcelRepository.Update(parcel);
+                
+                
                 _logger.LogDebug("report hop complete");
 
                 return true;
