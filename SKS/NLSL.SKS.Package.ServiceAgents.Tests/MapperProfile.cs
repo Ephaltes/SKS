@@ -16,7 +16,7 @@ namespace NLSL.SKS.Package.ServiceAgents.Tests
                         src => src.Street))
                 .ForMember(dest => dest.PostalCode,
                     opt => opt.MapFrom(
-                        src => src.ZipCode));
+                        src => src.PostalCode));
             
             CreateMap<GeocodeResponse, GeoCoordinates>()
                 .ForMember(dest => dest.Address,

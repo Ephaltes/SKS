@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,8 +14,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
     {
         public GeoCoordinateValidator()
         {
-            RuleFor(p => p.Lon).NotNull().WithMessage("{PropertyName} was null");
-            RuleFor(p => p.Lat).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.Location).NotNull().WithMessage("{PropertyName} was null");
         }
     }
 }

@@ -6,6 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\NLSL.SKS.Package.DataAccess.Entities\NLSL.SKS.Package.DataAccess.Entities.csproj" />
       <ProjectReference Include="..\NLSL.SKS.Package.ServiceAgents.Entities\NLSL.SKS.Package.ServiceAgents.Entities.csproj" />
     </ItemGroup>
 

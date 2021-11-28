@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
+using NLSL.SKS.Package.DataAccess.Sql.Extensions;
 
 using NUnit.Framework;
 
@@ -111,7 +112,9 @@ namespace NLSL.SKS.Package.DataAccess.Tests
         public void GetWarehouseByCode_PackageDoesNotExist_null()
         {
             A.CallTo(() => _context.Warehouses).Returns(DbContextMock.GetQueryableMockDbSet(new List<Warehouse>()));
-
+            A.CallTo(() => _context.Trucks).Returns(DbContextMock.GetQueryableMockDbSet(new List<Truck>()));
+            A.CallTo(() => _context.Transferwarehouses).Returns(DbContextMock.GetQueryableMockDbSet(new List<Transferwarehouse>()));
+            
             var result =  _repository.GetWarehouseByCode("aaaaaaaaaaaaaa");
             
             result.Should().Be(null);
@@ -212,5 +215,6 @@ namespace NLSL.SKS.Package.DataAccess.Tests
             
             action.Should().Throw<DataAccessExceptionBase>().WithInnerException<DbUpdateException>();
         }
+        
     }
 }

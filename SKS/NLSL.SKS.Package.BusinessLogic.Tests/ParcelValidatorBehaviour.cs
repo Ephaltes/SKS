@@ -46,13 +46,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             TestValidationResult<Parcel> result = validator.TestValidate(model);
             result.ShouldHaveValidationErrorFor(entity => entity.State);
         }
-        [Test]
-        public void ParcelValidator_TackingIdIsNull_Success()
-        {
-            Parcel model = new Parcel { TrackingId = null };
-            TestValidationResult<Parcel> result = validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(entity => entity.TrackingId);
-        }
+
         [Test]
         public void ParcelValidator_VisitedHopsIsNull_ValidationError()
         {

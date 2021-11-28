@@ -86,7 +86,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             DTOs.Warehouse warehouse = new DTOs.Warehouse();
             StatusCodeResult result;
-            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments().Returns(true);
+            A.CallTo(() => _warehouseLogic.ReplaceHierarchy(null)).WithAnyArguments().Returns(true);
             
             result = (StatusCodeResult)_testController.ImportWarehouses(warehouse);
 
@@ -98,7 +98,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             DTOs.Warehouse warehouse = new DTOs.Warehouse();
             ObjectResult result;
-            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments().Returns(false);
+            A.CallTo(() => _warehouseLogic.ReplaceHierarchy(null)).WithAnyArguments().Returns(false);
             
             result = (ObjectResult)_testController.ImportWarehouses(warehouse);
 
@@ -111,7 +111,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             ObjectResult result;
             BusinessLayerExceptionBase exception = new BusinessLayerExceptionBase("test",new BusinessLayerValidationException());
-            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments()
+            A.CallTo(() => _warehouseLogic.ReplaceHierarchy(null)).WithAnyArguments()
                 .Throws(exception);
             
             
@@ -126,7 +126,7 @@ namespace NLSL.SKS.Package.Services.Tests
         {
             ObjectResult result;
             BusinessLayerExceptionBase exception = new BusinessLayerExceptionBase("test",new DataAccessExceptionBase());
-            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments()
+            A.CallTo(() => _warehouseLogic.ReplaceHierarchy(null)).WithAnyArguments()
                 .Throws(exception);
             
             
@@ -139,7 +139,7 @@ namespace NLSL.SKS.Package.Services.Tests
         public void ImportWarehouses_BadRequest_FromException()
         {
             ObjectResult result;
-            A.CallTo(() => _warehouseLogic.Add(null)).WithAnyArguments()
+            A.CallTo(() => _warehouseLogic.ReplaceHierarchy(null)).WithAnyArguments()
                 .Throws<Exception>();
             
             result = (ObjectResult) _testController.ImportWarehouses(null);

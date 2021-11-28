@@ -27,7 +27,7 @@ namespace NLSL.SKS.Package.ServiceAgents
             _logger = logger;
             _geocoder = new ForwardGeocoder();
         }
-        public List<GeoCoordinates> GetGeoCoordinates(Address address)
+        public IReadOnlyCollection<GeoCoordinates> GetGeoCoordinates(Address address)
         {
             try
             {

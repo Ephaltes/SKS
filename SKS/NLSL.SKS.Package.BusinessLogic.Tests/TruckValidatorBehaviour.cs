@@ -1,5 +1,7 @@
 ﻿using FluentValidation.TestHelper;
 
+using NetTopologySuite.Geometries;
+
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 
@@ -96,18 +98,18 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void TruckValidator_RegionGeoJsonIsEmpty_ValidationError()
         {
-            Truck model = new Truck { HopType = "warehouse", RegionGeoJson = null };
+            Truck model = new Truck { HopType = "warehouse", RegionGeometry = null };
             TestValidationResult<Truck> result = validator.TestValidate(model);
 
-            result.ShouldHaveValidationErrorFor(entity => entity.RegionGeoJson);
+            result.ShouldHaveValidationErrorFor(entity => entity.RegionGeometry);
         }
         [Test]
         public void TruckValidator_RegionGeoJson_Succes()
         {
-            Truck model = new Truck { HopType = "warehouse", RegionGeoJson = "Test" };
+            Truck model = new Truck { HopType = "warehouse", RegionGeometry = new Point(1,1)};
             TestValidationResult<Truck> result = validator.TestValidate(model);
 
-            result.ShouldNotHaveValidationErrorFor(entity => entity.RegionGeoJson);
+            result.ShouldNotHaveValidationErrorFor(entity => entity.RegionGeometry);
         }
     }
 }

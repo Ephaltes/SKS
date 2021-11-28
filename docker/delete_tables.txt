@@ -1,4 +1,6 @@
 DROP TABLE WarehouseNextHops;
+DROP TABLE HopArrivalParcel;
+DROP TABLE HopArrivalParcel1;
 DROP TABLE HopArrival;
 DROP TABLE Hop;
 DROP TABLE GeoCoordinate;

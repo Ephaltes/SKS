@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
 using FluentValidation.TestHelper;
 
+using NetTopologySuite.Geometries;
+
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 
@@ -19,32 +21,18 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             validator.CascadeMode = CascadeMode.Continue;
         }
         [Test]
-        public void GeoCoordinateValidator_LonIsNull_ValidationError()
+        public void GeoCoordinateValidator_LocationIsNull_ValidationError()
         {
-            GeoCoordinate model = new GeoCoordinate { Lon = null };
+            GeoCoordinate model = new GeoCoordinate { Location = null};
             TestValidationResult<GeoCoordinate> result = validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(entity => entity.Lon);
-        }
-        [Test]
-        public void GeoCoordinateValidator_LatIsNull_ValidationError()
-        {
-            GeoCoordinate model = new GeoCoordinate { Lat = null };
-            TestValidationResult<GeoCoordinate> result = validator.TestValidate(model);
-            result.ShouldHaveValidationErrorFor(entity => entity.Lat);
+            result.ShouldHaveValidationErrorFor(entity => entity.Location);
         }
         [Test]
         public void GeoCoordinateValidator_LonIsValid_Success()
         {
-            GeoCoordinate model = new GeoCoordinate { Lon = 1 };
+            GeoCoordinate model = new GeoCoordinate { Location = new Point(1,1) };
             TestValidationResult<GeoCoordinate> result = validator.TestValidate(model);
-            result.ShouldNotHaveValidationErrorFor(entity => entity.Lon);
-        }
-        [Test]
-        public void GeoCoordinateValidator_LatIsValid_Success()
-        {
-            GeoCoordinate model = new GeoCoordinate { Lat = 1 };
-            TestValidationResult<GeoCoordinate> result = validator.TestValidate(model);
-            result.ShouldNotHaveValidationErrorFor(entity => entity.Lat);
+            result.ShouldNotHaveValidationErrorFor(entity => entity.Location);
         }
     }
 }

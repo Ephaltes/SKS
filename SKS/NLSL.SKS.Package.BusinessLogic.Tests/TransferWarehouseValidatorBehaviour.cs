@@ -1,5 +1,7 @@
 ﻿using FluentValidation.TestHelper;
 
+using NetTopologySuite.Geometries;
+
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 
@@ -80,18 +82,18 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         [Test]
         public void TransferWarehouseValidator_RegionGeoJsonIsEmpty_ValidationError()
         {
-            TransferWarehouse model = new TransferWarehouse { HopType = "warehouse", RegionGeoJson = null };
+            TransferWarehouse model = new TransferWarehouse { HopType = "warehouse", RegionGeometry = null };
             TestValidationResult<TransferWarehouse> result = validator.TestValidate(model);
 
-            result.ShouldHaveValidationErrorFor(entity => entity.RegionGeoJson);
+            result.ShouldHaveValidationErrorFor(entity => entity.RegionGeometry);
         }
         [Test]
         public void TransferWarehouseValidator_RegionGeoJson_Succes()
         {
-            TransferWarehouse model = new TransferWarehouse { HopType = "warehouse", RegionGeoJson = "Test" };
+            TransferWarehouse model = new TransferWarehouse { HopType = "warehouse", RegionGeometry = new Point(1,1) };
             TestValidationResult<TransferWarehouse> result = validator.TestValidate(model);
 
-            result.ShouldNotHaveValidationErrorFor(entity => entity.RegionGeoJson);
+            result.ShouldNotHaveValidationErrorFor(entity => entity.RegionGeometry);
         }
         [Test]
         public void TransferWarehouseValidator_LogisticsPartnerIsEmpty_ValidationError()

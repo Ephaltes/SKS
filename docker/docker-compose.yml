@@ -8,8 +8,8 @@ services:
       - SA_PASSWORD=SKS_P@ssword_S3cur3
     ports: 
       - 1433:1433
-    volumes:
-      - mssqldata:/var/opt/mssql
+#    volumes:
+#      - mssqldata:/var/opt/mssql
   adminer:
     image: knom/adminer-mssql
     ports:
@@ -22,5 +22,5 @@ services:
 #    image: rabbitmq
 #    ports:
 #      - 5672:5672
-volumes:
-    mssqldata:
+#volumes:
+#    mssqldata:

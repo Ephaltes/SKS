@@ -16,7 +16,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
             RuleFor(p => p.ProcessingDelayMins).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.LocationName).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.LocationCoordinates).NotNull().WithMessage("{PropertyName} was null");
-            RuleFor(p => p.RegionGeoJson).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.RegionGeometry).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.LogisticsPartner).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.LogisticsPartnerUrl).NotNull().WithMessage("{PropertyName} was null");
         }

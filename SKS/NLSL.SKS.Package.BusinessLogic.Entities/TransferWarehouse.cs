@@ -12,6 +12,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
+using NetTopologySuite.Geometries;
+
 namespace NLSL.SKS.Package.BusinessLogic.Entities
 {
     /// <summary>
@@ -23,7 +25,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
         /// GeoJSON of the are covered by the logistics partner.
         /// </summary>
         /// <value>GeoJSON of the are covered by the logistics partner.</value>
-        public string RegionGeoJson
+        public Geometry RegionGeometry
         {
             get;
             set;

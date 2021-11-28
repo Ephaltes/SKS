@@ -15,6 +15,10 @@ namespace NLSL.SKS.Package.DataAccess.Sql
     {
         private readonly ILogger<ParcelRepository> _logger;
         private readonly PackageContext _context;
+        private static Random _random = new Random();
+        private const string Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        private const int Length = 9;
+
 
         public ParcelRepository(PackageContext context, ILogger<ParcelRepository> logger)
         {
@@ -127,6 +131,27 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             catch (SqlException e)
             {
                 throw new DataAccessExceptionBase("Error during Sql Connection", e);
+            }
+        }
+        public string GenerateTrackingId()
+        {
+            try
+            {
+                string newTrackingId = "";
+                do
+                {
+                    newTrackingId = new string(Enumerable.Repeat(Chars, Length)
+                        .Select(s => s[_random.Next(s.Length)]).ToArray());
+
+
+                } while (_context.Parcels.FirstOrDefault(x => x.TrackingId == newTrackingId) != null);
+
+                return newTrackingId;
+            }
+            catch (Exception exception)
+            {
+                _logger.LogError(exception,$"{exception.Message}");
+                throw new DataAccessExceptionBase("Error during Sql Connection", exception);
             }
         }
 
