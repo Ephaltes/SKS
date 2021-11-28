@@ -68,5 +68,9 @@ namespace NLSL.SKS.Package.BusinessLogic.Entities
             get;
             set;
         }
+        
+        public bool IsInAustria =>
+            (Country.ToLowerInvariant() == "austria" 
+             || Country.ToLowerInvariant() == "österreich");
     }
 }

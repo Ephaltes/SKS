@@ -10,4 +10,9 @@
       <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="NetTopologySuite" Version="2.4.0" />
+      <PackageReference Include="NetTopologySuite.IO.GeoJSON" Version="2.0.4" />
+    </ItemGroup>
+
 </Project>

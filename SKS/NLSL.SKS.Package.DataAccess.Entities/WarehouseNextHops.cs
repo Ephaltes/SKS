@@ -35,7 +35,7 @@ namespace NLSL.SKS.Package.DataAccess.Entities
         /// <summary>
         /// Gets or Sets Hop
         /// </summary>
-        public Hop Hop
+        public virtual Hop Hop
         {
             get;
             set;
