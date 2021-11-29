@@ -347,12 +347,12 @@ namespace NLSL.SKS.Package.BusinessLogic
             senderPoint.SRID = 4326;
             receiverPoint.SRID = 4326;
 
-            Hop startTruck = _warehouseRepository.GetHopForPoint(senderPoint);
-            Hop endTruck = _warehouseRepository.GetHopForPoint(receiverPoint);
+            Hop startHop = _warehouseRepository.GetHopForPoint(senderPoint);
+            Hop endHop = _warehouseRepository.GetHopForPoint(receiverPoint);
 
-            List<Hop> path = GetPathForTrucks(startTruck, endTruck);
-            path.Insert(0,startTruck);
-            path.Add(endTruck);
+            List<Hop> path = GetPathForTrucks(startHop, endHop);
+            path.Insert(0,startHop);
+            path.Add(endHop);
 
             return path.Select(hop => new HopArrival
                                       {
@@ -365,23 +365,23 @@ namespace NLSL.SKS.Package.BusinessLogic
         {
             while (true)
             {
-                Hop startWarehouse = _warehouseRepository.GetParentOfHopByCode(startHop.Code);
-                Hop endWarehouse = _warehouseRepository.GetParentOfHopByCode(endHop.Code);
+                Hop startParentHop = _warehouseRepository.GetParentOfHopByCode(startHop.Code);
+                Hop endParentHop = _warehouseRepository.GetParentOfHopByCode(endHop.Code);
 
-                if (startWarehouse.Code == endWarehouse.Code)
+                if (startParentHop.Code == endParentHop.Code)
                 {
                     List<Hop> path = new List<Hop>();
                     path.AddRange(_endTruckToWarehouse);
                     _startTruckToWarehouse.Reverse();
-                    path.Add(endWarehouse);
+                    path.Add(endParentHop);
                     path.AddRange(_startTruckToWarehouse);
 
                     return path;
                 }
 
-                startHop = startWarehouse;
+                startHop = startParentHop;
 
-                endHop = endWarehouse;
+                endHop = endParentHop;
             }
         }
     }

@@ -202,8 +202,8 @@ namespace NLSL.SKS.Package.DataAccess.Sql
 
         public Warehouse? GetParentOfHopByCode(string code)
         {
-            WarehouseNextHops nexthop = _context.WarehouseNextHops.First(x => x.Hop.Code == code);
-            return _context.Warehouses.FirstOrDefault(x => x.NextHops.Contains(nexthop));
+            WarehouseNextHops warehouse = _context.WarehouseNextHops.First(x => x.Hop.Code == code);
+            return _context.Warehouses.FirstOrDefault(x => x.NextHops.Contains(warehouse));
         }
     }
 }
