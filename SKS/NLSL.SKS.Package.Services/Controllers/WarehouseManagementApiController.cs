@@ -57,7 +57,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         [Route("/warehouse")]
         [ValidateModelState]
         [SwaggerOperation("ExportWarehouses")]
-        [SwaggerResponse(200, type: typeof(Warehouse), description: "Successful response")]
+        [SwaggerResponse(200, type: typeof(DTOs.Warehouse), description: "Successful response")]
         [SwaggerResponse(400, type: typeof(Error), description: "An error occurred loading.")]
         public virtual IActionResult ExportWarehouses()
         {
@@ -115,7 +115,7 @@ namespace NLSL.SKS.Package.Services.Controllers
         [Route("/warehouse/{code}")]
         [ValidateModelState]
         [SwaggerOperation("GetWarehouse")]
-        [SwaggerResponse(200, type: typeof(Warehouse), description: "Successful response")]
+        [SwaggerResponse(200, type: typeof(DTOs.Warehouse), description: "Successful response")]
         [SwaggerResponse(400, type: typeof(Error), description: "An error occurred loading.")]
         [SwaggerResponse(404, type: typeof(Error), description: "Warehouse not found")]
         public virtual IActionResult GetWarehouse([FromRoute] [Required] string code)
