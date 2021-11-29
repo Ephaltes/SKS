@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31019.35
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services", "NLSL.SKS.Package.Services\NLSL.SKS.Package.Services.csproj", "{EF0EE5FB-85BE-41F4-B4AA-97FAC40BF2AB}"
 EndProject
@@ -17,29 +17,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.Services.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DTOs.Tests", "NLSL.SKS.Package.DTOs.Tests\NLSL.SKS.Package.DTOs.Tests.csproj", "{B75EB1B6-3A71-4F77-9A43-5CB3ECF550A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Entities", "NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj", "{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.BusinessLogic.Entities", "NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj", "{AAB9CC4B-FBBB-4234-8B17-68EB15E8552D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Interfaces", "NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj", "{2B111775-53EC-4CEC-9256-5A87683D91F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.BusinessLogic.Interfaces", "NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj", "{2B111775-53EC-4CEC-9256-5A87683D91F2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic", "NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj", "{7E1DDA8A-D756-437C-87F3-61E4078B0597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.BusinessLogic", "NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj", "{7E1DDA8A-D756-437C-87F3-61E4078B0597}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.BusinessLogic.Tests", "NLSL.SKS.Package.BusinessLogic.Tests\NLSL.SKS.Package.BusinessLogic.Tests.csproj", "{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.BusinessLogic.Tests", "NLSL.SKS.Package.BusinessLogic.Tests\NLSL.SKS.Package.BusinessLogic.Tests.csproj", "{3C0568BF-8CCA-4D82-B7D5-F2F1E36A86B6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Entities", "NLSL.SKS.Package.DataAccess.Entities\NLSL.SKS.Package.DataAccess.Entities.csproj", "{9A4C1153-EFB8-48AE-A45E-1E6101B7430E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DataAccess.Entities", "NLSL.SKS.Package.DataAccess.Entities\NLSL.SKS.Package.DataAccess.Entities.csproj", "{9A4C1153-EFB8-48AE-A45E-1E6101B7430E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Interfaces", "NLSL.SKS.Package.DataAccess.Interfaces\NLSL.SKS.Package.DataAccess.Interfaces.csproj", "{08F6B904-491B-4142-953E-48683B59EF89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DataAccess.Interfaces", "NLSL.SKS.Package.DataAccess.Interfaces\NLSL.SKS.Package.DataAccess.Interfaces.csproj", "{08F6B904-491B-4142-953E-48683B59EF89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Sql", "NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj", "{3909E966-4747-4241-8A7A-0AA392105317}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DataAccess.Sql", "NLSL.SKS.Package.DataAccess.Sql\NLSL.SKS.Package.DataAccess.Sql.csproj", "{3909E966-4747-4241-8A7A-0AA392105317}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.DataAccess.Tests", "NLSL.SKS.Package.DataAccess.Tests\NLSL.SKS.Package.DataAccess.Tests.csproj", "{017295B9-74F1-449D-A370-346FC51C4A8E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.DataAccess.Tests", "NLSL.SKS.Package.DataAccess.Tests\NLSL.SKS.Package.DataAccess.Tests.csproj", "{017295B9-74F1-449D-A370-346FC51C4A8E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents", "NLSL.SKS.Package.ServiceAgents\NLSL.SKS.Package.ServiceAgents.csproj", "{59060F49-B32D-4693-BCCB-53459723E7D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.ServiceAgents", "NLSL.SKS.Package.ServiceAgents\NLSL.SKS.Package.ServiceAgents.csproj", "{59060F49-B32D-4693-BCCB-53459723E7D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Interface", "NLSL.SKS.Package.ServiceAgents.Interface\NLSL.SKS.Package.ServiceAgents.Interface.csproj", "{CDAFEAB6-99F7-407A-99FA-7030B83AB0FC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.ServiceAgents.Interface", "NLSL.SKS.Package.ServiceAgents.Interface\NLSL.SKS.Package.ServiceAgents.Interface.csproj", "{CDAFEAB6-99F7-407A-99FA-7030B83AB0FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Tests", "NLSL.SKS.Package.ServiceAgents.Tests\NLSL.SKS.Package.ServiceAgents.Tests.csproj", "{8385CB6E-B1BD-4C45-87B0-E37EBAD54864}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.ServiceAgents.Tests", "NLSL.SKS.Package.ServiceAgents.Tests\NLSL.SKS.Package.ServiceAgents.Tests.csproj", "{8385CB6E-B1BD-4C45-87B0-E37EBAD54864}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.ServiceAgents.Entities", "NLSL.SKS.Package.ServiceAgents.Entities\NLSL.SKS.Package.ServiceAgents.Entities.csproj", "{7C453415-EB79-4A81-9C46-47FE6E1BCB46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLSL.SKS.Package.ServiceAgents.Entities", "NLSL.SKS.Package.ServiceAgents.Entities\NLSL.SKS.Package.ServiceAgents.Entities.csproj", "{7C453415-EB79-4A81-9C46-47FE6E1BCB46}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionItems", "{350693B4-4FB3-4D83-812B-147DEEF20A0F}"
 	ProjectSection(SolutionItems) = preProject
@@ -47,6 +47,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionItems", "SolutionIt
 		..\sample_Data\light.txt = ..\sample_Data\light.txt
 		..\sample_Data\medmium.txt = ..\sample_Data\medmium.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLSL.SKS.Package.IntegrationTests", "NLSL.SKS.Package.IntegrationTests\NLSL.SKS.Package.IntegrationTests.csproj", "{03AAFA8E-DE33-44D5-938C-FE5139DBB91E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -122,6 +124,10 @@ Global
 		{7C453415-EB79-4A81-9C46-47FE6E1BCB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C453415-EB79-4A81-9C46-47FE6E1BCB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C453415-EB79-4A81-9C46-47FE6E1BCB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03AAFA8E-DE33-44D5-938C-FE5139DBB91E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03AAFA8E-DE33-44D5-938C-FE5139DBB91E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03AAFA8E-DE33-44D5-938C-FE5139DBB91E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03AAFA8E-DE33-44D5-938C-FE5139DBB91E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -144,6 +150,7 @@ Global
 		{CDAFEAB6-99F7-407A-99FA-7030B83AB0FC} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
 		{8385CB6E-B1BD-4C45-87B0-E37EBAD54864} = {B219CC58-9068-4D0A-AFC3-BD56F6C11671}
 		{7C453415-EB79-4A81-9C46-47FE6E1BCB46} = {855DEB1B-BF8E-4B1C-ADF4-71A516014422}
+		{03AAFA8E-DE33-44D5-938C-FE5139DBB91E} = {B219CC58-9068-4D0A-AFC3-BD56F6C11671}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {863DB4E3-9185-4827-AB19-EFC5350ED555}
