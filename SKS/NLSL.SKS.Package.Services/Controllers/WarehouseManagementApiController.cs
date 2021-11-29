@@ -74,8 +74,8 @@ namespace NLSL.SKS.Package.Services.Controllers
                                                     { ErrorMessage = "No hierarchy loaded yet." });
                 }
             
-                List<Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, Warehouse>(warehouse)).ToList();
-
+                List<DTOs.Warehouse> rList = warehouseList.Select(warehouse => _mapper.Map<BusinessLogic.Entities.Warehouse, DTOs.Warehouse>(warehouse)).ToList();
+                {}
                 return new ObjectResult(rList) { StatusCode = 200 };
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
