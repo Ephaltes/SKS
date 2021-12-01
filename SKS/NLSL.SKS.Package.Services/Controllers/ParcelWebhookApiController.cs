@@ -1,21 +1,42 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
+using AutoMapper;
+
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 
+using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.Services.Attributes;
-using NLSL.SKS.Package.Services.DTOs;
+using NLSL.SKS.Package.WebhookManager.Interfaces;
 
 using Swashbuckle.AspNetCore.Annotations;
+
+using WebhookResponse = NLSL.SKS.Package.Services.DTOs.WebhookResponse;
+using WebhookResponses = NLSL.SKS.Package.Services.DTOs.WebhookResponses;
 
 namespace NLSL.SKS.Package.Services.Controllers
 {
     [ApiController]
     public class ParcelWebhookApiController
     {
-         /// <summary>
+        private readonly IMapper _mapper;
+
+        private readonly IWebHookLogic _webHookLogic;
+
+        private readonly ILogger<ParcelWebhookApiController> _logger;
+
+        public ParcelWebhookApiController(IMapper mapper, ILogger<ParcelWebhookApiController> logger, IWebHookLogic webHookLogic)
+        {
+            _mapper = mapper;
+            _logger = logger;
+            _webHookLogic = webHookLogic;
+        }
+
+        /// <summary>
         /// Get all registered subscriptions for the parcel webhook.
         /// </summary>
         /// <param name="trackingId"></param>
@@ -26,20 +47,26 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("ListParcelWebhooks")]
         [SwaggerResponse(statusCode: 200, type: typeof(WebhookResponses), description: "List of webooks for the &#x60;trackingId&#x60;")]
-        public virtual IActionResult ListParcelWebhooks([FromRoute][Required][RegularExpression("/^[A-Z0-9]{9}$/")]string trackingId)
-        { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(WebhookResponses));
+        public virtual IActionResult ListParcelWebhooks([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId)
+        {
+            try
+            {
+                var result = _webHookLogic.GetByTrackingId(new TrackingId(trackingId));
+                if (result is null)
+                {
+                    return new NotFoundResult();
+                }
 
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "[ {\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n}, {\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n} ]";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<WebhookResponses>(exampleJson)
-                        : default(WebhookResponses);            //TODO: Change the data returned
-            return new ObjectResult(example);
+                return new OkObjectResult(_mapper.Map<BusinessLogic.Entities.WebhookResponses, DTOs.WebhookResponses>(result));
+            }
+            catch
+            {
+                throw;
+            }
+            /*catch
+            {
+                return new NotFoundResult();
+            }*/
         }
 
         /// <summary>
@@ -54,20 +81,26 @@ namespace NLSL.SKS.Package.Services.Controllers
         [ValidateModelState]
         [SwaggerOperation("SubscribeParcelWebhook")]
         [SwaggerResponse(statusCode: 200, type: typeof(WebhookResponse), description: "Successful response")]
-        public virtual IActionResult SubscribeParcelWebhook([FromRoute][Required][RegularExpression("/^[A-Z0-9]{9}$/")]string trackingId, [FromQuery][Required()]string url)
+        public virtual IActionResult SubscribeParcelWebhook([FromRoute][Required][RegularExpression("^[A-Z0-9]{9}$")]string trackingId, [FromQuery][Required()]string url)
         { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200, default(WebhookResponse));
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-            string exampleJson = null;
-            exampleJson = "{\n  \"created_at\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"id\" : 0,\n  \"url\" : \"url\",\n  \"trackingId\" : \"trackingId\"\n}";
-            
-                        var example = exampleJson != null
-                        ? JsonConvert.DeserializeObject<WebhookResponse>(exampleJson)
-                        : default(WebhookResponse);            //TODO: Change the data returned
-            return new ObjectResult(example);
+            try
+            {
+                var businessLogicWebhook = new BusinessLogic.Entities.WebHook();
+                businessLogicWebhook.trackingId = trackingId;
+                businessLogicWebhook.URL = url;
+                businessLogicWebhook.CreatedAt = DateTime.Now;
+                
+                var result = _webHookLogic.Add(businessLogicWebhook);
+                if (result is null)
+                {
+                    return new NotFoundResult();
+                }
+                return new OkObjectResult(_mapper.Map<BusinessLogic.Entities.WebhookResponse, DTOs.WebhookResponse>(result));
+            }
+            catch
+            {
+                return new NotFoundResult();
+            }
         }
 
         /// <summary>
@@ -82,13 +115,15 @@ namespace NLSL.SKS.Package.Services.Controllers
         [SwaggerOperation("UnsubscribeParcelWebhook")]
         public virtual IActionResult UnsubscribeParcelWebhook([FromRoute][Required]long? id)
         { 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            //TODO: Uncomment the next line to return response 404 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(404);
-
-            throw new NotImplementedException();
+            try
+            {
+                _webHookLogic.Remove(id);
+                return new OkResult();
+            }
+            catch
+            {
+                return new NotFoundResult();
+            }
         }
     }
 }

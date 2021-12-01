@@ -18,6 +18,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 using NLSL.SKS.Package.BusinessLogic;
+using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 using NLSL.SKS.Package.DataAccess.Interfaces;
@@ -25,6 +26,7 @@ using NLSL.SKS.Package.DataAccess.Sql;
 using NLSL.SKS.Package.ServiceAgents;
 using NLSL.SKS.Package.ServiceAgents.Interface;
 using NLSL.SKS.Package.Services.Filter;
+using NLSL.SKS.Package.WebhookManager.Interfaces;
 
 namespace NLSL.SKS.Package.Services
 {
@@ -60,8 +62,12 @@ namespace NLSL.SKS.Package.Services
             services.AddTransient<IParcelRepository, ParcelRepository>();
             services.AddTransient<IGeoCodingAgent, GeoCodingAgent>();
             services.AddTransient<IHttpAgent, HttpAgent>();
+            services.AddTransient<IWebHookLogic, WebHookLogic>();
+            services.AddTransient<IWebHookRepository, WebHookRepository>();
+            services.AddTransient<IWebHookManager, WebhookManager.WebhookManager>();
 
-            string connectionString = Configuration.GetConnectionString("Database");
+
+            string connectionString = Configuration.GetConnectionString("localDatabase");
             services.AddDbContext<PackageContext>(options =>
                                                       options
                                                           .UseLazyLoadingProxies()

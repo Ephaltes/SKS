@@ -60,5 +60,21 @@ namespace NLSL.SKS.Package.ServiceAgents
                 throw new ServiceAgentsExceptionBase("No data found", e);
             }
         }
+
+        public bool PostAsJson(string url,object content)
+        {
+            try
+            {
+                HttpResponseMessage? httpResult = _httpClient.PostAsJsonAsync(url, content).Result;
+                
+                return httpResult.IsSuccessStatusCode;
+            }
+            catch (ServiceAgentHttpRequestFailed e)
+            {
+                _logger.LogError(e, $"{e.Message}");
+
+                throw new ServiceAgentsExceptionBase("No data found", e);
+            }
+        }
     }
 }

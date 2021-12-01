@@ -5,7 +5,7 @@ using System.Text;
 
 using Newtonsoft.Json;
 
-namespace NLSL.SKS.Package.Services.DTOs
+namespace NLSL.SKS.Package.WebhookManager.Entities
 {
     [ExcludeFromCodeCoverage]
     public class WebhookMessage : TrackingInformation

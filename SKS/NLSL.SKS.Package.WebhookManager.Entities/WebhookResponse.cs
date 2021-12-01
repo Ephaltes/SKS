@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 
-namespace NLSL.SKS.Package.Services.DTOs
+namespace NLSL.SKS.Package.WebhookManager.Entities
 {
     [ExcludeFromCodeCoverage]
     public class WebhookResponse

@@ -1,13 +1,15 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 using AutoMapper;
 
 using NetTopologySuite.Geometries;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
+using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.Services.Converter;
-
+using NLSL.SKS.Package.WebhookManager.Entities;
 using Nominatim.API.Models;
 
 namespace NLSL.SKS.Package.Services.AutoMapperProfiles
@@ -132,6 +134,24 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
 
             CreateMap<BusinessLogic.Entities.Recipient, Address>();
             CreateMap<Address, BusinessLogic.Entities.Recipient>();
+
+
+            // Webhooks
+            CreateMap<WebhookManager.Entities.WebHook, DataAccess.Entities.WebHook>();
+            CreateMap<WebhookManager.Entities.WebHook, WebhookManager.Entities.WebhookResponse>();
+            CreateMap<WebhookManager.Entities.Parcel,WebhookManager.Entities.WebhookMessage>();
+
+
+            CreateMap<BusinessLogic.Entities.WebHook, WebhookManager.Entities.WebHook>();
+            CreateMap<WebhookManager.Entities.WebhookResponse, BusinessLogic.Entities.WebhookResponse>();
+            
+            CreateMap<BusinessLogic.Entities.WebhookResponse, DTOs.WebhookResponse>();
+
+            CreateMap<BusinessLogic.Entities.Parcel, WebhookManager.Entities.Parcel>();
+            CreateMap<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(); 
+            CreateMap<BusinessLogic.Entities.Recipient, WebhookManager.Entities.Recipient>(); 
+            CreateMap<BusinessLogic.Entities.HopArrival, WebhookManager.Entities.HopArrival>();
+            CreateMap<DataAccess.Entities.WebHook, WebhookManager.Entities.WebhookResponse>();
 
         }
     }

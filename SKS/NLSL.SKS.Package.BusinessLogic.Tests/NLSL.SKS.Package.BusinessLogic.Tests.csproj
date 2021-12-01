@@ -19,7 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic\NLSL.SKS.Package.BusinessLogic.csproj" />
-    <ProjectReference Include="..\NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj" />
   </ItemGroup>
 
 </Project>
