@@ -15,9 +15,9 @@ namespace NLSL.SKS.Package.DataAccess.Sql
     public class WebHookRepository : IWebHookRepository
     {
         private readonly PackageContext _context;
-        private readonly ILogger<WarehouseRepository> _logger;
+        private readonly ILogger<WebHookRepository> _logger;
 
-        public WebHookRepository(PackageContext context, ILogger<WarehouseRepository> logger)
+        public WebHookRepository(PackageContext context, ILogger<WebHookRepository> logger)
         {
             _context = context;
             _logger = logger;

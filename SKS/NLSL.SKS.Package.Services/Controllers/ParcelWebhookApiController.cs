@@ -61,12 +61,8 @@ namespace NLSL.SKS.Package.Services.Controllers
             }
             catch
             {
-                throw;
-            }
-            /*catch
-            {
                 return new NotFoundResult();
-            }*/
+            }
         }
 
         /// <summary>
