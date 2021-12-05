@@ -17,7 +17,6 @@ using NLSL.SKS.Package.Services.DTOs;
 
 using NUnit.Framework;
 
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace NLSL.SKS.Package.IntegrationTests
 {
@@ -91,7 +90,7 @@ namespace NLSL.SKS.Package.IntegrationTests
             {
                 Assert.Fail();
             }
-            var parsedResponse = JsonSerializer.Deserialize<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
+            var parsedResponse = JsonConvert.DeserializeObject<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
             
             var webhooks = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
 
