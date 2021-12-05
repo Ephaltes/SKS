@@ -67,7 +67,7 @@ namespace NLSL.SKS.Package.Services
             services.AddTransient<IWebHookManager, WebhookManager.WebhookManager>();
 
 
-            string connectionString = Configuration.GetConnectionString("Database");
+            string connectionString = Configuration.GetConnectionString("localdatabase");
             services.AddDbContext<PackageContext>(options =>
                                                       options
                                                           .UseLazyLoadingProxies()
