@@ -52,7 +52,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/SKS.sln --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: True
   displayName: Publish
 
