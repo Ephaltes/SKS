@@ -24,9 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="warehouse_test_data.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <None Update="warehouse_test_data">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
