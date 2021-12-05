@@ -20,17 +20,18 @@ namespace NLSL.SKS.Package.IntegrationTests
 {
     public class ParcelWebHookApiBehaviour
     {
-        private string baseUrl;
         private HttpClient _httpClient;
         private HttpListener _listener;
         private Parcel _testParceL;
+        private string baseUrl;
         [SetUp]
         public void Setup()
         {
             baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
-            _httpClient = new HttpClient(){
-                                              BaseAddress = new Uri(baseUrl)
-                                          };
+            _httpClient = new HttpClient
+                          {
+                              BaseAddress = new Uri(baseUrl)
+                          };
             _testParceL = new Parcel
                           {
                               Weight = 1,
@@ -56,33 +57,35 @@ namespace NLSL.SKS.Package.IntegrationTests
         [Test]
         public async Task AddWebHook_Success()
         {
-            var content = new StringContent(File.ReadAllText("warehouse_test_data"), Encoding.UTF8, "application/json");
-            var warehouserequest = await _httpClient.PostAsync("/warehouse",content);
+            StringContent content = new StringContent(File.ReadAllText("warehouse_test_data"), Encoding.UTF8, "application/json");
+            HttpResponseMessage warehouserequest = await _httpClient.PostAsync("/warehouse", content);
             if (!warehouserequest.IsSuccessStatusCode)
             {
                 Assert.Fail();
             }
-            
-            var resultSubmit = await _httpClient.PostAsJsonAsync("/parcel", _testParceL);
+
+            content = new StringContent(JsonConvert.SerializeObject(_testParceL), Encoding.UTF8, "application/json");
+            HttpResponseMessage resultSubmit = await _httpClient.PostAsync("/parcel", content);
             if (!resultSubmit.IsSuccessStatusCode)
             {
-                
                 Assert.Fail();
             }
+
             JObject obj = JObject.Parse(await resultSubmit.Content.ReadAsStringAsync());
             string trackingID = (string)obj["trackingId"];
 
-            var resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url=test.com", null);
+            HttpResponseMessage resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url=test.com", null);
 
             if (!resultaAddWebhook.IsSuccessStatusCode)
             {
                 Assert.Fail();
             }
-            var parsedResponse = JsonConvert.DeserializeObject<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
-            
-            var webhooks = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
 
-            var result = await webhooks.Content.ReadAsStringAsync();
+            WebhookMessage parsedResponse = JsonConvert.DeserializeObject<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
+
+            HttpResponseMessage webhooks = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
+
+            string result = await webhooks.Content.ReadAsStringAsync();
             //throw new Exception(result);
             IList<WebhookResponse> listOfWebhooks = JsonConvert.DeserializeObject<IList<WebhookResponse>>(result);
 
@@ -91,55 +94,58 @@ namespace NLSL.SKS.Package.IntegrationTests
             listOfWebhooks[0].Url.Should().Be("test.com");
             listOfWebhooks[0].TrackingId.Should().Be(trackingID);
         }
-        
+
         [Test]
         public async Task RemoveWebHook_Success()
         {
-            var content = new StringContent(File.ReadAllText("warehouse_test_data"), Encoding.UTF8, "application/json");
-            var warehouserequest = await _httpClient.PostAsync("/warehouse",content);
+            StringContent content = new StringContent(File.ReadAllText("warehouse_test_data"), Encoding.UTF8, "application/json");
+            HttpResponseMessage warehouserequest = await _httpClient.PostAsync("/warehouse", content);
             if (!warehouserequest.IsSuccessStatusCode)
             {
                 Assert.Fail();
             }
-            
-            var resultSubmit = await _httpClient.PostAsJsonAsync("/parcel", _testParceL);
+            content = new StringContent(JsonConvert.SerializeObject(_testParceL), Encoding.UTF8, "application/json");
+            HttpResponseMessage resultSubmit = await _httpClient.PostAsync("/parcel", content);
             if (!resultSubmit.IsSuccessStatusCode)
             {
                 Assert.Fail();
             }
+
             JObject obj = JObject.Parse(await resultSubmit.Content.ReadAsStringAsync());
             string trackingID = (string)obj["trackingId"];
 
-            var resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url=test.com", null);
+            HttpResponseMessage resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url=test.com", null);
 
             if (!resultaAddWebhook.IsSuccessStatusCode)
             {
                 Assert.Fail();
             }
-            var parsedResponse = JsonConvert.DeserializeObject<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
-            
-            var webhooks = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
 
-            var listOfWebhooks = JsonConvert.DeserializeObject<WebhookResponses>(await webhooks.Content.ReadAsStringAsync());
+            WebhookMessage parsedResponse = JsonConvert.DeserializeObject<WebhookMessage>(await resultaAddWebhook.Content.ReadAsStringAsync());
+
+            HttpResponseMessage webhooks = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
+
+            WebhookResponses listOfWebhooks = JsonConvert.DeserializeObject<WebhookResponses>(await webhooks.Content.ReadAsStringAsync());
 
             listOfWebhooks.Count.Should().Be(1);
             listOfWebhooks[0].Url.Should().Be("test.com");
             listOfWebhooks[0].TrackingId.Should().Be(trackingID);
-            
-            var resultDelete = await _httpClient.DeleteAsync("/parcel/webhooks/" + listOfWebhooks[0].Id);
-            
+
+            HttpResponseMessage resultDelete = await _httpClient.DeleteAsync("/parcel/webhooks/" + listOfWebhooks[0].Id);
+
             if (!resultDelete.IsSuccessStatusCode)
             {
                 //var result = await resultDelete.Content.ReadAsStringAsync();
                 //throw new Exception(result + resultDelete.StatusCode);
                 Assert.Fail();
             }
-            
-            var webhooksDeleted = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
 
-            var listOfWebhooksDelete = JsonConvert.DeserializeObject<WebhookResponses>(await webhooksDeleted.Content.ReadAsStringAsync());
+            HttpResponseMessage webhooksDeleted = await _httpClient.GetAsync("/parcel/" + trackingID + "/webhooks");
 
-            listOfWebhooksDelete.Count.Should().Be(0); ;
+            WebhookResponses listOfWebhooksDelete = JsonConvert.DeserializeObject<WebhookResponses>(await webhooksDeleted.Content.ReadAsStringAsync());
+
+            listOfWebhooksDelete.Count.Should().Be(0);
+            ;
         }
     }
 }

@@ -68,7 +68,8 @@ namespace NLSL.SKS.Package.IntegrationTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
             HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
             
-            HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
+            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
@@ -97,8 +98,8 @@ namespace NLSL.SKS.Package.IntegrationTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
             HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
 
-            
-            HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync($"/parcel/{trackingId}", parcel);
+            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResult = await _httpClient.PostAsync($"/parcel/{trackingId}", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
@@ -120,8 +121,8 @@ namespace NLSL.SKS.Package.IntegrationTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
             HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
 
-
-            HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
+            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
@@ -148,8 +149,8 @@ namespace NLSL.SKS.Package.IntegrationTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
             HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
 
-
-            HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
+            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
@@ -185,8 +186,8 @@ namespace NLSL.SKS.Package.IntegrationTests
             StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
             HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
 
-
-            HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
+            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
