@@ -59,9 +59,9 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: false
-  displayName: Publish
+  displayName: Publish IntegrationTest
 
 # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
 - task: PublishPipelineArtifact@1
