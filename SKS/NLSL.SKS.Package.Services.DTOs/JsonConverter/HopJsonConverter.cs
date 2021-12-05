@@ -8,7 +8,7 @@ namespace NLSL.SKS.Package.Services.DTOs.JsonConverter
     {
         public override Hop Create(Type objectType, JObject jObject)
         {
-            if (jObject == null) throw new ArgumentNullException("jObject");
+            if (jObject == null) throw new ArgumentNullException(nameof(jObject));
 
             if (!jObject.ContainsKey("hopType"))
                 throw new ArgumentNullException("hopType");
