@@ -25,9 +25,6 @@ namespace NLSL.SKS.Package.WebhookManager.Entities
         /// Unique CODE of the hop.
         /// </summary>
         /// <value>Unique CODE of the hop.</value>
-        [Required]
-        [RegularExpression("^[A-Z]{4}\\d{1,4}$")]
-        [DataMember(Name = "code")]
         public string Code
         {
             get;
@@ -38,8 +35,6 @@ namespace NLSL.SKS.Package.WebhookManager.Entities
         /// Description of the hop.
         /// </summary>
         /// <value>Description of the hop.</value>
-        [Required]
-        [DataMember(Name = "description")]
         public string Description
         {
             get;
@@ -50,8 +45,6 @@ namespace NLSL.SKS.Package.WebhookManager.Entities
         /// The date/time the parcel arrived at the hop.
         /// </summary>
         /// <value>The date/time the parcel arrived at the hop.</value>
-        [Required]
-        [DataMember(Name = "dateTime")]
         public DateTime? DateTime
         {
             get;

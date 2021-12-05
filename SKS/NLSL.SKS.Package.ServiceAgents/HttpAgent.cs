@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 
@@ -34,23 +35,25 @@ namespace NLSL.SKS.Package.ServiceAgents
             try
             {
                 _logger.LogDebug("starting SendParcelToLogisticPartnerPost");
-                string? url =  logisticPartnerUri + "/parcel/" + parcel.TrackingId;
+                string? url = logisticPartnerUri + "/parcel/" + parcel.TrackingId;
 
 
                 BusinessLogic.Entities.Parcel? mappedToBusinessLogikParcel = _mapper.Map<Parcel, BusinessLogic.Entities.Parcel>(parcel);
                 Services.DTOs.Parcel? mappedToControllerParcel = _mapper.Map<BusinessLogic.Entities.Parcel, Services.DTOs.Parcel>(mappedToBusinessLogikParcel);
 
                 string? json = JsonConvert.SerializeObject(mappedToControllerParcel);
-                
+
                 StringContent? data = new StringContent(json, Encoding.UTF8, "application/json");
-                Console.WriteLine(url);
+                _logger.LogDebug(url);
                 HttpResponseMessage? httpResult = _httpClient.PostAsJsonAsync(url, mappedToControllerParcel).Result;
 
                 if (!httpResult.IsSuccessStatusCode)
                 {
                     _logger.LogDebug("could not call partner api");
-                    throw new ServiceAgentHttpRequestFailed(" could not call partner api: " + httpResult.ReasonPhrase +"");
+
+                    throw new ServiceAgentHttpRequestFailed(" could not call partner api: " + httpResult.ReasonPhrase + "");
                 }
+
                 _logger.LogDebug("ending SendParcelToLogisticPartnerPost");
             }
             catch (ServiceAgentHttpRequestFailed e)
@@ -58,6 +61,10 @@ namespace NLSL.SKS.Package.ServiceAgents
                 _logger.LogError(e, $"{e.Message}");
 
                 throw new ServiceAgentsExceptionBase("No data found", e);
+            }
+            catch (AggregateException aggregateException) when (aggregateException.InnerException is HttpRequestException)
+            {
+                _logger.LogWarning(aggregateException, "Invalid Partner URL");
             }
         }
 

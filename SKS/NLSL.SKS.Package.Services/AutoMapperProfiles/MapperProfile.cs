@@ -140,18 +140,19 @@ namespace NLSL.SKS.Package.Services.AutoMapperProfiles
             CreateMap<WebhookManager.Entities.WebHook, DataAccess.Entities.WebHook>();
             CreateMap<WebhookManager.Entities.WebHook, WebhookManager.Entities.WebhookResponse>();
             CreateMap<WebhookManager.Entities.Parcel,WebhookManager.Entities.WebhookMessage>();
-
+            CreateMap<WebhookManager.Entities.WebhookResponse, BusinessLogic.Entities.WebhookResponse>();
 
             CreateMap<BusinessLogic.Entities.WebHook, WebhookManager.Entities.WebHook>();
-            CreateMap<WebhookManager.Entities.WebhookResponse, BusinessLogic.Entities.WebhookResponse>();
-            
             CreateMap<BusinessLogic.Entities.WebhookResponse, DTOs.WebhookResponse>();
-
             CreateMap<BusinessLogic.Entities.Parcel, WebhookManager.Entities.Parcel>();
-            CreateMap<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(); 
             CreateMap<BusinessLogic.Entities.Recipient, WebhookManager.Entities.Recipient>(); 
             CreateMap<BusinessLogic.Entities.HopArrival, WebhookManager.Entities.HopArrival>();
+            
             CreateMap<DataAccess.Entities.WebHook, WebhookManager.Entities.WebhookResponse>();
+            CreateMap<DataAccess.Entities.Recipient, WebhookManager.Entities.Recipient>();
+            CreateMap<DataAccess.Entities.HopArrival, WebhookManager.Entities.HopArrival>();
+            CreateMap<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(); 
+
 
         }
     }

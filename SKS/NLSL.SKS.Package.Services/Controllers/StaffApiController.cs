@@ -10,6 +10,7 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Net.Sockets;
 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -59,29 +60,32 @@ namespace NLSL.SKS.Package.Services.Controllers
 
                 TrackingId trackingIdObject = new TrackingId(trackingId);
                 ReportHop reportHop = new ReportHop() { HopCode = code, TrackingId = trackingIdObject };
-            
+
                 bool isSuccessful = _parcelLogic.ReportHop(reportHop);
 
                 if (isSuccessful)
                     return StatusCode(200);
 
                 _logger.LogWarning("ReportHop was not successful");
-                    
+
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerDataNotFoundException)
             {
-                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                _logger.LogError(e, $"ReportHop failed with {e.Message}");
+
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is BusinessLayerValidationException)
             {
-                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                _logger.LogError(e, $"ReportHop failed with {e.Message}");
+
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
             catch (BusinessLayerExceptionBase e) when (e.InnerException is DataAccessExceptionBase)
             {
-                _logger.LogError(e,$"ReportHop failed with {e.Message}");
+                _logger.LogError(e, $"ReportHop failed with {e.Message}");
+
                 return new ObjectResult(new Error() { ErrorMessage = "An error occured." }) { StatusCode = 500 };
             }
             catch (Exception exception)
