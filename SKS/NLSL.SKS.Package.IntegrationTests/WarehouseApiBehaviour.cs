@@ -25,7 +25,7 @@ namespace NLSL.SKS.Package.IntegrationTests
         [SetUp]
         public void Setup()
         {
-            baseUrl = "https://localhost:5001/warehouse";
+            baseUrl = baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
             _httpClient = new HttpClient(){
                 BaseAddress = new Uri(baseUrl)
             };
@@ -36,8 +36,8 @@ namespace NLSL.SKS.Package.IntegrationTests
         public async Task ImportWarehouse_success()
         {
             var content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            var request = await _httpClient.PostAsync("", content);
-            
+            var request = await _httpClient.PostAsync($"/warehouse", content);
+             
             request.IsSuccessStatusCode.Should().BeTrue();
         }
         
@@ -45,8 +45,8 @@ namespace NLSL.SKS.Package.IntegrationTests
         public async Task GetTestWarehouse_success()
         {
             var content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            var request = await _httpClient.PostAsync("", content);
-            HttpResponseMessage httpResult = await _httpClient.GetAsync($"{_httpClient.BaseAddress}/{"TEST01"}");
+            var request = await _httpClient.PostAsync("/warehouse", content);
+            HttpResponseMessage httpResult = await _httpClient.GetAsync($"/warehouse/{"TEST01"}");
             string jsonString = await httpResult.Content.ReadAsStringAsync();
             Warehouse warehouse = JsonConvert.DeserializeObject<Warehouse>(jsonString);
 
@@ -59,8 +59,8 @@ namespace NLSL.SKS.Package.IntegrationTests
         public async Task GetAllWarehouse_success()
         {
             var content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            var request = await _httpClient.PostAsync("", content);
-            HttpResponseMessage httpResult = await _httpClient.GetAsync($"{_httpClient.BaseAddress}");
+            var request = await _httpClient.PostAsync("/warehouse", content);
+            HttpResponseMessage httpResult = await _httpClient.GetAsync($"/warehouse");
             string jsonString = await httpResult.Content.ReadAsStringAsync();
             List<Warehouse> warehouse = JsonConvert.DeserializeObject<List<Warehouse>>(jsonString);
 

@@ -1,18 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 using FluentAssertions;
-
-using Microsoft.Extensions.Logging;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -23,7 +19,7 @@ using NUnit.Framework;
 
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace NLSL.SKS.Package.Services.Tests
+namespace NLSL.SKS.Package.IntegrationTests
 {
     public class StaffApiBehaviour
     {
@@ -35,13 +31,13 @@ namespace NLSL.SKS.Package.Services.Tests
         [SetUp]
         public void Setup()
         {
-            baseUrl = "https://localhost:5001";
+            baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
             _httpClient = new HttpClient(){
                                               BaseAddress = new Uri(baseUrl)
                                           };
             _listener = new HttpListener();
-            _port = 80;
-            _listener.Prefixes.Add("http://localhost/");
+            _port = 40129;
+            _listener.Prefixes.Add($"http://localhost:{_port}/");
             _testParceL = new Parcel
                           {
                               Weight = 1,
