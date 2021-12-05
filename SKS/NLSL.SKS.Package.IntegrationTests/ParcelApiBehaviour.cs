@@ -31,7 +31,7 @@ namespace NLSL.SKS.Package.IntegrationTests
             baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
             _httpClient = new HttpClient
                           {
-                              BaseAddress = new Uri(baseUrl)
+                              BaseAddress = new Uri(baseUrl),
                           };
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
@@ -70,7 +70,7 @@ namespace NLSL.SKS.Package.IntegrationTests
             
             HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
 
-            NewParcelInfo newParcelInfo = await httpResult.Content.ReadFromJsonAsync<NewParcelInfo>();
+            NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
             newParcelInfo.Should().NotBeNull();
             newParcelInfo.TrackingId.Should().NotBeEmpty();
@@ -100,7 +100,7 @@ namespace NLSL.SKS.Package.IntegrationTests
             
             HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync($"/parcel/{trackingId}", parcel);
 
-            NewParcelInfo newParcelInfo = await httpResult.Content.ReadFromJsonAsync<NewParcelInfo>();
+            NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
             newParcelInfo.Should().NotBeNull();
             newParcelInfo.TrackingId.Should().Be(trackingId);
@@ -123,7 +123,7 @@ namespace NLSL.SKS.Package.IntegrationTests
 
             HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
 
-            NewParcelInfo newParcelInfo = await httpResult.Content.ReadFromJsonAsync<NewParcelInfo>();
+            NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
             httpResult = await _httpClient.GetAsync($"/parcel/{newParcelInfo.TrackingId}");
 
@@ -151,7 +151,7 @@ namespace NLSL.SKS.Package.IntegrationTests
 
             HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
 
-            NewParcelInfo newParcelInfo = await httpResult.Content.ReadFromJsonAsync<NewParcelInfo>();
+            NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
             httpResult = await _httpClient.GetAsync($"/parcel/{newParcelInfo.TrackingId}");
 
@@ -188,7 +188,7 @@ namespace NLSL.SKS.Package.IntegrationTests
 
             HttpResponseMessage httpResult = await _httpClient.PostAsJsonAsync("/parcel", parcel);
 
-            NewParcelInfo newParcelInfo = await httpResult.Content.ReadFromJsonAsync<NewParcelInfo>();
+            NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
 
             httpResult = await _httpClient.GetAsync($"/parcel/{newParcelInfo.TrackingId}");
 
