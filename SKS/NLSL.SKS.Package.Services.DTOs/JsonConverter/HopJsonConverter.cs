@@ -10,7 +10,7 @@ namespace NLSL.SKS.Package.Services.DTOs.JsonConverter
         {
             if (jObject == null) throw new ArgumentNullException(nameof(jObject));
 
-            if (!jObject.ContainsKey("hopType"))
+            if (jObject["hopType"] is null)
                 throw new ArgumentNullException("hopType");
             
             string hopType = jObject["hopType"].ToString().Trim();
