@@ -20,7 +20,7 @@ namespace NLSL.SKS.Package.IntegrationTests
 {
     public class StaffApiBehaviour
     {
-        private HttpClient _httpClient;
+       /* private HttpClient _httpClient;
         private HttpListener _listener;
         private int _port;
         private Parcel _testParceL;
@@ -135,6 +135,6 @@ namespace NLSL.SKS.Package.IntegrationTests
 
             bool success = listeningThread.Join(20000);
             success.Should().BeTrue();
-        }
+        }*/
     }
 }
