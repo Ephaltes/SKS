@@ -12,13 +12,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 
-using NetTopologySuite.IO.Converters;
-
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 
 using NLSL.SKS.Package.BusinessLogic;
-using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
 using NLSL.SKS.Package.BusinessLogic.Validators;
 using NLSL.SKS.Package.DataAccess.Interfaces;
@@ -162,6 +159,14 @@ namespace NLSL.SKS.Package.Services
                 app.UseExceptionHandler("/Error");
 
                 app.UseHsts();
+            }
+
+            using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                PackageContext context = serviceScope.ServiceProvider.GetRequiredService<PackageContext>();
+                context.Database.EnsureDeleted();
+                context.Database.EnsureCreated();
+
             }
         }
     }
