@@ -3,7 +3,6 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,15 +24,17 @@ namespace NLSL.SKS.Package.IntegrationTests
 
         private string baseUrl;
 
-        [SetUp]
-        public async Task Setup()
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
         {
-            baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
+            baseUrl = TestContext.Parameters.Get("baseUrl", "https://nlsl-test.azurewebsites.net");
             _httpClient = new HttpClient
                           {
-                              BaseAddress = new Uri(baseUrl),
+                              BaseAddress = new Uri(baseUrl)
                           };
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            await ImportWarehouse();
 
             _germanyRecipient = new Recipient
                                 {
@@ -47,11 +48,16 @@ namespace NLSL.SKS.Package.IntegrationTests
             _austriaRecipient = new Recipient
                                 {
                                     City = "Wien",
-                                    Country = "Österreich",
+                                    Country = "Austria",
                                     Name = "Maxi Musti",
                                     Street = "Wienerbergstraße 20",
                                     PostalCode = "1120"
                                 };
+        }
+
+        [SetUp]
+        public async Task Setup()
+        {
         }
 
         [Test]
@@ -64,11 +70,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                 Sender = _austriaRecipient
                             };
 
-            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
-            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
-            
-            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
             HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
@@ -94,11 +96,7 @@ namespace NLSL.SKS.Package.IntegrationTests
             string trackingId = new string(Enumerable.Repeat(Chars, Length)
                 .Select(s => s[_random.Next(s.Length)]).ToArray());
 
-            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
-            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
-
-            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
             HttpResponseMessage httpResult = await _httpClient.PostAsync($"/parcel/{trackingId}", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
@@ -117,11 +115,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                 Sender = _austriaRecipient
                             };
 
-            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
-            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
-
-            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
             HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
@@ -145,11 +139,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                 Sender = _austriaRecipient
                             };
 
-            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
-            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
-
-            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
             HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
@@ -182,11 +172,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                 Sender = _austriaRecipient
                             };
 
-            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
-            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
-            HttpResponseMessage request = await _httpClient.PostAsync("/warehouse", content);
-
-            content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
+            StringContent content = new StringContent(JsonConvert.SerializeObject(parcel), Encoding.UTF8, "application/json");
             HttpResponseMessage httpResult = await _httpClient.PostAsync("/parcel", content);
 
             NewParcelInfo newParcelInfo = JsonConvert.DeserializeObject<NewParcelInfo>(await httpResult.Content.ReadAsStringAsync());
@@ -205,6 +191,13 @@ namespace NLSL.SKS.Package.IntegrationTests
             httpResult = await _httpClient.PostAsync($"/parcel/{newParcelInfo.TrackingId}/reportDelivery", null);
 
             httpResult.IsSuccessStatusCode.Should().BeTrue();
+        }
+
+        private async Task ImportWarehouse()
+        {
+            Warehouse _warehouse = JsonConvert.DeserializeObject<Warehouse>(File.ReadAllText("warehouse_test_data"));
+            StringContent content = new StringContent(JsonConvert.SerializeObject(_warehouse), Encoding.UTF8, "application/json");
+            await _httpClient.PostAsync("/warehouse", content);
         }
     }
 }

@@ -24,8 +24,9 @@ namespace NLSL.SKS.Package.IntegrationTests
         private HttpListener _listener;
         private Parcel _testParceL;
         private string baseUrl;
-        [SetUp]
-        public void Setup()
+
+        [OneTimeSetUp]
+        public async Task OneTimeSetup()
         {
             baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
             _httpClient = new HttpClient
@@ -52,6 +53,12 @@ namespace NLSL.SKS.Package.IntegrationTests
                                            PostalCode = "1120"
                                        }
                           };
+        }
+        
+        [SetUp]
+        public void Setup()
+        {
+          
         }
 
         [Test]
