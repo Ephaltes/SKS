@@ -164,7 +164,6 @@ namespace NLSL.SKS.Package.Services
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {
                 PackageContext context = serviceScope.ServiceProvider.GetRequiredService<PackageContext>();
-                context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
             }
