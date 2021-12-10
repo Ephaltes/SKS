@@ -1,23 +1,44 @@
-﻿namespace NLSL.SKS.Package.IntegrationTests
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+using FluentAssertions;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+using NLSL.SKS.Package.Services.DTOs;
+
+using NUnit.Framework;
+
+using JsonSerializer = System.Text.Json.JsonSerializer;
+
+namespace NLSL.SKS.Package.IntegrationTests
 {
     public class StaffApiBehaviour
     {
-        /* private HttpClient _httpClient;
+         private HttpClient _httpClient;
          private HttpListener _listener;
          private int _port;
          private Parcel _testParceL;
          private string baseUrl;
+         private string _postbinContainerId ;
+         private static string _postbinAdress = "https://postb.in";
+         private static string _postbinApiPath = "/api/bin/";
+         
          [SetUp]
-         public void Setup()
+         public async Task Setup()
          {
              baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
              _httpClient = new HttpClient
                            {
                                BaseAddress = new Uri(baseUrl)
                            };
-             _listener = new HttpListener();
-             _port = 40129;
-             _listener.Prefixes.Add($"http://localhost:{_port}/");
              _testParceL = new Parcel
                            {
                                Weight = 1,
@@ -38,12 +59,19 @@
                                             PostalCode = "1120"
                                         }
                            };
+             await PostbinSetup();
          }
- 
-         [TearDown]
-         public void teardown()
+         private async Task PostbinSetup()
          {
-             _listener.Stop();
+             var x = await _httpClient.PostAsync(_postbinAdress + _postbinApiPath.TrimEnd('/'),null);
+             
+             JObject obj = JObject.Parse(await x.Content.ReadAsStringAsync());
+             _postbinContainerId = (string)obj["binId"];
+         }
+         [TearDown]
+         public async Task teardown()
+         {
+             await _httpClient.DeleteAsync(_postbinAdress + _postbinApiPath + _postbinContainerId);
          }
          [Test]
          public async Task WebhookShouldBeCallled_Success()
@@ -65,7 +93,7 @@
              JObject obj = JObject.Parse(await resultSubmit.Content.ReadAsStringAsync());
              string trackingID = (string)obj["trackingId"];
  
-             HttpResponseMessage resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url=http://localhost:" + _port, null);
+             HttpResponseMessage resultaAddWebhook = await _httpClient.PostAsync("/parcel/" + trackingID + "/webhooks?url="+ _postbinAdress +"/"+ _postbinContainerId, null);
  
              if (!resultaAddWebhook.IsSuccessStatusCode)
              {
@@ -80,31 +108,10 @@
              IList<WebhookResponse> listOfWebhooks = JsonConvert.DeserializeObject<IList<WebhookResponse>>(result);
  
              listOfWebhooks.Count.Should().Be(1);
-             listOfWebhooks[0].Url.Should().Be("http://localhost:" + _port);
+             listOfWebhooks[0].Url.Should().Be(_postbinAdress +"/"+ _postbinContainerId);
              listOfWebhooks[0].TrackingId.Should().Be(trackingID);
- 
-             Thread listeningThread = new Thread(() =>
-                                                 {
-                                                     _listener.Start();
- 
-                                                     HttpListenerContext connection = _listener.GetContext();
- 
-                                                     string text;
-                                                     using (StreamReader reader = new StreamReader(connection.Request.InputStream,
-                                                                connection.Request.ContentEncoding))
-                                                     {
-                                                         text = reader.ReadToEnd();
-                                                     }
- 
-                                                     WebhookMessage result = JsonConvert.DeserializeObject<WebhookMessage>(text);
-                                                     connection.Response.StatusCode = 200;
-                                                     connection.Response.Close();
-                                                     result.TrackingId.Should().Be(trackingID);
-                                                 });
- 
-             listeningThread.Start();
- 
- 
+             
+             
              HttpResponseMessage hops = await _httpClient.GetAsync("/parcel/" + trackingID);
              if (!hops.IsSuccessStatusCode)
              {
@@ -114,9 +121,20 @@
              TrackingInformation parsedHops = JsonConvert.DeserializeObject<TrackingInformation>(await hops.Content.ReadAsStringAsync());
  
              await _httpClient.PostAsync("/parcel/" + trackingID + "/reportHop/" + parsedHops.FutureHops[0].Code, null);
- 
-             bool success = listeningThread.Join(20000);
-             success.Should().BeTrue();
-         }*/
+
+             HttpResponseMessage mirrorRequest = await _httpClient.GetAsync(_postbinAdress+_postbinApiPath+_postbinContainerId+"/req/shift");
+             if(!mirrorRequest.IsSuccessStatusCode)
+             { 
+                 Assert.Fail();
+             }
+
+             JObject objMirrorRequest = JObject.Parse(await mirrorRequest.Content.ReadAsStringAsync());
+             var postbinResponse = objMirrorRequest["body"].ToString();
+
+             JObject objMirrorRequestBody = JObject.Parse(postbinResponse);
+             var trackingIdFromWebhook = objMirrorRequestBody["trackingId"].ToString();
+
+             trackingIdFromWebhook.Should().Be(trackingID);
+         }
     }
 }

@@ -142,8 +142,6 @@ namespace NLSL.SKS.Package.IntegrationTests
 
             if (!resultDelete.IsSuccessStatusCode)
             {
-                //var result = await resultDelete.Content.ReadAsStringAsync();
-                //throw new Exception(result + resultDelete.StatusCode);
                 Assert.Fail();
             }
 
@@ -152,7 +150,6 @@ namespace NLSL.SKS.Package.IntegrationTests
             WebhookResponses listOfWebhooksDelete = JsonConvert.DeserializeObject<WebhookResponses>(await webhooksDeleted.Content.ReadAsStringAsync());
 
             listOfWebhooksDelete.Count.Should().Be(0);
-            ;
         }
     }
 }

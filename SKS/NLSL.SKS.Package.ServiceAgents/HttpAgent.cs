@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Net.Sockets;
@@ -72,7 +73,21 @@ namespace NLSL.SKS.Package.ServiceAgents
         {
             try
             {
-                HttpResponseMessage? httpResult = _httpClient.PostAsJsonAsync(url, content).Result;
+                HttpResponseMessage? httpResult;
+                try
+                {
+                    httpResult = _httpClient.PostAsJsonAsync(url, content).Result;
+                    if (!httpResult.IsSuccessStatusCode)
+                    {
+                        _logger.LogWarning("webhook bad statuscode "+ httpResult.StatusCode+" with url "+url );
+                    }
+                    
+                }
+                catch
+                {
+                    _logger.LogWarning("could not send webhook exception");
+                    return false;
+                }
                 
                 return httpResult.IsSuccessStatusCode;
             }
