@@ -40,10 +40,14 @@ namespace NLSL.SKS.Package.DataAccess.Sql
             get;
             set;
         }
-        
+
+        public virtual DbSet<WebHook> WebHooks
+        {
+            get;
+            set;
+        }
         public PackageContext(DbContextOptions<PackageContext> options) : base(options)
         {
-            Database.EnsureCreated();
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)

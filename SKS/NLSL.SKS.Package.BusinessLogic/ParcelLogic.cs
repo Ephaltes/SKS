@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Reflection.PortableExecutable;
-using System.Text;
 
 using AutoMapper;
 
@@ -15,22 +10,24 @@ using Microsoft.Extensions.Logging;
 
 using NetTopologySuite.Geometries;
 
-using Newtonsoft.Json;
-
 using NLSL.SKS.Package.BusinessLogic.CustomExceptions;
 using NLSL.SKS.Package.BusinessLogic.Entities;
 using NLSL.SKS.Package.BusinessLogic.Entities.Enums;
 using NLSL.SKS.Package.BusinessLogic.Interfaces;
+using NLSL.SKS.Package.DataAccess.Entities;
 using NLSL.SKS.Package.DataAccess.Interfaces;
 using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
-using NLSL.SKS.Package.ServiceAgents;
 using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.ServiceAgents.Interface;
-//using NLSL.SKS.Package.Services.DTOs;
+using NLSL.SKS.Package.WebhookManager.Interfaces;
+
 using Hop = NLSL.SKS.Package.DataAccess.Entities.Hop;
+using HopArrival = NLSL.SKS.Package.BusinessLogic.Entities.HopArrival;
 using Parcel = NLSL.SKS.Package.BusinessLogic.Entities.Parcel;
 using Truck = NLSL.SKS.Package.DataAccess.Entities.Truck;
+using Warehouse = NLSL.SKS.Package.DataAccess.Entities.Warehouse;
+//using NLSL.SKS.Package.Services.DTOs;
 
 namespace NLSL.SKS.Package.BusinessLogic
 {
@@ -38,8 +35,10 @@ namespace NLSL.SKS.Package.BusinessLogic
     {
         private readonly List<Hop> _endTruckToWarehouse = new List<Hop>();
         private readonly IGeoCodingAgent _geoCodingAgent;
+        private readonly IHttpAgent _httpAgent;
         private readonly ILogger<ParcelLogic> _logger;
         private readonly IMapper _mapper;
+
         private readonly IParcelRepository _parcelRepository;
         private readonly IValidator<Parcel> _parcelValidator;
         private readonly IValidator<ReportHop> _reportHopValidator;
@@ -47,8 +46,8 @@ namespace NLSL.SKS.Package.BusinessLogic
         private readonly List<Hop> _startTruckToWarehouse = new List<Hop>();
         private readonly IValidator<TrackingId> _trackingIdValidator;
         private readonly IWarehouseRepository _warehouseRepository;
-        private readonly IHttpAgent _httpAgent;
-        
+        private readonly IWebHookManager _webHookManager;
+
         public ParcelLogic(IValidator<Parcel> parcelValidator,
             IValidator<TrackingId> trackingIdValidator,
             IValidator<ReportHop> reportHopValidator,
@@ -56,7 +55,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             IMapper mapper,
             ILogger<ParcelLogic> logger,
             IGeoCodingAgent geoCodingAgent,
-            IWarehouseRepository warehouseRepository, IHttpAgent httpAgent)
+            IWarehouseRepository warehouseRepository, IHttpAgent httpAgent, IWebHookManager webHookManager)
         {
             _parcelValidator = parcelValidator;
             _trackingIdValidator = trackingIdValidator;
@@ -67,6 +66,7 @@ namespace NLSL.SKS.Package.BusinessLogic
             _geoCodingAgent = geoCodingAgent;
             _warehouseRepository = warehouseRepository;
             _httpAgent = httpAgent;
+            _webHookManager = webHookManager;
         }
 
         public Parcel? Track(TrackingId trackingId)
@@ -145,7 +145,10 @@ namespace NLSL.SKS.Package.BusinessLogic
                     parcel.TrackingId = _parcelRepository.GenerateTrackingId();
 
                 parcel.FutureHops = GetFutureHopsForPackage(parcel);
+
                 parcel.State = StateEnum.Pickup;
+
+                _webHookManager.ParcelStateChanged(_mapper.Map<Parcel, WebhookManager.Entities.Parcel>(parcel));
 
                 DataAccess.Entities.Parcel dataAccessParcel = _mapper.Map<Parcel, DataAccess.Entities.Parcel>(parcel);
 
@@ -216,8 +219,10 @@ namespace NLSL.SKS.Package.BusinessLogic
 
                 bool status = parcelFromDb?.FutureHops.Count == 0;
                 parcelFromDb.State = DataAccess.Entities.Enums.StateEnum.Delivered;
+                _webHookManager.ParcelStateChanged(_mapper.Map<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(parcelFromDb));
+
                 _parcelRepository.Update(parcelFromDb);
-                
+
                 _logger.LogDebug("parcel delivery status complete");
 
                 return status;
@@ -279,30 +284,44 @@ namespace NLSL.SKS.Package.BusinessLogic
                     throw new BusinessLayerDataNotFoundException(result.Errors.First().ErrorMessage);
                 }
 
-                parcel.VisitedHops.Add(matchedHop);
-                parcel.FutureHops.Remove(matchedHop);
+
                 //throw new BusinessLayerExceptionBase(JsonConvert.SerializeObject(matchedHop));
                 switch (matchedHop.Hop)
                 {
-                    case DataAccess.Entities.Truck:
+                    case Truck:
                         parcel.State = DataAccess.Entities.Enums.StateEnum.InTruckDelivery;
-                        break;
-                    case DataAccess.Entities.Warehouse: 
-                        parcel.State = DataAccess.Entities.Enums.StateEnum.InTransport;
-                        break;
-                    case DataAccess.Entities.Transferwarehouse c:
 
-                        _httpAgent.SendParcelToLogisticPartnerPost(c.LogisticsPartnerUrl,parcel);
-                        
+                        break;
+                    case Warehouse:
+                        parcel.State = DataAccess.Entities.Enums.StateEnum.InTransport;
+
+                        break;
+                    case Transferwarehouse c:
+                        if (parcel.FutureHops.Count != 0)
+                        {
+                            parcel.State = DataAccess.Entities.Enums.StateEnum.InTransport;
+
+                            break;
+                        }
+
+                        _httpAgent.SendParcelToLogisticPartnerPost(c.LogisticsPartnerUrl, parcel);
+
                         parcel.State = DataAccess.Entities.Enums.StateEnum.Transferred;
+
                         break;
                     default:
                         _logger.LogDebug("Hoptype not recognised");
+
                         throw new BusinessLayerExceptionBase("Hoptype not recognised");
                 }
+
+                parcel.VisitedHops.Add(matchedHop);
+                parcel.FutureHops.Remove(matchedHop);
                 _parcelRepository.Update(parcel);
-                
-                
+                WebhookManager.Entities.Parcel webHookParcel = _mapper.Map<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(parcel);
+                _webHookManager.ParcelStateChanged(webHookParcel);
+
+
                 _logger.LogDebug("report hop complete");
 
                 return true;
@@ -343,16 +362,16 @@ namespace NLSL.SKS.Package.BusinessLogic
 
             Point senderPoint = new Point(senderGeoCoordinates.Longitude, senderGeoCoordinates.Latitude);
             Point receiverPoint = new Point(receiverGeoCoordinates.Longitude, receiverGeoCoordinates.Latitude);
-            
+
             senderPoint.SRID = 4326;
             receiverPoint.SRID = 4326;
 
-            Hop startTruck = _warehouseRepository.GetHopForPoint(senderPoint);
-            Hop endTruck = _warehouseRepository.GetHopForPoint(receiverPoint);
+            Hop startHop = _warehouseRepository.GetHopForPoint(senderPoint);
+            Hop endHop = _warehouseRepository.GetHopForPoint(receiverPoint);
 
-            List<Hop> path = GetPathForTrucks(startTruck, endTruck);
-            path.Insert(0,startTruck);
-            path.Add(endTruck);
+            List<Hop> path = GetPathForTrucks(startHop, endHop);
+            path.Insert(0, startHop);
+            path.Add(endHop);
 
             return path.Select(hop => new HopArrival
                                       {
@@ -365,23 +384,23 @@ namespace NLSL.SKS.Package.BusinessLogic
         {
             while (true)
             {
-                Hop startWarehouse = _warehouseRepository.GetParentOfHopByCode(startHop.Code);
-                Hop endWarehouse = _warehouseRepository.GetParentOfHopByCode(endHop.Code);
+                Hop startParentHop = _warehouseRepository.GetParentOfHopByCode(startHop.Code);
+                Hop endParentHop = _warehouseRepository.GetParentOfHopByCode(endHop.Code);
 
-                if (startWarehouse.Code == endWarehouse.Code)
+                if (startParentHop.Code == endParentHop.Code)
                 {
                     List<Hop> path = new List<Hop>();
                     path.AddRange(_endTruckToWarehouse);
                     _startTruckToWarehouse.Reverse();
-                    path.Add(endWarehouse);
+                    path.Add(endParentHop);
                     path.AddRange(_startTruckToWarehouse);
 
                     return path;
                 }
 
-                startHop = startWarehouse;
+                startHop = startParentHop;
 
-                endHop = endWarehouse;
+                endHop = endParentHop;
             }
         }
     }

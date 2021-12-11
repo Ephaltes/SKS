@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
-
-using Castle.Core.Logging;
 
 using NUnit.Framework;
 using FakeItEasy;
 
-using FizzWare.NBuilder;
-
 using FluentAssertions;
 
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 

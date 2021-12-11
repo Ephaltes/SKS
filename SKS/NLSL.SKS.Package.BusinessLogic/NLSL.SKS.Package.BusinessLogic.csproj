@@ -16,7 +16,9 @@
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Entities\NLSL.SKS.Package.BusinessLogic.Entities.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.BusinessLogic.Interfaces\NLSL.SKS.Package.BusinessLogic.Interfaces.csproj" />
     <ProjectReference Include="..\NLSL.SKS.Package.ServiceAgents\NLSL.SKS.Package.ServiceAgents.csproj" />
-    <ProjectReference Include="..\NLSL.SKS.Package.Services.DTOs\NLSL.SKS.Package.Services.DTOs.csproj" />
+    <ProjectReference Include="..\NLSL.SKS.Package.WebhookManager.Entities\NLSL.SKS.Package.WebhookManager.Entities.csproj" />
+    <ProjectReference Include="..\NLSL.SKS.Package.WebhookManager.Interfaces\NLSL.SKS.Package.WebhookManager.Interfaces.csproj" />
+    <ProjectReference Include="..\NLSL.SKS.Package.WebhookManager\NLSL.SKS.Package.WebhookManager.csproj" />
   </ItemGroup>
 
 </Project>

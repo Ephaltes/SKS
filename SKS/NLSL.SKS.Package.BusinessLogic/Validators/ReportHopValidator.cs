@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-using FluentValidation;
+﻿using FluentValidation;
 
 using NLSL.SKS.Package.BusinessLogic.Entities;
 

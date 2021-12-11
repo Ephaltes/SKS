@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 
 using AutoMapper;
 
@@ -25,6 +24,7 @@ using NLSL.SKS.Package.DataAccess.Sql.CustomExceptinos;
 using NLSL.SKS.Package.ServiceAgents.Entities;
 using NLSL.SKS.Package.ServiceAgents.Exceptions;
 using NLSL.SKS.Package.ServiceAgents.Interface;
+using NLSL.SKS.Package.WebhookManager.Interfaces;
 
 using NUnit.Framework;
 
@@ -46,6 +46,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
         private IValidator<TrackingId> _trackingIdValidator;
         private IWarehouseRepository _warehouseRepository;
         private IHttpAgent _httpClient;
+        private IWebHookManager _webHookManager;
         [SetUp]
         public void Setup()
         {
@@ -55,7 +56,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
             _warehouseRepository = A.Fake<IWarehouseRepository>();
             _geoCodingAgent = A.Fake<IGeoCodingAgent>();
             _httpClient = A.Fake<IHttpAgent>();
-            
+            _webHookManager = A.Fake<WebhookManager.WebhookManager>();
             _parcelRepository = A.Fake<IParcelRepository>();
             _mapper = A.Fake<IMapper>();
             _logger = A.Fake<ILogger<ParcelLogic>>();
@@ -67,7 +68,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Tests
                 _logger,
                 _geoCodingAgent,
                 _warehouseRepository,
-                _httpClient
+                _httpClient,
+                _webHookManager
                 );
         }
 
