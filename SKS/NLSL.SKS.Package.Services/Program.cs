@@ -24,6 +24,7 @@ namespace NLSL.SKS.Package.Services
                                       logging.AddConsole();
                                       logging.AddDebug();
                                       logging.AddEventLog();
+                                      logging.AddAzureWebAppDiagnostics();
                                   })
                 .ConfigureWebHostDefaults(webBuilder =>
                                           {

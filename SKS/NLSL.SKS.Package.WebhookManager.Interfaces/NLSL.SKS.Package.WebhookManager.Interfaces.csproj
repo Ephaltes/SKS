@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\NLSL.SKS.Package.WebhookManager.Entities\NLSL.SKS.Package.WebhookManager.Entities.csproj" />
+    </ItemGroup>
+
+</Project>

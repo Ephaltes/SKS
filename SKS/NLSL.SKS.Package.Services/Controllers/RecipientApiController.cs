@@ -82,7 +82,7 @@ namespace NLSL.SKS.Package.Services.Controllers
                         new Error { ErrorMessage = "tracked parcel not found" });
                 }
 
-                TrackingInformation? resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
+                TrackingInformation resultParcel = _mapper.Map<Parcel, TrackingInformation>(trackingParcel);
 
                 
                 _logger.LogDebug("TrackParcel successful");
