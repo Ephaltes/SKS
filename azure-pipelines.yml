@@ -51,7 +51,7 @@ steps:
   inputs:
     command: publish
     publishWebProjects: true
-    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
   displayName: Publish API
 
