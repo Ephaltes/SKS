@@ -14,12 +14,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-# - task: UseDotNet@2
-#   displayName: 'Use .NET Core sdk 5.0.100'
-#   inputs:
-#     packageType: 'sdk'
-#     version: '5.0.100'
-#     includePreviewVersions: true
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 5.0.100'
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
 - task: DotNetCoreCLI@2
   inputs:
     command: build
