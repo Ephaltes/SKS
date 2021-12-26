@@ -51,14 +51,14 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/API'
     zipAfterPublish: true
   displayName: Publish API
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: 'SKS/NLSL.SKS.Package.Blazor/NLSL.SKS.Package.Blazor.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.Blazor/NLSL.SKS.Package.Blazor.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Frontend'
     zipAfterPublish: true
   displayName: Publish Frontend
 
@@ -66,13 +66,26 @@ steps:
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
     zipAfterPublish: true
   displayName: Publish IntegrationTest
 
 # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'NLSL_WebApp'
-  displayName: create artefact
+    targetPath: '$(Build.ArtifactStagingDirectory)/API' 
+    artifactName: 'NLSL_API'
+  displayName: create artefact api
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/Frontend' 
+    artifactName: 'NLSL_Frontend'
+  displayName: create artefact frontend
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)/IntegrationTests' 
+    artifactName: 'NLSL_IntegrationTests'
+  displayName: create artefact IntegrationTests
+
