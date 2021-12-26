@@ -113,11 +113,17 @@ namespace NLSL.SKS.Package.Services
                                    {
                                        c.SwaggerDoc("v1", new OpenApiInfo { Title = "NLSL.SKS.Package.Services", Version = "v1" });
                                    });
+
+
+            services.AddCors();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyOrigin());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -160,6 +166,7 @@ namespace NLSL.SKS.Package.Services
 
                 app.UseHsts();
             }
+
 
             using (IServiceScope serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
             {

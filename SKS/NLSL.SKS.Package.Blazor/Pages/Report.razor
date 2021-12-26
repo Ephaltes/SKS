@@ -1,0 +1,88 @@
+﻿@page "/report"
+@using NLSL.SKS.Package.Blazor.Helper
+@using NLSL.SKS.Package.Blazor.Models
+@inject HttpHelper _helper
+
+<div class="container">
+    <h3 class="text-center">Search</h3>
+
+
+    <EditForm Model="@reportModel" OnValidSubmit="@ReportHop">
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="TrackingId" aria-label="Tracking ID" @bind-Value="reportModel.TrackingId"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => reportModel.TrackingId)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="mt-2 form-check">
+            <InputCheckbox class="form-check-input" type="checkbox" id="delivered" @bind-Value="reportModel.Delivered"/>
+            <label class="form-check-label" for="delivered">
+                final Delivery
+            </label>
+        </div>
+
+        @if (!reportModel.Delivered)
+        {
+            <div class="row mt-2">
+                <InputText class="form-control " type="text" placeholder="WarehouseCode" aria-label="Tracking ID" @bind-Value="reportModel.HopCode"/>
+                <div>
+                    <ValidationMessage class="form-check" For="@(() => reportModel.HopCode)"></ValidationMessage>
+                </div>
+            </div>
+        }
+
+        <div class="row mt-2">
+            <button class="form-control btn btn-primary" type="submit">Search</button>
+        </div>
+
+        <DataAnnotationsValidator/>
+    </EditForm>
+</div>
+<div class="container mt-3">
+    @if (!string.IsNullOrEmpty(errorMessage) || success == false)
+    {
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Report failed
+            </div>
+        }
+    }
+    else if (success == true)
+    {
+        <div class="alert alert-success" role="alert">
+            Report success
+        </div>
+    }
+
+</div>
+
+
+@code {
+    private readonly ReportHopModel reportModel = new ReportHopModel();
+    private string errorMessage;
+    private bool? success;
+    private async Task ReportHop()
+    {
+        try
+        {
+            success = null;
+            if (reportModel.Delivered)
+                success = await _helper.ReportDelivery(reportModel.TrackingId);
+            else
+                success = await _helper.ReportHop(reportModel.TrackingId, reportModel.HopCode);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            success = false;
+        }
+    }
+}
