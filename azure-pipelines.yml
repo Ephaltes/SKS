@@ -73,19 +73,7 @@ steps:
 # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
 - task: PublishPipelineArtifact@1
   inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/API' 
-    artifactName: 'NLSL_API'
-  displayName: create artefact api
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/Frontend' 
-    artifactName: 'NLSL_Frontend'
-  displayName: create artefact frontend
-
-- task: PublishPipelineArtifact@1
-  inputs:
-    targetPath: '$(Build.ArtifactStagingDirectory)/IntegrationTests' 
-    artifactName: 'NLSL_IntegrationTests'
-  displayName: create artefact IntegrationTests
+    targetPath: '$(Build.ArtifactStagingDirectory)' 
+    artifactName: 'NLSL_APP'
+  displayName: create artefact
 
