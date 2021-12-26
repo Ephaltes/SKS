@@ -51,16 +51,17 @@ steps:
   inputs:
     command: publish
     publishWebProjects: true
-    arguments: 'SKS/NLSL.SKS.Package.Blazor/NLSL.SKS.Package.Blazor.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
-  displayName: Publish
+  displayName: Publish API
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
     publishWebProjects: true
-    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    arguments: 'SKS/NLSL.SKS.Package.Blazor/NLSL.SKS.Package.Blazor.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
     zipAfterPublish: true
-  displayName: Publish
+  displayName: Publish Frontend
+
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
