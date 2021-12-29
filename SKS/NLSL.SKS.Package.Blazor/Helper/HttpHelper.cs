@@ -44,13 +44,13 @@ public class HttpHelper
     {
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"/parcel", parcel);
 
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.IsSuccessStatusCode)
         {
             return (true, await response.Content.ReadAsStringAsync());
         }
         else
         {
-            return (false, "");
+            return (false, await response.Content.ReadAsStringAsync());
         }
     }
 }
