@@ -44,7 +44,7 @@ public class HttpHelper
     {
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"/parcel", parcel);
 
-        if (response.StatusCode == HttpStatusCode.OK)
+        if (response.StatusCode == HttpStatusCode.Created)
         {
             return (true, await response.Content.ReadAsStringAsync());
         }
