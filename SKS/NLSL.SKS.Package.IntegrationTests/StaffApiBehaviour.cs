@@ -28,8 +28,8 @@ namespace NLSL.SKS.Package.IntegrationTests
          private Parcel _testParceL;
          private string baseUrl;
          private string _postbinContainerId ;
-         private static string _postbinAdress = "https://postb.in";
-         private static string _postbinApiPath = "/api/bin/";
+         private static string _postbinAdress = "https://www.toptal.com/developers/postbin/";
+         private static string _postbinApiPath = "/developers/postbin/api/bin/";
          
          [SetUp]
          public async Task Setup()

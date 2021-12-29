@@ -9,11 +9,12 @@
 
         public PersonModel Sender
         {
-            get; set;
-        }
+            get;
+            set;
+        } = new PersonModel();
         public PersonModel Recipient
         {
             get; set;
-        }
+        }= new PersonModel();
     }
 }

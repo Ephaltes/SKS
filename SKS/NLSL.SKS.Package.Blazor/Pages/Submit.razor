@@ -1,11 +1,140 @@
 ﻿@page "/submit"
 @using NLSL.SKS.Package.Blazor.Helper
 @using NLSL.SKS.Package.Blazor.Models
-@using NLSL.SKS.Package.Blazor.Dtos
 @inject HttpHelper _helper
 
 <h3>Submit</h3>
+<div class="container">
+    <EditForm Model="@ParcelModel" OnValidSubmit="@SubmitParcel">
+        <h3 class="text-center">Weight</h3>
+        <div class="row">
+            <InputNumber class="form-control" type="number" placeholder="TrackingId" aria-label="Tracking ID" @bind-Value="ParcelModel.Weight"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Weight)"></ValidationMessage>
+            </div>
+        </div>
+        <h3 class="text-center">Sender</h3>
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Sender Name" aria-label="Tracking ID" @bind-Value="ParcelModel.Sender.Name"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Sender.Name)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Sender Street" aria-label="Tracking ID" @bind-Value="ParcelModel.Sender.Street"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Sender.Street)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Sender City" aria-label="Tracking ID" @bind-Value="ParcelModel.Sender.City"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Sender.City)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Sender PostalCode" aria-label="Tracking ID" @bind-Value="ParcelModel.Sender.PostalCode"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Sender.PostalCode)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Sender Country" aria-label="Tracking ID" @bind-Value="ParcelModel.Sender.Country"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Sender.Country)"></ValidationMessage>
+            </div>
+        </div>
+        <h3 class="text-center">Recipient</h3>
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Recipient Name" aria-label="Tracking ID" @bind-Value="ParcelModel.Recipient.Name"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Recipient.Name)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Recipient Street" aria-label="Tracking ID" @bind-Value="ParcelModel.Recipient.Street"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Recipient.Street)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Recipient City" aria-label="Tracking ID" @bind-Value="ParcelModel.Recipient.City"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Recipient.City)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Recipient PostalCode" aria-label="Tracking ID" @bind-Value="ParcelModel.Recipient.PostalCode"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Recipient.PostalCode)"></ValidationMessage>
+            </div>
+        </div>
+
+        <div class="row">
+            <InputText class="form-control" type="text" placeholder="Recipient Country" aria-label="Tracking ID" @bind-Value="ParcelModel.Recipient.Country"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => ParcelModel.Recipient.Country)"></ValidationMessage>
+            </div>
+        </div>
+
+
+        <div class="row mt-2">
+            <button class="form-control btn btn-primary" type="submit">Submit this Awesome Parcel :)</button>
+        </div>
+        <DataAnnotationsValidator/>
+    </EditForm>
+</div>
+
+<div class="container mt-3">
+    @if (!string.IsNullOrEmpty(errorMessage) || success == false)
+    {
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Report failed
+            </div>
+        }
+    }
+    else if (success == true)
+    {
+        <div class="alert alert-success" role="alert">
+            Report success, trackingID: @trackingId
+        </div>
+    }
+</div>
 
 @code {
-    
+    private readonly ParcelModel ParcelModel = new();
+    private string errorMessage;
+    private bool? success;
+    private string? trackingId;
+
+    private async Task SubmitParcel()
+    {
+        try
+        {
+            success = null;
+            var x = await _helper.SubmitParcel(ParcelModel);
+            success = x.Item1;
+            trackingId = x.Item2;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+            success = false;
+            trackingId = "";
+        }
+    }
+
 }
