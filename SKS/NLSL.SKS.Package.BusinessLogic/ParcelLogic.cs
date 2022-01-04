@@ -217,7 +217,9 @@ namespace NLSL.SKS.Package.BusinessLogic
                     throw new BusinessLayerDataNotFoundException("no parcel found in db with trackingID");
                 }
 
-                bool status = parcelFromDb?.FutureHops.Count == 0;
+                if (parcelFromDb?.FutureHops.Count > 0)
+                    return false;
+
                 parcelFromDb.State = DataAccess.Entities.Enums.StateEnum.Delivered;
                 _webHookManager.ParcelStateChanged(_mapper.Map<DataAccess.Entities.Parcel, WebhookManager.Entities.Parcel>(parcelFromDb));
 
@@ -225,7 +227,7 @@ namespace NLSL.SKS.Package.BusinessLogic
 
                 _logger.LogDebug("parcel delivery status complete");
 
-                return status;
+                return true;
             }
             catch (BusinessLayerValidationException e)
             {

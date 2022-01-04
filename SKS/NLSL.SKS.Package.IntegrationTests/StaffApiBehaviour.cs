@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -28,13 +29,13 @@ namespace NLSL.SKS.Package.IntegrationTests
          private Parcel _testParceL;
          private string baseUrl;
          private string _postbinContainerId ;
-         private static string _postbinAdress = "https://postb.in";
+         private static string _postbinAdress = "https://www.toptal.com/developers/postbin";
          private static string _postbinApiPath = "/api/bin/";
          
          [SetUp]
          public async Task Setup()
          {
-             baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
+             baseUrl = TestContext.Parameters.Get("baseUrl", "http://localhost:5000");
              _httpClient = new HttpClient
                            {
                                BaseAddress = new Uri(baseUrl)

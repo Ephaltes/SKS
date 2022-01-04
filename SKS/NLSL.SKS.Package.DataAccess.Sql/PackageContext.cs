@@ -54,6 +54,16 @@ namespace NLSL.SKS.Package.DataAccess.Sql
         {
             //placeholder
           base.OnModelCreating(modelBuilder);
+
+          modelBuilder.Entity<Parcel>()
+              .HasOne(r => r.Recipient)
+              .WithMany()
+              .OnDelete(DeleteBehavior.Restrict);
+          
+          modelBuilder.Entity<Parcel>()
+              .HasOne(r => r.Sender)
+              .WithMany()
+              .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
