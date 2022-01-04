@@ -1,0 +1,100 @@
+﻿@page "/search"
+@using NLSL.SKS.Package.Blazor.Helper
+@using NLSL.SKS.Package.Blazor.Models
+@using NLSL.SKS.Package.Blazor.Dtos
+@inject HttpHelper _helper
+
+<div class="container">
+    <h3 class="text-center">Search</h3>
+
+
+    <EditForm class="row" Model="@searchModel" OnValidSubmit="@GetTrackingInformation">
+        <div class="col-10">
+            <InputText class="form-control" type="search" placeholder="Search" aria-label="Tracking ID" @bind-Value="searchModel.TrackingId"/>
+            <div>
+                <ValidationMessage class="form-check" For="@(() => searchModel.TrackingId)"></ValidationMessage>
+            </div>
+        </div>
+        <div class="col-2">
+            <button class="form-control btn btn-primary col-2" type="submit">Search</button>
+        </div>
+        <DataAnnotationsValidator/>
+    </EditForm>
+</div>
+<div class="container mt-3">
+    @if (send && (!string.IsNullOrEmpty(errorMessage) || trackingInformation is null))
+    {
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-danger" role="alert">
+                Tracking Number not found
+            </div>
+        }
+    }
+    else if (trackingInformation is not null)
+    {
+        <div class="row">
+            <div class="col-8">
+                State:
+            </div>
+            <div class="col-4">
+                @trackingInformation.State
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-6">
+                FutureHops:
+            </div>
+            <div class="col-6">
+                @foreach (HopArrival hop in trackingInformation.FutureHops)
+                {
+                    <div class="row">
+                        <div class="col-4"> @hop.Code </div>
+                        <div class="col-8"> @hop.Description</div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-6">
+                VisitedHops:
+            </div>
+            <div class="col-6">
+                @foreach (HopArrival hop in trackingInformation.VisitedHops)
+                {
+                    <div class="row">
+                        <div class="col-4"> @hop.Code </div>
+                        <div class="col-8"> @hop.Description</div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    }
+</div>
+
+@code {
+    private readonly SearchModel searchModel = new SearchModel();
+    private TrackingInformation trackingInformation;
+    private string errorMessage;
+    private bool send;
+    private async Task GetTrackingInformation()
+    {
+        try
+        {
+            trackingInformation = null;
+            trackingInformation = await _helper.GetTrackingInformation(searchModel.TrackingId);
+            send = true;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+    }
+}

@@ -14,12 +14,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-# - task: UseDotNet@2
-#   displayName: 'Use .NET Core sdk 5.0.100'
-#   inputs:
-#     packageType: 'sdk'
-#     version: '5.0.100'
-#     includePreviewVersions: true
+- task: UseDotNet@2
+  displayName: 'Use .NET Core sdk 6'
+  inputs:
+    packageType: 'sdk'
+    version: '6.x'
 - task: DotNetCoreCLI@2
   inputs:
     command: build
@@ -51,21 +50,30 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
-    publishWebProjects: true
-    arguments: '--configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    publishWebProjects: false
+    arguments: 'SKS/NLSL.SKS.Package.Services/NLSL.SKS.Package.Services.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/API'
     zipAfterPublish: true
-  displayName: Publish
+  displayName: Publish API
 - task: DotNetCoreCLI@2
   inputs:
     command: publish
     publishWebProjects: false
-    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-    zipAfterPublish: false
+    arguments: 'SKS/NLSL.SKS.Package.Blazor/NLSL.SKS.Package.Blazor.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Frontend'
+    zipAfterPublish: true
+  displayName: Publish Frontend
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    publishWebProjects: false
+    arguments: 'SKS/NLSL.SKS.Package.IntegrationTests/NLSL.SKS.Package.IntegrationTests.csproj --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/IntegrationTests'
+    zipAfterPublish: true
   displayName: Publish IntegrationTest
 
 # this code takes all the files in $(Build.ArtifactStagingDirectory) and uploads them as an artifact of your build.
 - task: PublishPipelineArtifact@1
   inputs:
     targetPath: '$(Build.ArtifactStagingDirectory)' 
-    artifactName: 'NLSL_WebApp'
+    artifactName: 'NLSL_APP'
   displayName: create artefact
+
