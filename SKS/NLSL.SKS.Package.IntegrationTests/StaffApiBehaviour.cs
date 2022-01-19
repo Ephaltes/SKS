@@ -57,7 +57,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                             Country = "Österreich",
                                             Name = "Maxi Musti",
                                             Street = "Wienerbergstraße 20",
-                                            PostalCode = "1120"
+                                            PostalCode = "A-1120"
                                         }
                            };
              await PostbinSetup();
