@@ -27,7 +27,7 @@ namespace NLSL.SKS.Package.IntegrationTests
         [OneTimeSetUp]
         public async Task OneTimeSetup()
         {
-            baseUrl = TestContext.Parameters.Get("baseUrl", "https://nlsl-test.azurewebsites.net");
+            baseUrl = TestContext.Parameters.Get("baseUrl", "https://localhost:5001");
             _httpClient = new HttpClient
                           {
                               BaseAddress = new Uri(baseUrl)
@@ -51,7 +51,7 @@ namespace NLSL.SKS.Package.IntegrationTests
                                     Country = "Austria",
                                     Name = "Maxi Musti",
                                     Street = "Wienerbergstraße 20",
-                                    PostalCode = "1120"
+                                    PostalCode = "A-1120"
                                 };
         }
 
