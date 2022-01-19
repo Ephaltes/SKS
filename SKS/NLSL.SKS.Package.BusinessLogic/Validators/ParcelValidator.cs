@@ -14,10 +14,12 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
     {
         public ParcelValidator()
         {
-            RuleFor(p => p.Recipient).NotNull().WithMessage("{PropertyName} was null");
-            RuleFor(p => p.Sender).NotNull().WithMessage("{PropertyName} was null");
-            RuleFor(p => p.VisitedHops).NotNull().WithMessage("{PropertyName} was null"); 
+            RuleFor(p => p.Recipient).NotNull().WithMessage("{PropertyName} was null").SetValidator(new RecipientValidator());
+            RuleFor(p => p.Sender).NotNull().WithMessage("{PropertyName} was null").SetValidator(new RecipientValidator());
+            RuleFor(p => p.VisitedHops).NotNull().WithMessage("{PropertyName} was null");
+            RuleForEach(p=> p.VisitedHops).SetValidator(new HopArrivalValidator());
             RuleFor(p => p.FutureHops).NotNull().WithMessage("{PropertyName} was null");
+            RuleForEach(p=> p.FutureHops).SetValidator(new HopArrivalValidator());
             RuleFor(p => p.State).NotNull().WithMessage("{PropertyName} was null");
 
             RuleFor(p => p.TrackingId).Matches("^[A-Z0-9]{9}$")
