@@ -17,7 +17,8 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
                 .Matches("^[A-Za-z0-9öÖäÄüÜ -]*$").WithMessage("{PropertyName} does not Match ^[A-Za-z0-9öÖäÄüÜ -]*$ Regex");
             RuleFor(p => p.ProcessingDelayMins).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.LocationName).NotNull().WithMessage("{PropertyName} was null");
-            RuleFor(p => p.LocationCoordinates).NotNull().WithMessage("{PropertyName} was null");
+            RuleFor(p => p.LocationCoordinates).NotNull().WithMessage("{PropertyName} was null")
+                .SetValidator(new GeoCoordinateValidator());
             RuleFor(p => p.RegionGeometry).NotNull().WithMessage("{PropertyName} was null");
             RuleFor(p => p.NumberPlate).NotNull().WithMessage("{PropertyName} was null");
         }
