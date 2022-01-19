@@ -26,7 +26,7 @@ namespace NLSL.SKS.Package.BusinessLogic.Validators
                 
                                                                          RuleFor(p => p.Street)
                                                                              .NotNull().WithMessage("{PropertyName} is Empty")
-                                                                             .Matches("^[A-Za-zßöÖäÄüÜ]+ [A-Za-z0-9öÖäÄüÜ/]+$").WithMessage("{PropertyName} does not Match ^[A-Za-zßöÖäÄüÜ]+ [A-Za-z0-9öÖäÄüÜ/]+$ Regex");
+                                                                             .Matches("^[A-Za-zßöÖäÄüÜ]+ [A-Za-z0-9öÖäÄüÜ/-]+$").WithMessage("{PropertyName} does not Match ^[A-Za-zßöÖäÄüÜ]+ [A-Za-z0-9öÖäÄüÜ/]+$ Regex");
                 
                                                                          RuleFor(p => p.City)
                                                                              .NotNull().WithMessage("{PropertyName} is Empty")
